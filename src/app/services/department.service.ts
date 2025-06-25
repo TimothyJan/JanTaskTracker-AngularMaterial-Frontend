@@ -39,7 +39,6 @@ export class DepartmentService {
   createDepartment(department: Department): void {
     let newDepartment = new Department(this.departmentId++, department.departmentName);
     this.departments.push(newDepartment);
-    // console.log(this.departments);
   }
 
   /** Update existing Department based on id */

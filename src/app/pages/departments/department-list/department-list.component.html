@@ -1,0 +1,42 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Department List</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <mat-list>
+
+      <mat-list-item>
+        <mat-grid-list cols="4">
+          <mat-grid-tile colspan="3">
+            Department Name
+          </mat-grid-tile>
+          <mat-grid-tile colspan="1">
+          </mat-grid-tile>
+        </mat-grid-list>
+      </mat-list-item>
+
+      <mat-list-item *ngFor="let department of departments">
+        <mat-grid-list cols="4">
+          <mat-grid-tile colspan="3">
+            {{ department.departmentName }}
+          </mat-grid-tile>
+          <mat-grid-tile colspan="1">
+
+            <button matButton [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="onOpenEditDialog(department.departmentId)">Edit</button>
+              <button mat-menu-item (click)="onDelete(department.departmentId)">Delete</button>
+              <button mat-menu-item>Cancel</button>
+            </mat-menu>
+
+          </mat-grid-tile>
+        </mat-grid-list>
+      </mat-list-item>
+
+    </mat-list>
+  </mat-card-content>
+</mat-card>

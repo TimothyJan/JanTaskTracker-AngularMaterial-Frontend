@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-input',
@@ -16,22 +16,16 @@ import {MatFormFieldModule} from '@angular/material/form-field';
   styleUrl: './input.component.css',
   standalone: true,
 })
-export class InputComponent implements OnInit{
+export class InputComponent {
   @Input() value: string = "";
   @Input() label: string = "text";
-  placeholder: string = "";
+  placeholder: string = `Enter ${this.label} here`;
 
   @Output() valueChanged = new EventEmitter<string>();
 
-  constructor() { }
-
-  ngOnInit(): void {
-    this.placeholder = `Enter ${this.label} here`;
-  }
-
-  onInputChange(event: any) {
-    this.value = event.target.value;
-    this.valueChanged.emit(this.value);
+  onInputChange(event: Event) {
+    const newValue = (event.target as HTMLInputElement).value;
+    this.valueChanged.emit(newValue);
   }
 
 }

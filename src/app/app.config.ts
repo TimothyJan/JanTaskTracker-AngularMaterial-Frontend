@@ -3,15 +3,18 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideHttpClient, withFetch } from '@angular/common/http';
+
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { provideHttpClient } from '@angular/common/http';
+import {MatDialogModule} from '@angular/material/dialog';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
     provideAnimations(), // Use provideAnimations instead of provideAnimationsAsync
-    provideHttpClient(),
+    provideHttpClient(withFetch()),
     importProvidersFrom(MatSnackBarModule),
+    importProvidersFrom(MatDialogModule)
   ]
 };

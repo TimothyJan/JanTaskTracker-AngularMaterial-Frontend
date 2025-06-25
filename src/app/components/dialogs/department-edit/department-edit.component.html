@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>Edit Department</h1>
+
+<div mat-dialog-content>
+  <form (ngSubmit)="confirm()">
+    <app-input
+      [label]="'Department Name'"
+      [value]="editedDepartment.departmentName"
+      (valueChanged)="onDepartmentNameChange($event)">
+    </app-input>
+  </form>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="confirm()">Save</button>
+</div>
