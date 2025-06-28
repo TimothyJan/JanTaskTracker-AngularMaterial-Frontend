@@ -26,7 +26,7 @@ export class DepartmentService {
   }
 
   /** Get Departments based on id */
-  getDepartment(id: number): Department | undefined {
+  getDepartmentById(id: number): Department | undefined {
     for(let i=0; i<this.departments.length; i++) {
       if(this.departments[i].departmentId == id) {
         return this.departments[i];

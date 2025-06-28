@@ -26,7 +26,7 @@ export class EmployeeService {
   }
 
   /** Get Employee based on id */
-  getEmployee(id: number): Employee | undefined {
+  getEmployeeById(id: number): Employee | undefined {
     for(let i=0; i<this.employees.length; i++) {
       if(this.employees[i].employeeId == id) {
         return this.employees[i];

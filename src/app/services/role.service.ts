@@ -43,7 +43,7 @@ export class RoleService {
   }
 
   /** Get Role based on id */
-  getRole(id: number): Role | undefined {
+  getRoleById(id: number): Role | undefined {
     for(let i=0; i<this.roles.length; i++) {
       if(this.roles[i].roleId == id) {
         return this.roles[i];
