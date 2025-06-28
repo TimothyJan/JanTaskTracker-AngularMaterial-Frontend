@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, inject, Inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Department } from '../../../models/department.model';
 import { DepartmentService } from '../../../services/department.service';
 import { SnackbarService } from '../../../services/snackbar.service';
 import { InputComponent } from '../../input/input.component';
+
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-department-edit',
@@ -18,28 +19,30 @@ import { InputComponent } from '../../input/input.component';
     InputComponent
   ],
   templateUrl: './department-edit.component.html',
-  styleUrl: './department-edit.component.css'
+  styleUrl: './department-edit.component.css',
+  standalone: true
 })
 export class DepartmentEditComponent implements OnInit {
+  private _snackbarService = inject(SnackbarService);
+  private _departmentService = inject(DepartmentService);
+
   originalDepartment: Department = { departmentId: -1, departmentName: "" };
   editedDepartment: Department = { departmentId: -1, departmentName: "" };
 
   constructor(
     private dialogRef: MatDialogRef<DepartmentEditComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { departmentId: number },
-    private _departmentService: DepartmentService,
-    private _snackbarService: SnackbarService
   ) { }
 
   ngOnInit() {
-    this.getDepartment();
+    this.getDepartmentById();
   }
 
   /** Get Department */
-  getDepartment(): void {
-    const dept = this._departmentService.getDepartment(this.data.departmentId);
+  getDepartmentById(): void {
+    const dept = this._departmentService.getDepartmentById(this.data.departmentId);
     if (!dept) {
-      console.error('Department not found');
+      console.error("Department not found");
       this.dialogRef.close(null);
       return;
     }

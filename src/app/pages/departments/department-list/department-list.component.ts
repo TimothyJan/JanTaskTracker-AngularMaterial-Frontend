@@ -2,15 +2,16 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { DepartmentService } from '../../../services/department.service';
 import { Department } from '../../../models/department.model';
+import { SnackbarService } from '../../../services/snackbar.service';
+import { DepartmentEditComponent } from '../../../components/dialogs/department-edit/department-edit.component';
+
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule}  from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { SnackbarService } from '../../../services/snackbar.service';
 import { MatDialog } from '@angular/material/dialog';
-import { DepartmentEditComponent } from '../../../components/dialogs/department-edit/department-edit.component';
 
 @Component({
   selector: 'app-department-list',
@@ -28,20 +29,20 @@ import { DepartmentEditComponent } from '../../../components/dialogs/department-
   standalone: true
 })
 export class DepartmentListComponent implements OnInit{
-  private snackbar = inject(SnackbarService)
+  private _snackbar = inject(SnackbarService);
+  private _departmentService = inject(DepartmentService);
   departments: Department[] = [];
 
   constructor(
-    private _departmentService: DepartmentService,
     private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
-    this.loadDepartments();
+    this.getDepartments();
   }
 
-  /** Load all departmetns */
-  loadDepartments(): void {
+  /** Get all departments */
+  getDepartments(): void {
     this.departments = this._departmentService.getDepartments();
   }
 
@@ -58,8 +59,8 @@ export class DepartmentListComponent implements OnInit{
     const confirmDelete = confirm('Are you sure you want to delete this department?');
     if (confirmDelete) {
       this._departmentService.deleteDepartment(departmentId);
-      this.loadDepartments();
-      this.snackbar.success("Department deleted.");
+      this.getDepartments();
+      this._snackbar.success("Department deleted.");
     }
   }
 
