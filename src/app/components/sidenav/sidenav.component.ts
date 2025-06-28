@@ -14,7 +14,6 @@ import { NavItem } from '../../models/nav-item.model';
 
 @Component({
   selector: 'app-sidenav',
-  standalone: true,
   imports: [
     CommonModule,
     RouterModule,
@@ -25,7 +24,8 @@ import { NavItem } from '../../models/nav-item.model';
     MatToolbarModule,
   ],
   templateUrl: './sidenav.component.html',
-  styleUrls: ['./sidenav.component.css']
+  styleUrls: ['./sidenav.component.css'],
+  standalone: true
 })
 export class SidenavComponent implements AfterViewInit, OnDestroy {
   @ViewChild('sidenav') matSidenav!: MatSidenav;
