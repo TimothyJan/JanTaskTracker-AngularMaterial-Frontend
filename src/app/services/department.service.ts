@@ -32,7 +32,7 @@ export class DepartmentService {
         return this.departments[i];
       }
     }
-    return undefined
+    return undefined;
   }
 
   /** Post new Department */

@@ -112,6 +112,7 @@ export class RoleListComponent implements OnInit {
     const confirmDelete = confirm('Are you sure you want to delete this role?');
     if (confirmDelete) {
       this._roleService.deleteRole(roleId);
+      this.getRoles();
       this._snackbar.success("Role deleted.");
     }
   }

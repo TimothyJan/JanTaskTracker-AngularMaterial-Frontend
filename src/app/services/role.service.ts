@@ -39,7 +39,7 @@ export class RoleService {
         departmentRoles.push(this.roles[i]);
       }
     }
-    return departmentRoles
+    return departmentRoles;
   }
 
   /** Get Role based on id */
@@ -49,7 +49,7 @@ export class RoleService {
         return this.roles[i];
       }
     }
-    return undefined
+    return undefined;
   }
 
   /** Post new Role */
