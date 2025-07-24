@@ -38,6 +38,9 @@ export class DepartmentListComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
+    this._departmentService.departmentsChanged$.subscribe(() => {
+      this.getDepartments();
+    });
     this.getDepartments();
   }
 

@@ -22,7 +22,7 @@ export class DepartmentService {
 
   /** Get Departments */
   getDepartments(): Department[] {
-    return this.departments;
+    return this.sortDepartments(this.departments);
   }
 
   /** Get Departments based on id */
@@ -39,6 +39,8 @@ export class DepartmentService {
   createDepartment(department: Department): void {
     let newDepartment = new Department(this.departmentId++, department.departmentName);
     this.departments.push(newDepartment);
+    this.departments = this.sortDepartments(this.departments); // Sort after adding
+    this.notifyDepartmentsChanged();
   }
 
   /** Update existing Department based on id */
@@ -72,6 +74,13 @@ export class DepartmentService {
       }
     }
     return false;
+  }
+
+  /** Helper method to sort departments alphabetically */
+  private sortDepartments(departments: Department[]): Department[] {
+    return [...departments].sort((a, b) =>
+      a.departmentName.localeCompare(b.departmentName)
+    );
   }
 
 }
