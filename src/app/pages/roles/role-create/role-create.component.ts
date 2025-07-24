@@ -2,13 +2,13 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputComponent } from '../../../components/input/input.component';
-import { RoleService } from '../../../services/role.service';
 import { SnackbarService } from '../../../services/snackbar.service';
+import { RoleService } from '../../../services/role.service';
+import { SelectDepartmentComponent } from "../../../components/select-department/select-department.component";
 
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { SelectDepartmentComponent } from "../../../components/select-department/select-department.component";
 
 @Component({
   selector: 'app-role-create',
