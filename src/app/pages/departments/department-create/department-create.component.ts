@@ -42,7 +42,6 @@ export class DepartmentCreateComponent {
       const departmentName = this.departmentForm.value.departmentName;
       if (!this._departmentService.checkDuplicates(departmentName)) {
         this._departmentService.createDepartment(this.departmentForm.value);
-        this.departmentForm.reset();
         this._departmentService.notifyDepartmentsChanged();
         this._snackbar.success("Department created.");
       } else {

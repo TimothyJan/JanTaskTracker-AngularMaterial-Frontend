@@ -52,7 +52,6 @@ export class RoleCreateComponent {
       const formValue = this.roleForm.value;
       if(!this._roleService.checkDuplicates(formValue)) {
         this._roleService.addRole(formValue);
-        this.roleForm.reset();
         this._roleService.notifyRolesChanged();
         this._snackbar.success("Role created.");
       }
