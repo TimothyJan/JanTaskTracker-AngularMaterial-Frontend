@@ -1,0 +1,18 @@
+@switch (data) {
+  @case ("DEPARTMENTS") {
+    <mat-label>Department: </mat-label>
+    <mat-form-field>
+      <mat-label>Select Dpt.</mat-label>
+      <mat-select (selectionChange)="onDepartmentChange($event)">
+        <mat-option
+          *ngFor="let department of departments"
+          [value]="department.departmentId">
+          {{ department.departmentName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  }
+  @default {
+    <h1>Error loading data in switch component.</h1>
+  }
+}
