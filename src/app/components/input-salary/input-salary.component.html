@@ -1,8 +1,9 @@
-<mat-label>{{ label }}: </mat-label>
+<mat-label>Salary: </mat-label>
 <mat-form-field>
+  <span matTextPrefix>$&nbsp;</span>
   <input
     matInput
     [value]="value"
-    [placeholder]="placeholder"
+    placeholder="0.00"
     (input)="onInputChange($event)">
 </mat-form-field>
