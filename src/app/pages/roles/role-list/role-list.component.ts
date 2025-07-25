@@ -15,6 +15,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDialog } from '@angular/material/dialog';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { RoleEditComponent } from '../../../components/dialogs/role-edit/role-edit.component';
+import { TruncatePipe } from '../../../pipes/truncate.pipe';
 
 @Component({
   selector: 'app-role-list',
@@ -26,7 +27,8 @@ import { RoleEditComponent } from '../../../components/dialogs/role-edit/role-ed
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    TruncatePipe
   ],
   templateUrl: './role-list.component.html',
   styleUrl: './role-list.component.css',
