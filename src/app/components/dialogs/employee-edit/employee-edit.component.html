@@ -1,0 +1,41 @@
+<h1 mat-dialog-title>Edit Employee</h1>
+
+<div mat-dialog-content>
+  <form (ngSubmit)="confirm()">
+
+    <div class="flex-container">
+      <div class="flex-item">
+        <app-select-department
+          [departmentId]="editedEmployee.departmentId"
+          (departmentChanged)="handleDepartmentChange($event)">
+        </app-select-department>
+      </div>
+      <div class="flex-item">
+        <app-select-role
+          [departmentId]="editedEmployee.departmentId"
+          [roleId]="editedEmployee.roleId"
+          (roleChanged)="handleRoleChange($event)">
+        </app-select-role>
+      </div>
+      <div class="flex-item">
+        <app-input
+          [label]="'Employee Name'"
+          [value]="editedEmployee.name"
+          (valueChanged)="handleEmployeeNameChange($event)">
+        </app-input>
+      </div>
+      <div class="flex-item">
+        <app-input-salary
+          [value]="editedEmployee.salary"
+          (valueChanged)="handleSalaryChange($event)">
+        </app-input-salary>
+      </div>
+    </div>
+
+  </form>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="confirm()">Save</button>
+</div>

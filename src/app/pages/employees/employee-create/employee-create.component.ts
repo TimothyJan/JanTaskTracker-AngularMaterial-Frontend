@@ -70,7 +70,6 @@ export class EmployeeCreateComponent {
       console.log(formValue);
       this._employeeService.addEmployee(formValue);
       this._employeeService.notifyEmployeesChanged();
-      this.employeeForm.reset();
       this._snackbar.success("Employee created.");
     }
     else {

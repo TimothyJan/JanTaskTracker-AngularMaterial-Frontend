@@ -18,7 +18,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 })
 export class InputSalaryComponent {
   private salaryRegex: RegExp = new RegExp(/^\d*\.?\d{0,2}$/g);
-  @Input() value: string = '';
+  @Input() value: number = 0;
   @Output() valueChanged = new EventEmitter<number>();
 
   /** Validate salary format */
