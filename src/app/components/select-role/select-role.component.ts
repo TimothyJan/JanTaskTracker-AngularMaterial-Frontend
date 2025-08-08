@@ -35,22 +35,36 @@ export class SelectRoleComponent implements OnInit, OnChanges {
   constructor() {}
 
   ngOnInit(): void {
-    this.loadRoles();
+    this.getRoles();
+    this.setSelectedRole();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['departmentId'] && !changes['departmentId'].firstChange) {
-      this.loadRoles();
+      this.getRoles();
+    }
+    if (changes['roleId']) {
+      this.setSelectedRole();
     }
   }
 
   /** Load roles based on current departmentId */
-  loadRoles(): void {
+  getRoles(): void {
     if (this.departmentId !== null) {
       this.roles = this._roleService.getRolesFromDepartmentId(this.departmentId);
       this.selectedRoleId = null; // Reset selection when department changes
     } else {
       this.roles = [];
+      this.selectedRoleId = null;
+    }
+  }
+
+  /** Set the selected role based on input roleId */
+  setSelectedRole(): void {
+    if (this.roleId !== null && this.roles.some(role => role.roleId === this.roleId)) {
+      this.selectedRoleId = this.roleId;
+    } else {
+      this.selectedRoleId = null;
     }
   }
 
