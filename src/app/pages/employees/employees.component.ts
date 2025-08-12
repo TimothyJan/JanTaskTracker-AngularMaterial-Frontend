@@ -4,7 +4,10 @@ import { EmployeeListComponent } from "./employee-list/employee-list.component";
 
 @Component({
   selector: 'app-employees',
-  imports: [EmployeeCreateComponent, EmployeeListComponent],
+  imports: [
+    EmployeeCreateComponent,
+    EmployeeListComponent
+  ],
   templateUrl: './employees.component.html',
   styleUrl: './employees.component.css',
   standalone: true

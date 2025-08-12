@@ -4,7 +4,10 @@ import { DepartmentListComponent } from "./department-list/department-list.compo
 
 @Component({
   selector: 'app-departments',
-  imports: [DepartmentCreateComponent, DepartmentListComponent],
+  imports: [
+    DepartmentCreateComponent,
+    DepartmentListComponent
+  ],
   templateUrl: './departments.component.html',
   styleUrl: './departments.component.css',
   standalone: true

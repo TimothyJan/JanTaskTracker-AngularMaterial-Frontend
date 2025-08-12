@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RoleService } from '../../services/role.service';
 import { Role } from '../../models/role.model';
+
+import { RoleService } from '../../services/role.service';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';

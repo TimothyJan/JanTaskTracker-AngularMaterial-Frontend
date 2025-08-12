@@ -4,7 +4,10 @@ import { RoleListComponent } from "./role-list/role-list.component";
 
 @Component({
   selector: 'app-roles',
-  imports: [RoleCreateComponent, RoleListComponent],
+  imports: [
+    RoleCreateComponent,
+    RoleListComponent
+  ],
   templateUrl: './roles.component.html',
   styleUrl: './roles.component.css',
   standalone: true

@@ -1,17 +1,17 @@
 import { Component, Inject, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SnackbarService } from '../../../services/snackbar.service';
 import { InputComponent } from '../../input/input.component';
 import { SelectDepartmentComponent } from "../../select-department/select-department.component";
 import { Employee } from '../../../models/employee.model';
-import { DepartmentService } from '../../../services/department.service';
+import { SelectRoleComponent } from '../../select-role/select-role.component';
+import { InputSalaryComponent } from "../../input-salary/input-salary.component";
+
+import { SnackbarService } from '../../../services/snackbar.service';
+import { EmployeeService } from '../../../services/employee.service';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { EmployeeService } from '../../../services/employee.service';
-import { SelectRoleComponent } from '../../select-role/select-role.component';
-import { InputSalaryComponent } from "../../input-salary/input-salary.component";
 
 @Component({
   selector: 'app-employee-edit',
@@ -30,7 +30,6 @@ import { InputSalaryComponent } from "../../input-salary/input-salary.component"
 })
 export class EmployeeEditComponent implements OnInit {
   private _snackbarService = inject(SnackbarService);
-  private _departmentService = inject(DepartmentService);
   private _employeeService = inject(EmployeeService);
 
   originalEmployee: Employee = { employeeId: -1, name: "", salary: -1, departmentId: -1, roleId: -1};

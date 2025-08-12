@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Department } from '../../models/department.model';
+
 import { DepartmentService } from '../../services/department.service';
 
 import { MatFormFieldModule } from '@angular/material/form-field';

@@ -1,11 +1,12 @@
 import { Component, Inject, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SnackbarService } from '../../../services/snackbar.service';
 import { Role } from '../../../models/role.model';
-import { RoleService } from '../../../services/role.service';
 import { InputComponent } from '../../input/input.component';
 import { SelectDepartmentComponent } from "../../select-department/select-department.component";
+
+import { SnackbarService } from '../../../services/snackbar.service';
+import { RoleService } from '../../../services/role.service';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';

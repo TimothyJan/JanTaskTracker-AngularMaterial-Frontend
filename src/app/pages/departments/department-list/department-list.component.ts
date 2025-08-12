@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { DepartmentService } from '../../../services/department.service';
 import { Department } from '../../../models/department.model';
-import { SnackbarService } from '../../../services/snackbar.service';
 import { DepartmentEditComponent } from '../../../components/dialogs/department-edit/department-edit.component';
+
+import { SnackbarService } from '../../../services/snackbar.service';
+import { DepartmentService } from '../../../services/department.service';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
@@ -52,7 +53,7 @@ export class DepartmentListComponent implements OnInit{
   /** Open Department Edit dialog */
   onOpenEditDialog(departmentId: number): void {
     this.dialog.open(DepartmentEditComponent, {
-      width: '400px',
+      width: '500px',
       data: { departmentId }
     });
   }

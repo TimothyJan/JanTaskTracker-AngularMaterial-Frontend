@@ -1,10 +1,13 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { SnackbarService } from '../../../services/snackbar.service';
-import { RoleService } from '../../../services/role.service';
+import { CommonModule } from '@angular/common';
 import { Role } from '../../../models/role.model';
-import { DepartmentService } from '../../../services/department.service';
 import { Department } from '../../../models/department.model';
+import { RoleEditComponent } from '../../../components/dialogs/role-edit/role-edit.component';
+import { TruncatePipe } from '../../../pipes/truncate.pipe';
+
+import { SnackbarService } from '../../../services/snackbar.service';
+import { DepartmentService } from '../../../services/department.service';
+import { RoleService } from '../../../services/role.service';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
@@ -14,8 +17,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialog } from '@angular/material/dialog';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { RoleEditComponent } from '../../../components/dialogs/role-edit/role-edit.component';
-import { TruncatePipe } from '../../../pipes/truncate.pipe';
 
 @Component({
   selector: 'app-role-list',
@@ -104,7 +105,7 @@ export class RoleListComponent implements OnInit {
   /** Open Role Edit dialog */
   onOpenEditDialog(roleId: number): void {
     this.dialog.open(RoleEditComponent, {
-      width: '400px',
+      width: '500px',
       data: { roleId }
     });
   }

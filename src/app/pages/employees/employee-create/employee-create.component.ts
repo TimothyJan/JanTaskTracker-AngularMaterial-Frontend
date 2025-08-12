@@ -1,16 +1,17 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { SnackbarService } from '../../../services/snackbar.service';
-import { EmployeeService } from '../../../services/employee.service';
 import { InputComponent } from '../../../components/input/input.component';
 import { SelectDepartmentComponent } from '../../../components/select-department/select-department.component';
 import { SelectRoleComponent } from "../../../components/select-role/select-role.component";
+import { InputSalaryComponent } from "../../../components/input-salary/input-salary.component";
+
+import { SnackbarService } from '../../../services/snackbar.service';
+import { EmployeeService } from '../../../services/employee.service';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { InputSalaryComponent } from "../../../components/input-salary/input-salary.component";
 
 @Component({
   selector: 'app-employee-create',
@@ -67,7 +68,6 @@ export class EmployeeCreateComponent {
   onSubmit(): void {
     if (this.employeeForm.valid) {
       const formValue = this.employeeForm.value;
-      console.log(formValue);
       this._employeeService.addEmployee(formValue);
       this._employeeService.notifyEmployeesChanged();
       this._snackbar.success("Employee created.");

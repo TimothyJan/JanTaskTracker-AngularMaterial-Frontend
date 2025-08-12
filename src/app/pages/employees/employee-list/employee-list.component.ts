@@ -3,6 +3,13 @@ import { Component, inject, OnInit } from '@angular/core';
 import { SnackbarService } from '../../../services/snackbar.service';
 import { EmployeeService } from '../../../services/employee.service';
 import { Employee } from '../../../models/employee.model';
+import { EmployeeEditComponent } from '../../../components/dialogs/employee-edit/employee-edit.component';
+import { Department } from '../../../models/department.model';
+import { Role } from '../../../models/role.model';
+import { TruncatePipe } from '../../../pipes/truncate.pipe';
+
+import { DepartmentService } from '../../../services/department.service';
+import { RoleService } from '../../../services/role.service';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
@@ -12,12 +19,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialog } from '@angular/material/dialog';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { EmployeeEditComponent } from '../../../components/dialogs/employee-edit/employee-edit.component';
-import { Department } from '../../../models/department.model';
-import { Role } from '../../../models/role.model';
-import { DepartmentService } from '../../../services/department.service';
-import { RoleService } from '../../../services/role.service';
-import { TruncatePipe } from '../../../pipes/truncate.pipe';
 
 @Component({
   selector: 'app-employee-list',
@@ -89,7 +90,7 @@ export class EmployeeListComponent implements OnInit{
   /** Open Role Edit dialog */
   onOpenEditDialog(employeeId: number): void {
     this.dialog.open(EmployeeEditComponent, {
-      width: '400px',
+      width: '500px',
       data: { employeeId }
     });
   }

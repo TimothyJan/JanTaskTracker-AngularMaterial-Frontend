@@ -2,8 +2,9 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { InputComponent } from '../../../components/input/input.component';
-import { DepartmentService } from '../../../services/department.service';
+
 import { SnackbarService } from '../../../services/snackbar.service';
+import { DepartmentService } from '../../../services/department.service';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';

@@ -1,10 +1,11 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject, Inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Department } from '../../../models/department.model';
-import { DepartmentService } from '../../../services/department.service';
-import { SnackbarService } from '../../../services/snackbar.service';
 import { InputComponent } from '../../input/input.component';
+
+import { SnackbarService } from '../../../services/snackbar.service';
+import { DepartmentService } from '../../../services/department.service';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';

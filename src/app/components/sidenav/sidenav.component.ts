@@ -1,16 +1,17 @@
 import { Component, Inject, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MatSidenavModule, MatSidenav } from '@angular/material/sidenav';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { SidenavService } from '../../services/sidenav.service';
 import { PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { NavItem } from '../../models/nav-item.model';
+
+import { MatSidenavModule, MatSidenav } from '@angular/material/sidenav';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-sidenav',
