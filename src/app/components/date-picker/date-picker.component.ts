@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -19,16 +19,24 @@ import { MatNativeDateModule } from '@angular/material/core';
   templateUrl: './date-picker.component.html',
   styleUrl: './date-picker.component.css'
 })
-export class DatePickerComponent {
+export class DatePickerComponent implements OnChanges {
   @Input() label: string = "Date";
   @Input() initialDate?: Date | null = null;
   @Output() dateSelected = new EventEmitter<Date>();
 
   // Unique ID for each datepicker instance
   pickerId = `datepicker-${Math.random().toString(36).substring(2, 9)}`;
+  displayDate: Date | null = null;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['initialDate']) {
+      this.displayDate = this.initialDate ? new Date(this.initialDate) : null;
+    }
+  }
 
   /** Handle date selection changes */
   onDateChange(date: Date) {
+    this.displayDate = date;
     this.dateSelected.emit(date);
   }
 }
