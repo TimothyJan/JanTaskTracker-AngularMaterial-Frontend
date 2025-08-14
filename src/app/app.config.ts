@@ -4,9 +4,10 @@ import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient, withFetch } from '@angular/common/http';
+import { MatNativeDateModule } from '@angular/material/core';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,6 +16,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(), // Use provideAnimations instead of provideAnimationsAsync
     provideHttpClient(withFetch()),
     importProvidersFrom(MatSnackBarModule),
-    importProvidersFrom(MatDialogModule)
+    importProvidersFrom(MatDialogModule),
+    importProvidersFrom(MatNativeDateModule),
   ]
 };

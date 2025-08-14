@@ -1,1 +1,24 @@
-<p>projects works!</p>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      <!-- Projects -->
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-actions>
+    <button mat-raised-button color="primary" (click)="openProjectCreateDialog()">Add Project</button>
+  </mat-card-actions>
+
+  <mat-card-content>
+    <div *ngIf="listOfProjectIds.length>0; else noProjectsBlock">
+      <div *ngFor="let projectId of listOfProjectIds">
+        <app-project [projectId]="projectId"></app-project>
+      </div>
+    </div>
+    <ng-template #noProjectsBlock>
+      <h3>No Projects Found</h3>
+      <p>Get started by creating your first project</p>
+    </ng-template>
+  </mat-card-content>
+</mat-card>
+
