@@ -7,7 +7,6 @@ import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-date-picker',
-  standalone: true,
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -17,7 +16,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatNativeDateModule
   ],
   templateUrl: './date-picker.component.html',
-  styleUrl: './date-picker.component.css'
+  styleUrl: './date-picker.component.css',
+  standalone: true,
 })
 export class DatePickerComponent implements OnChanges {
   @Input() label: string = "Date";

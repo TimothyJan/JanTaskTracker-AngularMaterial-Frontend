@@ -4,13 +4,13 @@ import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms'
 import { InputComponent } from '../../input/input.component';
 import { DatePickerComponent } from '../../date-picker/date-picker.component';
 import { SelectStatusComponent } from '../../select-status/select-status.component';
+import { Project } from '../../../models/project.model';
 
 import { SnackbarService } from '../../../services/snackbar.service';
 import { ProjectService } from '../../../services/project.service';
 
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { Project } from '../../../models/project.model';
 
 @Component({
   selector: 'app-project-dialog',
@@ -24,7 +24,8 @@ import { Project } from '../../../models/project.model';
     SelectStatusComponent
   ],
   templateUrl: './project-dialog.component.html',
-  styleUrl: './project-dialog.component.css'
+  styleUrl: './project-dialog.component.css',
+  standalone: true
 })
 export class ProjectDialogComponent implements OnInit {
   private _snackbarService = inject(SnackbarService);
@@ -113,7 +114,6 @@ export class ProjectDialogComponent implements OnInit {
     this._projectService.updateProject(editedProject);
     this._projectService.notifyProjectsChanged();
     this._snackbarService.success("Project saved.");
-    console.log(this._projectService.getProjects());
   }
 
   /** Handle project name input changes */

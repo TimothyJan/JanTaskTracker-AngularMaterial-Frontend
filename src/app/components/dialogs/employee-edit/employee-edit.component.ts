@@ -26,7 +26,8 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/materia
     InputSalaryComponent
 ],
   templateUrl: './employee-edit.component.html',
-  styleUrl: './employee-edit.component.css'
+  styleUrl: './employee-edit.component.css',
+  standalone: true
 })
 export class EmployeeEditComponent implements OnInit {
   private _snackbarService = inject(SnackbarService);
