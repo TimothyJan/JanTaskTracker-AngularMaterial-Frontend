@@ -1,0 +1,62 @@
+<mat-card>
+
+  <mat-grid-list cols="8">
+    <mat-grid-tile colspan="3">
+      <mat-card-title>
+        Assigned Employees
+      </mat-card-title>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="2">
+      <button mat-raised-button color="primary" (click)="openAssignEmployees()">
+        Edit Employees
+      </button>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="3"></mat-grid-tile>
+  </mat-grid-list>
+
+  @if(!isLoading) {
+    <mat-card-content>
+      <div *ngIf="assignedEmployeeList.length>0; else noAssignedEmployees">
+        <mat-list>
+
+          <mat-list-item>
+            <mat-grid-list cols="9">
+              <mat-grid-tile colspan="3">
+                Employee Name
+              </mat-grid-tile>
+              <mat-grid-tile colspan="3">
+                Role
+              </mat-grid-tile>
+              <mat-grid-tile colspan="3">
+                Department
+              </mat-grid-tile>
+            </mat-grid-list>
+          </mat-list-item>
+
+          <mat-list-item *ngFor="let employee of assignedEmployeeList">
+            <mat-grid-list cols="9">
+              <mat-grid-tile colspan="3">
+                {{ employee.name | truncate:16 }}
+              </mat-grid-tile>
+              <mat-grid-tile colspan="3">
+                {{ getRoleName(employee.roleId)! | truncate:16 }}
+              </mat-grid-tile>
+              <mat-grid-tile colspan="3">
+                {{ getDepartmentName(employee.departmentId)! | truncate:16 }}
+              </mat-grid-tile>
+            </mat-grid-list>
+          </mat-list-item>
+
+        </mat-list>
+      </div>
+
+      <ng-template #noAssignedEmployees>
+        No assigned employees
+      </ng-template>
+    </mat-card-content>
+  } @else {
+    <mat-spinner></mat-spinner>
+  }
+
+</mat-card>
+
