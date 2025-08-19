@@ -23,7 +23,8 @@ import { MatDialog } from '@angular/material/dialog';
     ProjectComponent
 ],
   templateUrl: './projects.component.html',
-  styleUrl: './projects.component.css'
+  styleUrl: './projects.component.css',
+  standalone: true
 })
 export class ProjectsComponent implements OnInit {
   private _projectService = inject(ProjectService);

@@ -36,13 +36,13 @@
           <mat-list-item *ngFor="let employee of assignedEmployeeList">
             <mat-grid-list cols="9">
               <mat-grid-tile colspan="3">
-                {{ employee.name | truncate:16 }}
+                {{ employee.name | truncate:20 }}
               </mat-grid-tile>
               <mat-grid-tile colspan="3">
-                {{ getRoleName(employee.roleId)! | truncate:16 }}
+                {{ getRoleName(employee.roleId)! | truncate:20 }}
               </mat-grid-tile>
               <mat-grid-tile colspan="3">
-                {{ getDepartmentName(employee.departmentId)! | truncate:16 }}
+                {{ getDepartmentName(employee.departmentId)! | truncate:20 }}
               </mat-grid-tile>
             </mat-grid-list>
           </mat-list-item>

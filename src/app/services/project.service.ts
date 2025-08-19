@@ -13,8 +13,8 @@ export class ProjectService {
   projectId: number = 3;
 
   private projects: Project[] = [
-    new Project(1, 'Project Alpha', 'First project', 'Active', new Date('2024-11-13'), new Date('2025-11-13')),
-    new Project(2, 'Project Beta', 'Second project', 'Active', new Date('2024-11-13'), new Date('2025-1-13')),
+    new Project(1, 'Project Alpha', 'First project', 'Active', new Date('2025-11-13'), new Date('2026-11-13')),
+    new Project(2, 'Project Beta', 'Second project', 'Active', new Date('2025-11-13'), new Date('2026-1-13')),
   ];
 
   constructor() {}

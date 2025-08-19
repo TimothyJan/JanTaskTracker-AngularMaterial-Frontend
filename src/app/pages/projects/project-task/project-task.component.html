@@ -1,0 +1,44 @@
+@if(!isLoading) {
+  <mat-card>
+
+      <button matIconButton aria-label="Example icon button with a vertical three dot icon">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+
+      <mat-grid-list cols="15">
+      <mat-grid-tile colspan="3">
+        {{ projectTask.startDate | date: 'shortDate':'UTC' }} - {{ projectTask.dueDate | date: 'shortDate':'UTC' }}
+      </mat-grid-tile>
+      <mat-grid-tile colspan="9"></mat-grid-tile>
+      <mat-grid-tile colspan="2">
+        {{ projectTask.status }}
+      </mat-grid-tile>
+      <mat-grid-tile colspan="1">
+        <button matIconButton [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="openProjectTaskEditDialog()">Edit</button>
+          <button mat-menu-item (click)="onDelete()">Delete</button>
+          <button mat-menu-item>Cancel</button>
+        </mat-menu>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-card-content>
+
+      <mat-card-title>
+        {{ projectTask.title }}
+      </mat-card-title>
+
+      <p>{{ projectTask.description }}</p>
+
+      <app-assigned-employees [projectTaskId]="projectTaskId"></app-assigned-employees>
+
+    </mat-card-content>
+
+  </mat-card>
+} @else {
+  <mat-spinner></mat-spinner>
+}

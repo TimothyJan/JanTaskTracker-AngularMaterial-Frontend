@@ -14,6 +14,7 @@ import { MatGridListModule } from "@angular/material/grid-list";
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
+import { ProjectTaskDialogComponent } from '../../../components/dialogs/project-task-dialog/project-task-dialog.component';
 
 @Component({
   selector: 'app-project',
@@ -27,7 +28,8 @@ import { MatDialog } from '@angular/material/dialog';
     ProjectTaskComponent
 ],
   templateUrl: './project.component.html',
-  styleUrl: './project.component.css'
+  styleUrl: './project.component.css',
+  standalone: true
 })
 export class ProjectComponent implements OnInit {
   private _snackbarService = inject(SnackbarService);
@@ -68,16 +70,19 @@ export class ProjectComponent implements OnInit {
   }
 
   /** Opens Project Edit Dialog */
-  async openProjectEditDialog(projectId: number) {
+  async openProjectEditDialog() {
     this.dialog.open(ProjectDialogComponent, {
       width: '500px',
-      data: { projectId }
+      data: { projectId: this.project.projectId }
     });
   }
 
   /** Opens Project Task Create Dialog */
   async openProjectTaskCreateDialog() {
-
+    this.dialog.open(ProjectTaskDialogComponent, {
+      width: '500px',
+      data: { projectId: this.project.projectId }
+    })
   }
 
   onDelete(): void {

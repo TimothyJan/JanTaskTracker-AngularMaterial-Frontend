@@ -43,7 +43,7 @@ export class EmployeeListComponent implements OnInit{
   private _departmentService = inject(DepartmentService);
   private _roleService = inject(RoleService);
   departments: Department[] = [];
-  roles: Role[] = []
+  roles: Role[] = [];
   employees: Employee[] = [];
 
   constructor(

@@ -14,7 +14,8 @@
       </button>
 
       <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="openProjectEditDialog(project.projectId)">Edit</button>
+        <button mat-menu-item (click)="openProjectEditDialog()">Edit</button>
+        <button mat-menu-item (click)="openProjectTaskCreateDialog()">Add Task</button>
         <button mat-menu-item (click)="onDelete()">Delete</button>
         <button mat-menu-item>Cancel</button>
       </mat-menu>

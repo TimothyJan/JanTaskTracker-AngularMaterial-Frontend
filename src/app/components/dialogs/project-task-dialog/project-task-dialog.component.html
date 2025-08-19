@@ -1,0 +1,58 @@
+@if(!isLoading) {
+
+  <h1 mat-dialog-title *ngIf="data.projectId==-1">Create Project Task</h1>
+  <h1 mat-dialog-title *ngIf="data.projectId!=-1">Edit Project Task</h1>
+
+  <div mat-dialog-content>
+    <form (ngSubmit)="confirm()">
+      <div class="flex-container">
+        <div class="flex-item">
+          <app-input
+            [label]="'Project Task Name'"
+            [value]="projectTaskForm.get('title')?.value"
+            (valueChanged)="handleTitleChange($event)">
+          </app-input>
+        </div>
+        <div class="flex-item">
+          <app-input
+            [label]="'Description'"
+            [value]="projectTaskForm.get('description')?.value"
+            (valueChanged)="handleDescriptionChange($event)">
+          </app-input>
+        </div>
+        <div class="flex-item">
+          <app-select-status
+            [value]="projectTaskForm.get('status')?.value">
+          </app-select-status>
+        </div>
+        <div class="flex-item">
+          <app-date-picker
+            [label]="'Start Date'"
+            [initialDate]="projectTaskForm.get('startDate')?.value"
+            (dateSelected)="handleStartDateSelection($event)">
+          </app-date-picker>
+        </div>
+        <div class="flex-item">
+          <app-date-picker
+            [label]="'End Date'"
+            [initialDate]="projectTaskForm.get('dueDate')?.value"
+            (dateSelected)="handleDueDateSelection($event)">
+          </app-date-picker>
+        </div>
+        @if(data.projectTaskId) {
+          <div class="flex-item">
+            <app-assigned-employees [projectTaskId]="data.projectTaskId"></app-assigned-employees>
+          </div>
+        }
+      </div>
+    </form>
+  </div>
+
+  <div mat-dialog-actions align="end">
+    <button mat-button (click)="cancel()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="confirm()">Save</button>
+  </div>
+
+} @else {
+  <mat-spinner></mat-spinner>
+}
