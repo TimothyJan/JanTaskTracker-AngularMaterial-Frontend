@@ -50,6 +50,8 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
   departments: Department[] = [];
   roles: Role[] = [];
   employees: Employee[] = [];
+  sortedEmployees: Employee[] = [];
+  sortBy: 'employee' | 'role' | 'department' | 'none' = 'none';
 
   constructor(
     private dialog: MatDialog
@@ -60,15 +62,18 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
     this.getRoles();
     this.getDepartments();
     this._employeeService.employeesChanged$.subscribe(() => {
+      this.getEmployees();
       this.getRoles();
       this.getDepartments();
-    })
+    });
   }
 
   /** Get all employees */
   getEmployees(): void {
     this.isLoading = true;
     this.employees = this._employeeService.getEmployees();
+    this.sortedEmployees = [...this.employees];
+    this.sortEmployees();
     this.isLoading = false;
 
     // Subscribe to the employee notifications
@@ -107,6 +112,41 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
       });
   }
 
+  /** Sort employees based on current sortBy value */
+  sortEmployees(): void {
+    if (this.sortBy === 'none') {
+      this.sortedEmployees = [...this.employees];
+      return;
+    }
+
+    this.sortedEmployees = [...this.employees].sort((a, b) => {
+      switch (this.sortBy) {
+        case 'employee':
+          return a.name.localeCompare(b.name);
+        case 'role':
+          const aRole = this.getRoleName(a.roleId) || '';
+          const bRole = this.getRoleName(b.roleId) || '';
+          return aRole.localeCompare(bRole);
+        case 'department':
+          const aDept = this.getDepartmentName(a.departmentId) || '';
+          const bDept = this.getDepartmentName(b.departmentId) || '';
+          return aDept.localeCompare(bDept);
+        default:
+          return 0;
+      }
+    });
+  }
+
+  /** Toggle sorting */
+  toggleSort(sortType: 'employee' | 'role' | 'department'): void {
+    if (this.sortBy === sortType) {
+      this.sortBy = 'none'; // Toggle off if already sorted by this type
+    } else {
+      this.sortBy = sortType; // Set new sort type
+    }
+    this.sortEmployees();
+  }
+
   /** Get Department name from DepartmentId */
   getDepartmentName(departmentId: number): string | undefined {
     const department = this.departments.find(dep => dep.departmentId === departmentId);
@@ -119,7 +159,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
     return role ? role.roleName : undefined;
   }
 
-  /** Open Role Edit dialog */
+  /** Open Employee Edit dialog */
   onOpenEditDialog(employeeId: number): void {
     this.dialog.open(EmployeeEditComponent, {
       width: '500px',
@@ -127,14 +167,14 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
     });
   }
 
-  /** Delete Role */
+  /** Delete Employee */
   onDelete(employeeId: number): void {
-    const confirmDelete = confirm('Are you sure you want to delete this role?');
+    const confirmDelete = confirm('Are you sure you want to delete this employee?');
     if (confirmDelete) {
       this.isLoading = true;
       this._employeeService.deleteEmployee(employeeId);
       this.getEmployees();
-      this._snackbar.success("Role deleted.");
+      this._snackbar.success("Employee deleted.");
       this.isLoading = false;
     }
   }

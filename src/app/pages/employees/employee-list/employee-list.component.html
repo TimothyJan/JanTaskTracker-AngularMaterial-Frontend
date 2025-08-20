@@ -6,8 +6,11 @@
     </mat-card-header>
 
     <mat-card-content>
-      <!-- <div class="sort-controls">
+      <div class="sort-controls">
         <mat-button-toggle-group>
+          <mat-button-toggle (click)="toggleSort('employee')" [checked]="sortBy === 'employee'">
+            Sort by Employee
+          </mat-button-toggle>
           <mat-button-toggle (click)="toggleSort('role')" [checked]="sortBy === 'role'">
             Sort by Role
           </mat-button-toggle>
@@ -15,7 +18,7 @@
             Sort by Department
           </mat-button-toggle>
         </mat-button-toggle-group>
-      </div> -->
+      </div>
 
       <mat-list>
         <mat-list-item>
@@ -37,7 +40,7 @@
           </mat-grid-list>
         </mat-list-item>
 
-        @for(employee of employees; track employee.employeeId) {
+        @for(employee of sortedEmployees; track employee.employeeId) {
           <mat-list-item>
             <mat-grid-list cols="12">
               <mat-grid-tile colspan="3">
@@ -50,7 +53,7 @@
                 {{ getDepartmentName(employee.departmentId)! | truncate:12 }}
               </mat-grid-tile>
               <mat-grid-tile colspan="2">
-                {{ employee.salary }}
+                {{ employee.salary | currency }}
               </mat-grid-tile>
               <mat-grid-tile colspan="1">
                 <button matIconButton [matMenuTriggerFor]="menu">
@@ -67,7 +70,6 @@
         @empty {
           No Employees found.
         }
-
       </mat-list>
     </mat-card-content>
   </mat-card>
