@@ -47,7 +47,9 @@ export class RoleListComponent implements OnInit, OnDestroy {
   roles: Role[] = [];
   departments: Department[] = [];
   sortedRoles: Role[] = [];
-  sortBy: 'role' | 'department' | 'none' = 'none';
+
+  // Set default sort to department
+  sortBy: 'role' | 'department' | 'none' = 'department';
 
   constructor(
     private dialog: MatDialog
@@ -56,6 +58,10 @@ export class RoleListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getRoles();
     this.getDepartments();
+
+    // Sort immediately after component initialization
+    this.sortRoles();
+
     this._roleService.rolesChanged$.subscribe(() => {
       this.getRoles();
       this.sortRoles();
@@ -74,7 +80,6 @@ export class RoleListComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.getRoles(); // Reload roles with updates
       });
-    this.sortRoles();
   }
 
   /** Get all departments */
