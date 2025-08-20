@@ -1,6 +1,6 @@
 import { Component, Inject, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { InputComponent } from '../../input/input.component';
 import { SelectDepartmentComponent } from "../../select-department/select-department.component";
 import { Employee } from '../../../models/employee.model';
@@ -38,8 +38,13 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
 
   isLoading: boolean = false;
-  originalEmployee: Employee = { employeeId: -1, name: "", salary: -1, departmentId: -1, roleId: -1};
-  editedEmployee: Employee = { employeeId: -1, name: "", salary: -1, departmentId: -1, roleId: -1};
+  employeeForm: FormGroup = new FormGroup({
+    employeeId: new FormControl(-1, [Validators.required, Validators.pattern(/^\d+$/)]),
+    name: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(100)]),
+    salary: new FormControl(0, [Validators.min(0), Validators.required]),
+    departmentId: new FormControl(-1, [Validators.required, Validators.pattern(/^\d+$/)]),
+    roleId: new FormControl(-1, [Validators.required, Validators.pattern(/^\d+$/)])
+  });
 
   constructor(
     private dialogRef: MatDialogRef<EmployeeEditComponent>,
@@ -47,47 +52,53 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.getEmployeeById();
+    this.setEmployeeFormValues();
   }
 
-  /** Get Employee */
-  getEmployeeById(): void {
+  setEmployeeFormValues(): void {
     this.isLoading = true;
     const employee = this._employeeService.getEmployeeById(this.data.employeeId);
-    if (!employee) {
-      console.error("Employee not found");
-      this.dialogRef.close(null);
-      return;
-    }
-    this.originalEmployee = { ...employee };
-    this.editedEmployee =  { ...employee };
+    this.employeeForm.patchValue({
+      employeeId: employee?.employeeId,
+      name: employee?.name,
+      salary: employee?.salary,
+      departmentId: employee?.departmentId,
+      roleId: employee?.roleId
+    })
     this.isLoading = false;
   }
 
   /** Handle department select changes */
   handleDepartmentChange(departmentId: number): void {
-    this.editedEmployee.departmentId = departmentId;
+    this.employeeForm.controls["departmentId"].setValue(departmentId);
   }
 
   /** Handle role select changes */
   handleRoleChange(roleId: number): void {
-    this.editedEmployee.roleId = roleId;
+    this.employeeForm.controls["roleId"].setValue(roleId);
   }
 
   /** Handle department name input changes */
   handleEmployeeNameChange(newValue: string): void {
-    this.editedEmployee.name = newValue.toUpperCase();
+    this.employeeForm.controls["name"].setValue(newValue.toUpperCase());
   }
 
   /** Handle salary input changes */
   handleSalaryChange(newSalary: number): void {
-    this.editedEmployee.salary = newSalary;
+    this.employeeForm.controls["salary"].setValue(newSalary);
   }
 
-    /** Save Changes */
+  /** Save Changes */
   saveChanges(): void {
     this.isLoading = true;
-    this._employeeService.updateEmployee(this.editedEmployee);
+    const updatedEmployee = new Employee(
+      this.employeeForm.controls["employeeId"].value,
+      this.employeeForm.controls["name"].value,
+      this.employeeForm.controls["salary"].value,
+      this.employeeForm.controls["departmentId"].value,
+      this.employeeForm.controls["roleId"].value,
+    )
+    this._employeeService.updateEmployee(updatedEmployee);
     this._employeeService.notifyEmployeesChanged();
     this._snackbarService.success("Role saved.");
     this.isLoading = false;

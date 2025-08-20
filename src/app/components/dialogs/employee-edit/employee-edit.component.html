@@ -8,27 +8,27 @@
       <div class="flex-container">
         <div class="flex-item">
           <app-select-department
-            [departmentId]="editedEmployee.departmentId"
+            [departmentId]="employeeForm.get('departmentId')?.value"
             (departmentChanged)="handleDepartmentChange($event)">
           </app-select-department>
         </div>
         <div class="flex-item">
           <app-select-role
-            [departmentId]="editedEmployee.departmentId"
-            [roleId]="editedEmployee.roleId"
+            [departmentId]="employeeForm.get('departmentId')?.value"
+            [roleId]="employeeForm.get('roleId')?.value"
             (roleChanged)="handleRoleChange($event)">
           </app-select-role>
         </div>
         <div class="flex-item">
           <app-input
             [label]="'Employee Name'"
-            [value]="editedEmployee.name"
+            [value]="employeeForm.get('name')?.value"
             (valueChanged)="handleEmployeeNameChange($event)">
           </app-input>
         </div>
         <div class="flex-item">
           <app-input-salary
-            [value]="editedEmployee.salary"
+            [value]="employeeForm.get('salary')?.value"
             (valueChanged)="handleSalaryChange($event)">
           </app-input-salary>
         </div>
