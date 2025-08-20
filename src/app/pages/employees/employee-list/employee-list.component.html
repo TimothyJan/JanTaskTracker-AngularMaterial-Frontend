@@ -38,7 +38,7 @@
         </mat-list-item>
 
         @for(employee of employees; track employee.employeeId) {
-          <mat-list-item *ngFor="let employee of employees">
+          <mat-list-item>
             <mat-grid-list cols="12">
               <mat-grid-tile colspan="3">
                 {{ employee.name | truncate:12 }}
