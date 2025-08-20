@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { InputComponent } from '../../input/input.component';
 import { SelectDepartmentComponent } from "../../select-department/select-department.component";
-import { Employee } from '../../../models/employee.model';
 import { SelectRoleComponent } from '../../select-role/select-role.component';
 import { InputSalaryComponent } from "../../input-salary/input-salary.component";
 import { Subject } from 'rxjs';
@@ -16,7 +15,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/materia
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
-  selector: 'app-employee-edit',
+  selector: 'app-employee-dialog',
   imports: [
     CommonModule,
     FormsModule,
@@ -27,12 +26,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     InputComponent,
     InputSalaryComponent,
     MatProgressSpinnerModule,
-],
-  templateUrl: './employee-edit.component.html',
-  styleUrl: './employee-edit.component.css',
+  ],
+  templateUrl: './employee-dialog.component.html',
+  styleUrl: './employee-dialog.component.css',
   standalone: true
 })
-export class EmployeeEditComponent implements OnInit, OnDestroy {
+export class EmployeeDialogComponent  implements OnInit, OnDestroy {
   private _snackbarService = inject(SnackbarService);
   private _employeeService = inject(EmployeeService);
   private unsubscribe$ = new Subject<void>();
@@ -47,7 +46,7 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
   });
 
   constructor(
-    private dialogRef: MatDialogRef<EmployeeEditComponent>,
+    private dialogRef: MatDialogRef<EmployeeDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { employeeId: number },
   ) {}
 

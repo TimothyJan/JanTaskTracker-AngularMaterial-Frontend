@@ -3,7 +3,7 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { SnackbarService } from '../../../services/snackbar.service';
 import { EmployeeService } from '../../../services/employee.service';
 import { Employee } from '../../../models/employee.model';
-import { EmployeeEditComponent } from '../../../components/dialogs/employee-edit/employee-edit.component';
+import { EmployeeDialogComponent } from '../../../components/dialogs/employee-dialog/employee-dialog.component';
 import { Department } from '../../../models/department.model';
 import { Role } from '../../../models/role.model';
 import { TruncatePipe } from '../../../pipes/truncate.pipe';
@@ -161,7 +161,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
 
   /** Open Employee Edit dialog */
   onOpenEditDialog(employeeId: number): void {
-    this.dialog.open(EmployeeEditComponent, {
+    this.dialog.open(EmployeeDialogComponent, {
       width: '500px',
       data: { employeeId }
     });

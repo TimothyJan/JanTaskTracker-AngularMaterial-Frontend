@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RoleListComponent } from "./role-list/role-list.component";
-import { RoleEditComponent } from '../../components/dialogs/role-edit/role-edit.component';
+import { RoleDialogComponent } from '../../components/dialogs/role-dialog/role-dialog.component';
 
 import { MatCardModule } from "@angular/material/card";
 import { MatGridListModule } from "@angular/material/grid-list";
@@ -26,7 +26,7 @@ export class RolesComponent {
   ) {}
 
   onOpenRoleDialog(): void {
-    this.dialog.open(RoleEditComponent, {
+    this.dialog.open(RoleDialogComponent, {
       width: '500px',
       data: { }
     });

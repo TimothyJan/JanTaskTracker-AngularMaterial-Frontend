@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { DepartmentListComponent } from "./department-list/department-list.component";
-import { DepartmentEditComponent } from '../../components/dialogs/department-edit/department-edit.component';
+import { DepartmentDialogComponent } from '../../components/dialogs/department-dialog/department-dialog.component';
 
 import { MatCardModule } from "@angular/material/card";
 import { MatGridListModule } from "@angular/material/grid-list";
@@ -27,7 +27,7 @@ export class DepartmentsComponent {
 
   /** Open Department Create dialog */
   onOpenDepartmentDialog(): void {
-    this.dialog.open(DepartmentEditComponent, {
+    this.dialog.open(DepartmentDialogComponent, {
       width: '500px',
       data: { }
     });

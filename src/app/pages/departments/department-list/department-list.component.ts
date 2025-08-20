@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Department } from '../../../models/department.model';
-import { DepartmentEditComponent } from '../../../components/dialogs/department-edit/department-edit.component';
+import { DepartmentDialogComponent } from '../../../components/dialogs/department-dialog/department-dialog.component';
 import { Subject, takeUntil } from 'rxjs';
 
 import { SnackbarService } from '../../../services/snackbar.service';
@@ -15,6 +15,7 @@ import { MatIconModule}  from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 
 @Component({
   selector: 'app-department-list',
@@ -63,7 +64,7 @@ export class DepartmentListComponent implements OnInit, OnDestroy {
 
   /** Open Department Edit dialog */
   onOpenEditDialog(departmentId: number): void {
-    this.dialog.open(DepartmentEditComponent, {
+    this.dialog.open(DepartmentDialogComponent, {
       width: '500px',
       data: { departmentId }
     });

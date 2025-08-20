@@ -1,7 +1,6 @@
 import { Component, inject, Inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
-import { Department } from '../../../models/department.model';
 import { InputComponent } from '../../input/input.component';
 import { Subject } from 'rxjs';
 
@@ -13,7 +12,7 @@ import { MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/materia
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
-  selector: 'app-department-edit',
+  selector: 'app-department-dialog',
   imports: [
     CommonModule,
     FormsModule,
@@ -22,11 +21,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     InputComponent,
     MatProgressSpinnerModule
   ],
-  templateUrl: './department-edit.component.html',
-  styleUrl: './department-edit.component.css',
+  templateUrl: './department-dialog.component.html',
+  styleUrl: './department-dialog.component.css',
   standalone: true
 })
-export class DepartmentEditComponent implements OnInit, OnDestroy {
+export class DepartmentDialogComponent implements OnInit, OnDestroy {
   private _snackbarService = inject(SnackbarService);
   private _departmentService = inject(DepartmentService);
   private unsubscribe$ = new Subject<void>();
@@ -38,7 +37,7 @@ export class DepartmentEditComponent implements OnInit, OnDestroy {
   });
 
   constructor(
-    private dialogRef: MatDialogRef<DepartmentEditComponent>,
+    private dialogRef: MatDialogRef<DepartmentDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { departmentId?: number },
   ) { }
 
@@ -101,7 +100,7 @@ export class DepartmentEditComponent implements OnInit, OnDestroy {
     if(this.departmentForm.valid) {
       this.isLoading = true;
       const updatedDepartment = this.departmentForm.value
-      if (!this._departmentService.checkDuplicates(updatedDepartment)) {
+      if (!this._departmentService.checkDuplicates(updatedDepartment.departmentName)) {
         this._departmentService.updateDepartment(updatedDepartment);
         this._departmentService.notifyDepartmentsChanged();
         this._snackbarService.success("Department saved.");

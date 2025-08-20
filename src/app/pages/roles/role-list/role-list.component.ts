@@ -2,7 +2,7 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Role } from '../../../models/role.model';
 import { Department } from '../../../models/department.model';
-import { RoleEditComponent } from '../../../components/dialogs/role-edit/role-edit.component';
+
 import { TruncatePipe } from '../../../pipes/truncate.pipe';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -19,6 +19,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDialog } from '@angular/material/dialog';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { RoleDialogComponent } from '../../../components/dialogs/role-dialog/role-dialog.component';
 
 @Component({
   selector: 'app-role-list',
@@ -132,7 +133,7 @@ export class RoleListComponent implements OnInit, OnDestroy {
 
   /** Open Role Edit dialog */
   onOpenEditDialog(roleId: number): void {
-    this.dialog.open(RoleEditComponent, {
+    this.dialog.open(RoleDialogComponent, {
       width: '500px',
       data: { roleId: roleId }
     });

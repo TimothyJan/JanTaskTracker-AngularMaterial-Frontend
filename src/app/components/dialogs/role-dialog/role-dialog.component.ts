@@ -1,7 +1,6 @@
 import { Component, Inject, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
-import { Role } from '../../../models/role.model';
 import { InputComponent } from '../../input/input.component';
 import { SelectDepartmentComponent } from "../../select-department/select-department.component";
 import { Subject } from 'rxjs';
@@ -14,7 +13,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/materia
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
-  selector: 'app-role-edit',
+  selector: 'app-role-dialog',
   imports: [
     CommonModule,
     FormsModule,
@@ -23,12 +22,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     InputComponent,
     SelectDepartmentComponent,
     MatProgressSpinnerModule
-],
-  templateUrl: './role-edit.component.html',
-  styleUrl: './role-edit.component.css',
+  ],
+  templateUrl: './role-dialog.component.html',
+  styleUrl: './role-dialog.component.css',
   standalone: true
 })
-export class RoleEditComponent implements OnInit, OnDestroy {
+export class RoleDialogComponent implements OnInit, OnDestroy {
   private _snackbarService = inject(SnackbarService);
   private _roleService = inject(RoleService);
   private unsubscribe$ = new Subject<void>();
@@ -41,7 +40,7 @@ export class RoleEditComponent implements OnInit, OnDestroy {
   });
 
   constructor(
-    private dialogRef: MatDialogRef<RoleEditComponent>,
+    private dialogRef: MatDialogRef<RoleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { roleId?: number },
   ) {}
 
