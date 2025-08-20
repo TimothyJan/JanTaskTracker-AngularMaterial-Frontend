@@ -41,7 +41,7 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
   employeeForm: FormGroup = new FormGroup({
     employeeId: new FormControl(-1, [Validators.required, Validators.pattern(/^\d+$/)]),
     name: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(100)]),
-    salary: new FormControl(0, [Validators.min(0), Validators.required]),
+    salary: new FormControl(0, [Validators.min(0), Validators.required, Validators.pattern(/^\d+$/)]),
     departmentId: new FormControl(-1, [Validators.required, Validators.pattern(/^\d+$/)]),
     roleId: new FormControl(-1, [Validators.required, Validators.pattern(/^\d+$/)])
   });

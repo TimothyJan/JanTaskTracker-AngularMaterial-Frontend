@@ -42,7 +42,7 @@ export class EmployeeCreateComponent implements OnDestroy {
   isLoading: boolean = false;
   employeeForm: FormGroup = new FormGroup({
     name: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(100)]),
-    salary: new FormControl(0, [Validators.min(0), Validators.required]),
+    salary: new FormControl(0, [Validators.pattern(/^\d+$/), Validators.min(0), Validators.required]),
     departmentId: new FormControl(-1, Validators.required),
     roleId: new FormControl(-1, Validators.required)
   });

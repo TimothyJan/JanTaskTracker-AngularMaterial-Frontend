@@ -41,7 +41,7 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
 
   isLoading: boolean = false;
   projectTaskForm: FormGroup = new FormGroup({
-    projectId: new FormControl(0, [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
+    projectId: new FormControl(0, [Validators.required, Validators.pattern(/^\d+$/), Validators.minLength(2), Validators.maxLength(50)]),
     title: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
     description: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
     status: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),

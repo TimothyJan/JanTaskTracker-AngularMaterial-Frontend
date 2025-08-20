@@ -38,7 +38,7 @@ export class RoleCreateComponent implements OnDestroy {
   isLoading: boolean = false;
   roleForm: FormGroup = new FormGroup({
     roleName: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
-    departmentId: new FormControl(null, Validators.required)
+    departmentId: new FormControl(null, [Validators.required, Validators.pattern(/^\d+$/)])
   });
 
   constructor() { }
