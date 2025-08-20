@@ -1,6 +1,6 @@
 import { Component, Inject, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { Role } from '../../../models/role.model';
 import { InputComponent } from '../../input/input.component';
 import { SelectDepartmentComponent } from "../../select-department/select-department.component";
@@ -34,8 +34,11 @@ export class RoleEditComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
 
   isLoading: boolean = false;
-  originalRole: Role = { roleId: -1, roleName: "", departmentId: -1};
-  editedRole: Role = { roleId: -1, roleName: "", departmentId: -1};
+  roleForm: FormGroup = new FormGroup({
+    roleId: new FormControl(-1, [Validators.required, Validators.pattern(/^\d+$/)]),
+    roleName: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
+    departmentId: new FormControl(-1, [Validators.required, Validators.pattern(/^\d+$/)])
+  });
 
   constructor(
     private dialogRef: MatDialogRef<RoleEditComponent>,
@@ -43,40 +46,47 @@ export class RoleEditComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.getRoleById();
+    this.setRoleFormValues();
   }
 
-  /** Get Role */
-  getRoleById(): void {
+  setRoleFormValues(): void {
     this.isLoading = true;
     const role = this._roleService.getRoleById(this.data.roleId);
+    this.roleForm.patchValue({
+      roleId: role?.roleId,
+      roleName: role?.roleName,
+      departmentId: role?.departmentId
+    })
     this.isLoading = false;
-    if (!role) {
-      console.error("Role not found");
-      this.dialogRef.close(null);
-      return;
-    }
-    this.originalRole = { ...role };
-    this.editedRole =  { ...role };
   }
 
   /** Handle department select changes */
   handleDepartmentChange(departmentId: number): void {
-    this.editedRole.departmentId = departmentId;
+    this.roleForm.controls["departmentId"].setValue(departmentId);
   }
 
   /** Handle department name input changes */
   handleRoleNameChange(newValue: string): void {
-    this.editedRole.roleName = newValue.toUpperCase();
+    this.roleForm.controls["roleName"].setValue(newValue.toUpperCase());
   }
 
   /** Save Changes */
   saveChanges(): void {
-    this.isLoading = true;
-    this._roleService.updateRole(this.editedRole);
-    this._roleService.notifyRolesChanged();
-    this._snackbarService.success("Role saved.");
-    this.isLoading = false;
+    if (this.roleForm.valid) {
+      this.isLoading = true;
+      const newRole = new Role(
+        this.roleForm.controls["roleId"].value,
+        this.roleForm.controls["roleName"].value,
+        this.roleForm.controls["departmentId"].value,
+      )
+      this._roleService.updateRole(newRole);
+      this._roleService.notifyRolesChanged();
+      this._snackbarService.success("Role saved.");
+      this.isLoading = false;
+    } else {
+      this._snackbarService.error("Invalid role values");
+    }
+
   }
 
   /** Cancel and close dialog */

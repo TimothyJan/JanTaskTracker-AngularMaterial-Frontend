@@ -8,14 +8,14 @@
       <div class="flex-container">
         <div class="flex-item">
           <app-select-department
-            [departmentId]="editedRole.departmentId"
+            [departmentId]="roleForm.get('departmentId')?.value"
             (departmentChanged)="handleDepartmentChange($event)">
           </app-select-department>
         </div>
         <div class="flex-item">
           <app-input
             [label]="'Role Name'"
-            [value]="editedRole.roleName"
+            [value]="roleForm.get('roleName')?.value"
             (valueChanged)="handleRoleNameChange($event)">
           </app-input>
         </div>
