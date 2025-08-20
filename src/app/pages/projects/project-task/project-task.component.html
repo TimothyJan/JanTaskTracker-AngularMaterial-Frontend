@@ -1,10 +1,6 @@
 @if(!isLoading) {
   <mat-card>
 
-      <button matIconButton aria-label="Example icon button with a vertical three dot icon">
-        <mat-icon>more_vert</mat-icon>
-      </button>
-
       <mat-grid-list cols="15">
       <mat-grid-tile colspan="3">
         {{ projectTask.startDate | date: 'shortDate':'UTC' }} - {{ projectTask.dueDate | date: 'shortDate':'UTC' }}
