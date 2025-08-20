@@ -3,10 +3,11 @@ import { Component, inject, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Employee } from '../../../models/employee.model';
 import { ProjectTask } from '../../../models/project-task.model';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 import { EmployeeService } from '../../../services/employee.service';
 import { ProjectTaskService } from '../../../services/project-task.service';
+import { SnackbarService } from '../../../services/snackbar.service';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
@@ -35,13 +36,14 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   standalone: true
 })
 export class AssignEmployeesDialogComponent implements OnInit, OnDestroy {
+  private _snackbarService = inject(SnackbarService);
   private _projectTaskService = inject(ProjectTaskService);
   private _employeeService = inject(EmployeeService);
   private unsubscribe$ = new Subject<void>();
 
   isLoading: boolean = false;
   projectTask: ProjectTask = new ProjectTask(0, 0, "", "", "Not Started", new Date(), new Date(), []);
-  employeeList: Employee[] = [];
+  employees: Employee[] = [];
   selectedEmployees: number[] = [];
 
   constructor(
@@ -63,13 +65,27 @@ export class AssignEmployeesDialogComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.projectTask = this._projectTaskService.getProjectTaskById(projectTaskId);
     this.isLoading = false;
+
+    // Subscribe to the projectTask notifications
+    this._projectTaskService.projectTasksChanged$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.getProjectTaskById(this.projectTask.projectTaskId); // Reload projectTask with updates
+      });
   }
 
   /** Get Employees */
   getEmployees(): void {
     this.isLoading = true;
-    this.employeeList = this._employeeService.getEmployees();
+    this.employees = this._employeeService.getEmployees();
     this.isLoading = false;
+
+    // Subscribe to the employee notifications
+    this._employeeService.employeesChanged$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.getEmployees(); // Reload employees with updates
+      });
   }
 
   /** Check if employee is selected */

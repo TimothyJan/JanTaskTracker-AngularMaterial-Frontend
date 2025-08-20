@@ -33,8 +33,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   standalone: true
 })
 export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
-  private _projectTaskService = inject(ProjectTaskService);
   private _snackbarService = inject(SnackbarService);
+  private _projectTaskService = inject(ProjectTaskService);
   private unsubscribe$ = new Subject<void>();
 
   @Input() projectId: number = -1;

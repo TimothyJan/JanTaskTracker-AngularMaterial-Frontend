@@ -12,6 +12,7 @@ import { ProjectTaskService } from '../../services/project-task.service';
 import { EmployeeService } from '../../services/employee.service';
 import { RoleService } from '../../services/role.service';
 import { DepartmentService } from '../../services/department.service';
+import { SnackbarService } from '../../services/snackbar.service';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from "@angular/material/grid-list";
@@ -42,6 +43,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   standalone: true
 })
 export class AssignedEmployeesComponent implements OnInit, OnDestroy {
+  private _snackbarService = inject(SnackbarService);
   private _projectTaskService = inject(ProjectTaskService);
   private _employeeService = inject(EmployeeService);
   private _roleService = inject(RoleService);

@@ -1,9 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Role } from '../../../models/role.model';
 import { Department } from '../../../models/department.model';
 import { RoleEditComponent } from '../../../components/dialogs/role-edit/role-edit.component';
 import { TruncatePipe } from '../../../pipes/truncate.pipe';
+import { Subject, takeUntil } from 'rxjs';
 
 import { SnackbarService } from '../../../services/snackbar.service';
 import { DepartmentService } from '../../../services/department.service';
@@ -17,6 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialog } from '@angular/material/dialog';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-role-list',
@@ -29,16 +31,19 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatIconModule,
     MatMenuModule,
     MatButtonToggleModule,
-    TruncatePipe
+    TruncatePipe,
+    MatProgressSpinnerModule
   ],
   templateUrl: './role-list.component.html',
   styleUrl: './role-list.component.css',
   standalone: true
 })
-export class RoleListComponent implements OnInit {
+export class RoleListComponent implements OnInit, OnDestroy {
   private _snackbar = inject(SnackbarService);
   private _departmentService = inject(DepartmentService);
   private _roleService = inject(RoleService);
+  private unsubscribe$ = new Subject<void>();
+  isLoading: boolean = false;
   roles: Role[] = [];
   departments: Department[] = [];
   sortedRoles: Role[] = [];
@@ -59,13 +64,31 @@ export class RoleListComponent implements OnInit {
 
   /** Get all roles */
   getRoles(): void {
+    this.isLoading = true;
     this.roles = this._roleService.getRoles();
+    this.isLoading = false;
+
+    // Subscribe to the role notifications
+    this._roleService.rolesChanged$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.getRoles(); // Reload roles with updates
+      });
     this.sortRoles();
   }
 
   /** Get all departments */
   getDepartments(): void {
+    this.isLoading = true;
     this.departments = this._departmentService.getDepartments();
+    this.isLoading = false;
+
+    // Subscribe to the department notifications
+    this._departmentService.departmentsChanged$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.getDepartments(); // Reload departments with updates
+      });
   }
 
   /** Sort roles based on current sortBy value */
@@ -114,9 +137,16 @@ export class RoleListComponent implements OnInit {
   onDelete(roleId: number): void {
     const confirmDelete = confirm('Are you sure you want to delete this role?');
     if (confirmDelete) {
+      this.isLoading = true;
       this._roleService.deleteRole(roleId);
       this.getRoles();
       this._snackbar.success("Role deleted.");
+      this.isLoading = false;
     }
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

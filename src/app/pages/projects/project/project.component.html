@@ -1,42 +1,48 @@
-<mat-card>
+@if (!isLoading) {
 
-  <mat-grid-list cols="15">
-    <mat-grid-tile colspan="3">
-      {{ project.startDate | date: 'shortDate':'UTC' }} - {{ project.dueDate | date: 'shortDate':'UTC' }}
-    </mat-grid-tile>
-    <mat-grid-tile colspan="9"></mat-grid-tile>
-    <mat-grid-tile colspan="2">
-      {{ project.status }}
-    </mat-grid-tile>
-    <mat-grid-tile colspan="1">
-      <button matIconButton [matMenuTriggerFor]="menu">
-        <mat-icon>more_vert</mat-icon>
-      </button>
+  <mat-card>
 
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="openProjectEditDialog()">Edit</button>
-        <button mat-menu-item (click)="openProjectTaskCreateDialog()">Add Task</button>
-        <button mat-menu-item (click)="onDelete()">Delete</button>
-        <button mat-menu-item>Cancel</button>
-      </mat-menu>
-    </mat-grid-tile>
-  </mat-grid-list>
+    <mat-grid-list cols="15">
+      <mat-grid-tile colspan="3">
+        {{ project.startDate | date: 'shortDate':'UTC' }} - {{ project.dueDate | date: 'shortDate':'UTC' }}
+      </mat-grid-tile>
+      <mat-grid-tile colspan="9"></mat-grid-tile>
+      <mat-grid-tile colspan="2">
+        {{ project.status }}
+      </mat-grid-tile>
+      <mat-grid-tile colspan="1">
+        <button matIconButton [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
 
-  <mat-card-content>
-    <mat-card-title>
-      {{ project.projectName }}
-    </mat-card-title>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="openProjectEditDialog()">Edit</button>
+          <button mat-menu-item (click)="openProjectTaskCreateDialog()">Add Task</button>
+          <button mat-menu-item (click)="onDelete()">Delete</button>
+          <button mat-menu-item>Cancel</button>
+        </mat-menu>
+      </mat-grid-tile>
+    </mat-grid-list>
 
-    <p>{{ project.description }}</p>
+    <mat-card-content>
+      <mat-card-title>
+        {{ project.projectName }}
+      </mat-card-title>
 
-    <div *ngIf="listOfProjectTaskIds.length>0; else noProjectTasksBlock">
-      <div *ngFor="let projectTaskId of listOfProjectTaskIds">
-        <app-project-task [projectTaskId]="projectTaskId"></app-project-task>
+      <p>{{ project.description }}</p>
+
+      <div *ngIf="listOfProjectTaskIds.length>0; else noProjectTasksBlock">
+        <div *ngFor="let projectTaskId of listOfProjectTaskIds">
+          <app-project-task [projectTaskId]="projectTaskId"></app-project-task>
+        </div>
       </div>
-    </div>
-    <ng-template #noProjectTasksBlock>
-      No Project Tasks
-    </ng-template>
+      <ng-template #noProjectTasksBlock>
+        No Project Tasks
+      </ng-template>
 
-  </mat-card-content>
-</mat-card>
+    </mat-card-content>
+  </mat-card>
+
+} @else {
+  <mat-spinner></mat-spinner>
+}

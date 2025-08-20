@@ -1,50 +1,56 @@
-<h1 mat-dialog-title *ngIf="data.projectId==-1">Create Project</h1>
-<h1 mat-dialog-title *ngIf="data.projectId!=-1">Edit Project</h1>
+@if(!isLoading) {
 
-<div mat-dialog-content>
-  <form (ngSubmit)="confirm()">
+  <h1 mat-dialog-title *ngIf="data.projectId==-1">Create Project</h1>
+  <h1 mat-dialog-title *ngIf="data.projectId!=-1">Edit Project</h1>
 
-    <div class="flex-container">
-      <div class="flex-item">
-        <app-input
-          [label]="'Project Name'"
-          [value]="projectForm.get('projectName')?.value"
-          (valueChanged)="handleProjectNameChange($event)">
-        </app-input>
-      </div>
-      <div class="flex-item">
-        <app-input
-          [label]="'Description'"
-          [value]="projectForm.get('description')?.value"
-          (valueChanged)="handleDescriptionChange($event)">
-        </app-input>
-      </div>
-      <div class="flex-item">
-        <app-select-status
-          [value]="projectForm.get('status')?.value"
-          (statusChanged)="handleStatusChange($event)">
-        </app-select-status>
-      </div>
-      <div class="flex-item">
-        <app-date-picker
-          [label]="'Start Date'"
-          [initialDate]="projectForm.get('startDate')?.value"
-          (dateSelected)="handleStartDateSelection($event)">
-        </app-date-picker>
-      </div>
-      <div class="flex-item">
-        <app-date-picker
-          [label]="'End Date'"
-          [initialDate]="projectForm.get('dueDate')?.value"
-          (dateSelected)="handleDueDateSelection($event)">
-        </app-date-picker>
-      </div>
-    </div>
+  <div mat-dialog-content>
+    <form (ngSubmit)="confirm()">
 
-  </form>
-</div>
+      <div class="flex-container">
+        <div class="flex-item">
+          <app-input
+            [label]="'Project Name'"
+            [value]="projectForm.get('projectName')?.value"
+            (valueChanged)="handleProjectNameChange($event)">
+          </app-input>
+        </div>
+        <div class="flex-item">
+          <app-input
+            [label]="'Description'"
+            [value]="projectForm.get('description')?.value"
+            (valueChanged)="handleDescriptionChange($event)">
+          </app-input>
+        </div>
+        <div class="flex-item">
+          <app-select-status
+            [value]="projectForm.get('status')?.value"
+            (statusChanged)="handleStatusChange($event)">
+          </app-select-status>
+        </div>
+        <div class="flex-item">
+          <app-date-picker
+            [label]="'Start Date'"
+            [initialDate]="projectForm.get('startDate')?.value"
+            (dateSelected)="handleStartDateSelection($event)">
+          </app-date-picker>
+        </div>
+        <div class="flex-item">
+          <app-date-picker
+            [label]="'End Date'"
+            [initialDate]="projectForm.get('dueDate')?.value"
+            (dateSelected)="handleDueDateSelection($event)">
+          </app-date-picker>
+        </div>
+      </div>
 
-<div mat-dialog-actions align="end">
-  <button mat-button (click)="cancel()">Cancel</button>
-  <button mat-raised-button color="primary" (click)="confirm()">Save</button>
-</div>
+    </form>
+  </div>
+
+  <div mat-dialog-actions align="end">
+    <button mat-button (click)="cancel()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="confirm()">Save</button>
+  </div>
+
+} @else {
+  <mat-spinner></mat-spinner>
+}

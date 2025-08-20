@@ -1,14 +1,17 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Department } from '../../models/department.model';
+import { Subject } from 'rxjs';
 
 import { DepartmentService } from '../../services/department.service';
+import { SnackbarService } from '../../services/snackbar.service';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSelectChange } from '@angular/material/select';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-select-department',
@@ -18,16 +21,21 @@ import { MatSelectChange } from '@angular/material/select';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './select-department.component.html',
   styleUrl: './select-department.component.css',
   standalone: true
 })
-export class SelectDepartmentComponent implements OnInit {
+export class SelectDepartmentComponent implements OnInit, OnDestroy {
+  private _snackbarService = inject(SnackbarService);
   private _departmentService = inject(DepartmentService);
+  private unsubscribe$ = new Subject<void>();
+
   @Input() departmentId: number | null = null;
   @Output() departmentChanged = new EventEmitter<number>();
 
+  isLoading: boolean = false;
   departments: Department[] = [];
   selectedDepartmentId: number | null = null;
 
@@ -43,7 +51,9 @@ export class SelectDepartmentComponent implements OnInit {
 
   /** Get all departments */
   getDepartments(): void {
+    this.isLoading = true;
     this.departments = this._departmentService.getDepartments();
+    this.isLoading = false;
   }
 
   /** On department change, emit value */
@@ -51,5 +61,10 @@ export class SelectDepartmentComponent implements OnInit {
     const departmentId = Number(event.value);
     this.selectedDepartmentId = departmentId;
     this.departmentChanged.emit(departmentId);
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

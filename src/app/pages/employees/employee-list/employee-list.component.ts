@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { SnackbarService } from '../../../services/snackbar.service';
 import { EmployeeService } from '../../../services/employee.service';
 import { Employee } from '../../../models/employee.model';
@@ -7,6 +7,7 @@ import { EmployeeEditComponent } from '../../../components/dialogs/employee-edit
 import { Department } from '../../../models/department.model';
 import { Role } from '../../../models/role.model';
 import { TruncatePipe } from '../../../pipes/truncate.pipe';
+import { Subject, takeUntil } from 'rxjs';
 
 import { DepartmentService } from '../../../services/department.service';
 import { RoleService } from '../../../services/role.service';
@@ -19,6 +20,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialog } from '@angular/material/dialog';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-employee-list',
@@ -31,17 +33,20 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatIconModule,
     MatMenuModule,
     MatButtonToggleModule,
-    TruncatePipe
+    TruncatePipe,
+    MatProgressSpinnerModule
   ],
   templateUrl: './employee-list.component.html',
   styleUrl: './employee-list.component.css',
   standalone: true
 })
-export class EmployeeListComponent implements OnInit{
+export class EmployeeListComponent implements OnInit, OnDestroy {
   private _snackbar = inject(SnackbarService);
   private _employeeService = inject(EmployeeService);
   private _departmentService = inject(DepartmentService);
   private _roleService = inject(RoleService);
+  private unsubscribe$ = new Subject<void>();
+  isLoading: boolean = false;
   departments: Department[] = [];
   roles: Role[] = [];
   employees: Employee[] = [];
@@ -62,17 +67,44 @@ export class EmployeeListComponent implements OnInit{
 
   /** Get all employees */
   getEmployees(): void {
+    this.isLoading = true;
     this.employees = this._employeeService.getEmployees();
+    this.isLoading = false;
+
+    // Subscribe to the employee notifications
+    this._employeeService.employeesChanged$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.getEmployees(); // Reload employees with updates
+      });
   }
 
   /** Get all departments */
   getDepartments(): void {
+    this.isLoading = true;
     this.departments = this._departmentService.getDepartments();
+    this.isLoading = false;
+
+    // Subscribe to the department notifications
+    this._departmentService.departmentsChanged$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.getDepartments(); // Reload departments with updates
+      });
   }
 
   /** Get all roles */
   getRoles(): void {
+    this.isLoading = true;
     this.roles = this._roleService.getRoles();
+    this.isLoading = false;
+
+    // Subscribe to the role notifications
+    this._roleService.rolesChanged$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.getRoles(); // Reload roles with updates
+      });
   }
 
   /** Get Department name from DepartmentId */
@@ -99,9 +131,16 @@ export class EmployeeListComponent implements OnInit{
   onDelete(employeeId: number): void {
     const confirmDelete = confirm('Are you sure you want to delete this role?');
     if (confirmDelete) {
+      this.isLoading = true;
       this._employeeService.deleteEmployee(employeeId);
       this.getEmployees();
       this._snackbar.success("Role deleted.");
+      this.isLoading = false;
     }
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

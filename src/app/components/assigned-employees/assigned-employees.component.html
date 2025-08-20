@@ -1,20 +1,21 @@
-<mat-card>
+@if(!isLoading) {
 
-  <mat-grid-list cols="8">
-    <mat-grid-tile colspan="3">
-      <mat-card-title>
-        Assigned Employees
-      </mat-card-title>
-    </mat-grid-tile>
-    <mat-grid-tile colspan="2">
-      <button mat-raised-button color="primary" (click)="openAssignEmployees()">
-        Edit Employees
-      </button>
-    </mat-grid-tile>
-    <mat-grid-tile colspan="3"></mat-grid-tile>
-  </mat-grid-list>
+  <mat-card>
 
-  @if(!isLoading) {
+    <mat-grid-list cols="8">
+      <mat-grid-tile colspan="3">
+        <mat-card-title>
+          Assigned Employees
+        </mat-card-title>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="2">
+        <button mat-raised-button color="primary" (click)="openAssignEmployees()">
+          Edit Employees
+        </button>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="3"></mat-grid-tile>
+    </mat-grid-list>
+
     <mat-card-content>
       <div *ngIf="assignedEmployeeList.length>0; else noAssignedEmployees">
         <mat-list>
@@ -54,9 +55,11 @@
         No assigned employees
       </ng-template>
     </mat-card-content>
-  } @else {
-    <mat-spinner></mat-spinner>
-  }
+  </mat-card>
 
-</mat-card>
+} @else {
+  <mat-spinner></mat-spinner>
+}
+
+
 

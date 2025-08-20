@@ -32,7 +32,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrl: './department-list.component.css',
   standalone: true
 })
-export class DepartmentListComponent implements OnInit, OnDestroy{
+export class DepartmentListComponent implements OnInit, OnDestroy {
   private _snackbar = inject(SnackbarService);
   private _departmentService = inject(DepartmentService);
   private unsubscribe$ = new Subject<void>();

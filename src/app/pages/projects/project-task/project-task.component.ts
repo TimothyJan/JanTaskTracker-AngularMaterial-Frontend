@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { ProjectTask } from '../../../models/project-task.model';
 import { AssignedEmployeesComponent } from "../../../components/assigned-employees/assigned-employees.component";
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { ProjectTaskDialogComponent } from '../../../components/dialogs/project-task-dialog/project-task-dialog.component';
 
 import { SnackbarService } from '../../../services/snackbar.service';
@@ -53,6 +53,13 @@ export class ProjectTaskComponent implements OnInit{
     this.isLoading = true;
     this.projectTask = this._projectTaskService.getProjectTaskById(this.projectTaskId);
     this.isLoading = false;
+
+    // Subscribe to the project notifications
+    this._projectTaskService.projectTasksChanged$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.getProjectTaskById(); // Reload projectTask with updates
+      });
   }
 
   /** Opens Project Task Edit Dialog */

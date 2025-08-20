@@ -1,16 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject, inject, OnInit } from '@angular/core';
+import { Component, Inject, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { InputComponent } from '../../input/input.component';
 import { DatePickerComponent } from '../../date-picker/date-picker.component';
 import { SelectStatusComponent } from '../../select-status/select-status.component';
 import { Project } from '../../../models/project.model';
+import { Subject } from 'rxjs';
 
 import { SnackbarService } from '../../../services/snackbar.service';
 import { ProjectService } from '../../../services/project.service';
 
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-project-dialog',
@@ -21,16 +23,19 @@ import { MatButtonModule } from '@angular/material/button';
     MatButtonModule,
     InputComponent,
     DatePickerComponent,
-    SelectStatusComponent
+    SelectStatusComponent,
+    MatProgressSpinnerModule
   ],
   templateUrl: './project-dialog.component.html',
   styleUrl: './project-dialog.component.css',
   standalone: true
 })
-export class ProjectDialogComponent implements OnInit {
+export class ProjectDialogComponent implements OnInit, OnDestroy {
   private _snackbarService = inject(SnackbarService);
   private _projectService = inject(ProjectService);
+  private unsubscribe$ = new Subject<void>();
 
+  isLoading: boolean = false;
   projectForm: FormGroup = new FormGroup({
     projectName: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
     description: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
@@ -51,33 +56,17 @@ export class ProjectDialogComponent implements OnInit {
     }
   }
 
-  /** Cancel and close dialog */
-  cancel(): void {
-    this.dialogRef.close(null);
-  }
-
-  /** Confirm create or update project */
-  confirm(): void {
-    if (this.projectForm.valid) {
-      if (this.data.projectId == -1) {
-        this.createProject();
-      } else {
-        this.updateProject();
-      }
-      this.dialogRef.close(null);
-    } else {
-      this._snackbarService.error("Please fill all required fields correctly.");
-    }
-  }
-
   /** Get Project */
   getProject(): void {
+    this.isLoading = true;
     const project = this._projectService.getProjectById(this.data.projectId);
     if (!project) {
       console.log("Project not found.");
       this.dialogRef.close(null);
       return;
     }
+    this.isLoading = false;
+
     this.projectForm.patchValue({
       projectName: project.projectName,
       description: project.description,
@@ -85,35 +74,6 @@ export class ProjectDialogComponent implements OnInit {
       startDate: project.startDate,
       dueDate: project.dueDate
     });
-  }
-
-  /** Create the Project */
-  createProject(): void {
-    const newProject = new Project(
-      0,
-      this.projectForm.controls["projectName"].value,
-      this.projectForm.controls["description"].value,
-      this.projectForm.controls["status"].value,
-      this.projectForm.controls["startDate"].value,
-      this.projectForm.controls["dueDate"].value,
-    );
-    this._projectService.createProject(newProject);
-    this._projectService.notifyProjectsChanged();
-  }
-
-  /** Edit the Project */
-  updateProject(): void {
-    const editedProject = new Project(
-      this.data.projectId,
-      this.projectForm.controls["projectName"].value,
-      this.projectForm.controls["description"].value,
-      this.projectForm.controls["status"].value,
-      this.projectForm.controls["startDate"].value,
-      this.projectForm.controls["dueDate"].value,
-    );
-    this._projectService.updateProject(editedProject);
-    this._projectService.notifyProjectsChanged();
-    this._snackbarService.success("Project saved.");
   }
 
   /** Handle project name input changes */
@@ -141,4 +101,61 @@ export class ProjectDialogComponent implements OnInit {
     this.projectForm.patchValue({ dueDate: selectedDate });
   }
 
+  /** Create the Project */
+  createProject(): void {
+    this.isLoading = true;
+    const newProject = new Project(
+      0,
+      this.projectForm.controls["projectName"].value,
+      this.projectForm.controls["description"].value,
+      this.projectForm.controls["status"].value,
+      this.projectForm.controls["startDate"].value,
+      this.projectForm.controls["dueDate"].value,
+    );
+    this._projectService.createProject(newProject);
+    this._projectService.notifyProjectsChanged();
+    this._snackbarService.success("Project created.");
+    this.isLoading = false;
+  }
+
+  /** Edit the Project */
+  updateProject(): void {
+    this.isLoading = true;
+    const editedProject = new Project(
+      this.data.projectId,
+      this.projectForm.controls["projectName"].value,
+      this.projectForm.controls["description"].value,
+      this.projectForm.controls["status"].value,
+      this.projectForm.controls["startDate"].value,
+      this.projectForm.controls["dueDate"].value,
+    );
+    this._projectService.updateProject(editedProject);
+    this._projectService.notifyProjectsChanged();
+    this._snackbarService.success("Project saved.");
+    this.isLoading = false;
+  }
+
+  /** Cancel and close dialog */
+  cancel(): void {
+    this.dialogRef.close(null);
+  }
+
+  /** Confirm create or update project */
+  confirm(): void {
+    if (this.projectForm.valid) {
+      if (this.data.projectId == -1) {
+        this.createProject();
+      } else {
+        this.updateProject();
+      }
+      this.dialogRef.close(null);
+    } else {
+      this._snackbarService.error("Please fill all required fields correctly.");
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 }

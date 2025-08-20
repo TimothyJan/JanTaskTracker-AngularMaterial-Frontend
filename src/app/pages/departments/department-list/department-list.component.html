@@ -1,12 +1,12 @@
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Department List</mat-card-title>
-  </mat-card-header>
+@if (!isLoading) {
 
-  <mat-card-content>
-    <mat-list>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Department List</mat-card-title>
+    </mat-card-header>
 
-      @if (!isLoading) {
+    <mat-card-content>
+      <mat-list>
         <mat-list-item>
           <mat-grid-list cols="4">
             <mat-grid-tile colspan="3">
@@ -24,7 +24,7 @@
               </mat-grid-tile>
               <mat-grid-tile colspan="1">
 
-                <button matButton [matMenuTriggerFor]="menu">
+                <button matIconButton [matMenuTriggerFor]="menu">
                   <mat-icon>more_vert</mat-icon>
                 </button>
 
@@ -37,13 +37,14 @@
               </mat-grid-tile>
             </mat-grid-list>
           </mat-list-item>
-          } @empty {
-            No Departments found
           }
-      } @else {
-        <mat-spinner></mat-spinner>
-      }
+        @empty {
+          No Departments found.
+        }
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
 
-    </mat-list>
-  </mat-card-content>
-</mat-card>
+} @else {
+  <mat-spinner></mat-spinner>
+}

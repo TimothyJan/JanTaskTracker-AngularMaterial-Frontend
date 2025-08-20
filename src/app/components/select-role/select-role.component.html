@@ -1,11 +1,17 @@
-<mat-label>Role: </mat-label>
-<mat-form-field>
-  <mat-select
-    (selectionChange)="onRoleChange($event)"
-    [value]="selectedRoleId"
-    placeholder="Select Role">
-    <mat-option *ngFor="let role of roles" [value]="role.roleId">
-      {{ role.roleName }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
+@if(!isLoading) {
+
+  <mat-label>Role: </mat-label>
+  <mat-form-field>
+    <mat-select
+      (selectionChange)="onRoleChange($event)"
+      [value]="selectedRoleId"
+      placeholder="Select Role">
+      <mat-option *ngFor="let role of roles" [value]="role.roleId">
+        {{ role.roleName }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+} @else {
+  <mat-spinner></mat-spinner>
+}
