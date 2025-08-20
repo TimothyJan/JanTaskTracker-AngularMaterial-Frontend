@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Department } from '../../../models/department.model';
 import { DepartmentEditComponent } from '../../../components/dialogs/department-edit/department-edit.component';
+import { Subject, takeUntil } from 'rxjs';
 
 import { SnackbarService } from '../../../services/snackbar.service';
 import { DepartmentService } from '../../../services/department.service';
@@ -13,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule}  from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialog } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-department-list',
@@ -23,15 +25,18 @@ import { MatDialog } from '@angular/material/dialog';
     MatGridListModule,
     MatButtonModule,
     MatIconModule,
-    MatMenuModule
+    MatMenuModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './department-list.component.html',
   styleUrl: './department-list.component.css',
   standalone: true
 })
-export class DepartmentListComponent implements OnInit{
+export class DepartmentListComponent implements OnInit, OnDestroy{
   private _snackbar = inject(SnackbarService);
   private _departmentService = inject(DepartmentService);
+  private unsubscribe$ = new Subject<void>();
+  isLoading: boolean = false;
   departments: Department[] = [];
 
   constructor(
@@ -40,14 +45,20 @@ export class DepartmentListComponent implements OnInit{
 
   ngOnInit(): void {
     this.getDepartments();
-    this._departmentService.departmentsChanged$.subscribe(() => {
-      this.getDepartments();
-    });
   }
 
   /** Get all departments */
   getDepartments(): void {
+    this.isLoading = true;
     this.departments = this._departmentService.getDepartments();
+    this.isLoading = false;
+
+    // Subscribe to the department notifications
+    this._departmentService.departmentsChanged$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.getDepartments(); // Reload departments with updates
+      });
   }
 
   /** Open Department Edit dialog */
@@ -62,10 +73,16 @@ export class DepartmentListComponent implements OnInit{
   onDelete(departmentId: number): void {
     const confirmDelete = confirm('Are you sure you want to delete this department?');
     if (confirmDelete) {
+      this.isLoading = true;
       this._departmentService.deleteDepartment(departmentId);
       this.getDepartments();
       this._snackbar.success("Department deleted.");
+      this.isLoading = false;
     }
   }
 
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 }
