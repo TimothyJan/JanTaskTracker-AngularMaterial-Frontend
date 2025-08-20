@@ -9,6 +9,7 @@ import { DepartmentService } from '../../../services/department.service';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-department-create',
@@ -19,6 +20,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatCardModule,
     MatButtonModule,
     InputComponent,
+    MatProgressSpinnerModule
   ],
   templateUrl: './department-create.component.html',
   styleUrl: './department-create.component.css',
