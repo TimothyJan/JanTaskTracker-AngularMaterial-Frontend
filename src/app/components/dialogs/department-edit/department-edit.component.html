@@ -5,7 +5,7 @@
     <form (ngSubmit)="confirm()">
       <app-input
         [label]="'Department Name'"
-        [value]="editedDepartment.departmentName"
+        [value]="departmentForm.get('departmentName')?.value"
         (valueChanged)="onDepartmentNameChange($event)">
       </app-input>
     </form>
