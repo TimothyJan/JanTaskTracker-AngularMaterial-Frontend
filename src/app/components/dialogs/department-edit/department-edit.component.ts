@@ -33,23 +33,25 @@ export class DepartmentEditComponent implements OnInit, OnDestroy {
 
   isLoading: boolean = false;
   departmentForm: FormGroup = new FormGroup({
-    departmentId: new FormControl(-1, [Validators.required, Validators.pattern(/^\d+$/)]),
+    departmentId: new FormControl(0, [Validators.pattern(/^\d+$/)]),
     departmentName: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)])
   });
 
   constructor(
     private dialogRef: MatDialogRef<DepartmentEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { departmentId: number },
+    @Inject(MAT_DIALOG_DATA) public data: { departmentId?: number },
   ) { }
 
   ngOnInit() {
-    this.setDepartmentFormValues();
+    if(this.data.departmentId !== undefined) {
+      this.setDepartmentFormValues();
+    }
   }
 
   /** Set departmentForm using getDepartmentById */
   setDepartmentFormValues(): void {
     this.isLoading = true;
-    const dept = this._departmentService.getDepartmentById(this.data.departmentId);
+    const dept = this._departmentService.getDepartmentById(this.data.departmentId!);
     this.departmentForm.patchValue({
       departmentId: dept?.departmentId,
       departmentName: dept?.departmentName
@@ -62,32 +64,56 @@ export class DepartmentEditComponent implements OnInit, OnDestroy {
     this.departmentForm.controls["departmentName"].setValue(newValue.toUpperCase());
   }
 
-  /** Save Changes */
-  saveChanges(): void {
-    if(this.departmentForm.valid) {
-      this.isLoading = true;
-      const newDepartment = new Department(
-        this.departmentForm.controls["departmentId"].value,
-        this.departmentForm.controls["departmentName"].value
-      );
-      this._departmentService.updateDepartment(newDepartment);
-      this._departmentService.notifyDepartmentsChanged();
-      this._snackbarService.success("Department saved.");
-      this.isLoading = false;
-    } else {
-      this._snackbarService.error("Invalid department values");
-    }
-  }
-
   /** Cancel and close dialog */
   cancel(): void {
     this.dialogRef.close(null);
   }
 
-  /** Confirm save */
+  /** Confirm create or update and close dialog*/
   confirm(): void {
-    this.saveChanges();
-    this.dialogRef.close(this.data.departmentId);
+    if(this.data.departmentId === undefined) {
+      this.createDepartment();
+    } else {
+      this.updateDepartment();
+    }
+  }
+
+  createDepartment() {
+    if (this.departmentForm.valid) {
+      this.isLoading = true;
+      const newDepartment = this.departmentForm.value;
+      if (!this._departmentService.checkDuplicates(newDepartment.departmentName)) {
+        this._departmentService.createDepartment(this.departmentForm.value);
+        this._departmentService.notifyDepartmentsChanged();
+        this._snackbarService.success("Department created.");
+        this.dialogRef.close(this.data.departmentId);
+        this.isLoading = false;
+      } else {
+        this._snackbarService.error("Department already exists.");
+        this.isLoading = false;
+      }
+    } else {
+      this._snackbarService.warning("Department failed to be created.");
+    }
+  }
+
+  updateDepartment(): void {
+    if(this.departmentForm.valid) {
+      this.isLoading = true;
+      const updatedDepartment = this.departmentForm.value
+      if (!this._departmentService.checkDuplicates(updatedDepartment)) {
+        this._departmentService.updateDepartment(updatedDepartment);
+        this._departmentService.notifyDepartmentsChanged();
+        this._snackbarService.success("Department saved.");
+        this.dialogRef.close(this.data.departmentId);
+        this.isLoading = false;
+      } else {
+        this._snackbarService.error("Department already exists.");
+        this.isLoading = false;
+      }
+    } else {
+      this._snackbarService.error("Invalid department values");
+    }
   }
 
   ngOnDestroy(): void {

@@ -53,8 +53,8 @@ export class RoleService {
   }
 
   /** Post new Role */
-  addRole(role: Role): void {
-    let newRole = new Role(this.roleId++, role.roleName, role.departmentId);
+  createRole(role: Role): void {
+    let newRole = new Role(this.roleId++, role.roleName.toUpperCase(), role.departmentId);
     this.roles.push(newRole);
     // console.log(this.roles);
   }

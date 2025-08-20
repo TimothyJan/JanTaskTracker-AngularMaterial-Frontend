@@ -1,6 +1,13 @@
 @if(!isLoading) {
 
-  <h1 mat-dialog-title>Edit Role</h1>
+  <h1 mat-dialog-title>
+    @if(data.roleId === undefined) {
+      Create Role
+    } @else {
+      Edit Role
+    }
+
+  </h1>
 
   <div mat-dialog-content>
     <form (ngSubmit)="confirm()">
@@ -15,7 +22,7 @@
         <div class="flex-item">
           <app-input
             [label]="'Role Name'"
-            [value]="roleForm.get('roleName')?.value"
+            [value]="roleForm.get('roleName')?.value || ''"
             (valueChanged)="handleRoleNameChange($event)">
           </app-input>
         </div>

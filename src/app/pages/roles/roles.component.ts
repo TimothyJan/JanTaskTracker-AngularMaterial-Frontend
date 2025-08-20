@@ -1,17 +1,35 @@
 import { Component } from '@angular/core';
-import { RoleCreateComponent } from "./role-create/role-create.component";
 import { RoleListComponent } from "./role-list/role-list.component";
+import { RoleEditComponent } from '../../components/dialogs/role-edit/role-edit.component';
+
+import { MatCardModule } from "@angular/material/card";
+import { MatGridListModule } from "@angular/material/grid-list";
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-roles',
   imports: [
-    RoleCreateComponent,
-    RoleListComponent
-  ],
+    RoleListComponent,
+    MatCardModule,
+    MatGridListModule,
+    MatButtonModule,
+],
   templateUrl: './roles.component.html',
   styleUrl: './roles.component.css',
   standalone: true
 })
 export class RolesComponent {
+
+  constructor(
+    private dialog: MatDialog
+  ) {}
+
+  onOpenRoleDialog(): void {
+    this.dialog.open(RoleEditComponent, {
+      width: '500px',
+      data: { }
+    });
+  }
 
 }

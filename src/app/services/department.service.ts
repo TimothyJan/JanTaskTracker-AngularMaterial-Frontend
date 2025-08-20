@@ -37,7 +37,7 @@ export class DepartmentService {
 
   /** Post new Department */
   createDepartment(department: Department): void {
-    let newDepartment = new Department(this.departmentId++, department.departmentName);
+    let newDepartment = new Department(this.departmentId++, department.departmentName.toUpperCase());
     this.departments.push(newDepartment);
     this.departments = this.sortDepartments(this.departments); // Sort after adding
     this.notifyDepartmentsChanged();
@@ -69,7 +69,7 @@ export class DepartmentService {
   /** Checks for duplicate department names */
   checkDuplicates(departmentName: string): boolean {
     for(let i=0; i<this.departments.length; i++) {
-      if(this.departments[i].departmentName == departmentName.toUpperCase()) {
+      if(this.departments[i].departmentName == departmentName) {
         return true;
       }
     }

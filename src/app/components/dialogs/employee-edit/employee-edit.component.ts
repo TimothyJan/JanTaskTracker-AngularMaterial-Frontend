@@ -39,7 +39,7 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
 
   isLoading: boolean = false;
   employeeForm: FormGroup = new FormGroup({
-    employeeId: new FormControl(-1, [Validators.required, Validators.pattern(/^\d+$/)]),
+    employeeId: new FormControl(0, [Validators.pattern(/^\d+$/)]),
     name: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(100)]),
     salary: new FormControl(0, [Validators.min(0), Validators.required, Validators.pattern(/^\d+$/)]),
     departmentId: new FormControl(-1, [Validators.required, Validators.pattern(/^\d+$/)]),
@@ -52,7 +52,9 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.setEmployeeFormValues();
+    if(this.data.employeeId !== undefined) {
+      this.setEmployeeFormValues();
+    }
   }
 
   setEmployeeFormValues(): void {
@@ -88,22 +90,6 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
     this.employeeForm.controls["salary"].setValue(newSalary);
   }
 
-  /** Save Changes */
-  saveChanges(): void {
-    this.isLoading = true;
-    const updatedEmployee = new Employee(
-      this.employeeForm.controls["employeeId"].value,
-      this.employeeForm.controls["name"].value,
-      this.employeeForm.controls["salary"].value,
-      this.employeeForm.controls["departmentId"].value,
-      this.employeeForm.controls["roleId"].value,
-    )
-    this._employeeService.updateEmployee(updatedEmployee);
-    this._employeeService.notifyEmployeesChanged();
-    this._snackbarService.success("Role saved.");
-    this.isLoading = false;
-  }
-
   /** Cancel and close dialog */
   cancel(): void {
     this.dialogRef.close(null);
@@ -111,8 +97,37 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
 
   /** Confirm save */
   confirm(): void {
-    this.saveChanges();
+    if(this.data.employeeId === undefined) {
+      this.createEmployee();
+    } else {
+      this.updateEmployee();
+    }
+  }
+
+  createEmployee(): void {
+    if (this.employeeForm.valid) {
+      this.isLoading = true;
+      const newEmployee = this.employeeForm.value;
+      this._employeeService.addEmployee(newEmployee);
+      this._employeeService.notifyEmployeesChanged();
+      this._snackbarService.success("Employee created.");
+      this.dialogRef.close(this.data.employeeId);
+      this.isLoading = false;
+    }
+    else {
+      this._snackbarService.error("Employee failed to be created.");
+    }
+  }
+
+  /** Save Changes */
+  updateEmployee(): void {
+    this.isLoading = true;
+    const updatedEmployee = this.employeeForm.value;
+    this._employeeService.updateEmployee(updatedEmployee);
+    this._employeeService.notifyEmployeesChanged();
+    this._snackbarService.success("Employee saved.");
     this.dialogRef.close(this.data.employeeId);
+    this.isLoading = false;
   }
 
   ngOnDestroy(): void {

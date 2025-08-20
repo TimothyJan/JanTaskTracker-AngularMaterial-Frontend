@@ -134,7 +134,7 @@ export class RoleListComponent implements OnInit, OnDestroy {
   onOpenEditDialog(roleId: number): void {
     this.dialog.open(RoleEditComponent, {
       width: '500px',
-      data: { roleId }
+      data: { roleId: roleId }
     });
   }
 

@@ -1,11 +1,17 @@
 @if(!isLoading) {
-  <h1 mat-dialog-title>Edit Department</h1>
+  <h1 mat-dialog-title>
+    @if(data.departmentId === undefined) {
+      Create Department
+    } @else {
+      Edit Department
+    }
+  </h1>
 
   <div mat-dialog-content>
     <form (ngSubmit)="confirm()">
       <app-input
         [label]="'Department Name'"
-        [value]="departmentForm.get('departmentName')?.value"
+        [value]="departmentForm.get('departmentName')?.value || '' "
         (valueChanged)="onDepartmentNameChange($event)">
       </app-input>
     </form>

@@ -35,23 +35,25 @@ export class RoleEditComponent implements OnInit, OnDestroy {
 
   isLoading: boolean = false;
   roleForm: FormGroup = new FormGroup({
-    roleId: new FormControl(-1, [Validators.required, Validators.pattern(/^\d+$/)]),
+    roleId: new FormControl(0, [Validators.pattern(/^\d+$/)]),
     roleName: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
     departmentId: new FormControl(-1, [Validators.required, Validators.pattern(/^\d+$/)])
   });
 
   constructor(
     private dialogRef: MatDialogRef<RoleEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { roleId: number },
+    @Inject(MAT_DIALOG_DATA) public data: { roleId?: number },
   ) {}
 
   ngOnInit(): void {
-    this.setRoleFormValues();
+    if(this.data.roleId !== undefined) {
+      this.setRoleFormValues();
+    }
   }
 
   setRoleFormValues(): void {
     this.isLoading = true;
-    const role = this._roleService.getRoleById(this.data.roleId);
+    const role = this._roleService.getRoleById(this.data.roleId!);
     this.roleForm.patchValue({
       roleId: role?.roleId,
       roleName: role?.roleName,
@@ -70,25 +72,6 @@ export class RoleEditComponent implements OnInit, OnDestroy {
     this.roleForm.controls["roleName"].setValue(newValue.toUpperCase());
   }
 
-  /** Save Changes */
-  saveChanges(): void {
-    if (this.roleForm.valid) {
-      this.isLoading = true;
-      const newRole = new Role(
-        this.roleForm.controls["roleId"].value,
-        this.roleForm.controls["roleName"].value,
-        this.roleForm.controls["departmentId"].value,
-      )
-      this._roleService.updateRole(newRole);
-      this._roleService.notifyRolesChanged();
-      this._snackbarService.success("Role saved.");
-      this.isLoading = false;
-    } else {
-      this._snackbarService.error("Invalid role values");
-    }
-
-  }
-
   /** Cancel and close dialog */
   cancel(): void {
     this.dialogRef.close(null);
@@ -96,8 +79,54 @@ export class RoleEditComponent implements OnInit, OnDestroy {
 
   /** Confirm save */
   confirm(): void {
-    this.saveChanges();
-    this.dialogRef.close(this.data.roleId);
+    if(this.data.roleId === undefined) {
+      this.createRole();
+    } else {
+      this.updateRole();
+    }
+  }
+
+  createRole(): void {
+    if (this.roleForm.valid) {
+      this.isLoading = true;
+      const newRole = this.roleForm.value;
+      if(!this._roleService.checkDuplicates(newRole)) {
+        this._roleService.createRole(newRole);
+        this._roleService.notifyRolesChanged();
+        this._snackbarService.success("Role created.");
+        this.dialogRef.close(this.data.roleId);
+        this.isLoading = false;
+      }
+      else {
+        this._snackbarService.error("Role already exists.");
+        this.isLoading = false;
+      }
+    }
+    else {
+      this._snackbarService.error("Role failed to be created.");
+      this.isLoading = false;
+    }
+  }
+
+  /** Save Changes */
+  updateRole(): void {
+    if (this.roleForm.valid) {
+      this.isLoading = true;
+      const updatedRole = this.roleForm.value;
+      if(!this._roleService.checkDuplicates(updatedRole)) {
+        this._roleService.updateRole(updatedRole);
+        this._roleService.notifyRolesChanged();
+        this._snackbarService.success("Role saved.");
+        this.dialogRef.close(this.data.roleId);
+        this.isLoading = false;
+      }
+      else {
+        this._snackbarService.error("Role already exists.");
+        this.isLoading = false;
+      }
+    } else {
+      this._snackbarService.error("Invalid role values");
+    }
   }
 
   ngOnDestroy(): void {
