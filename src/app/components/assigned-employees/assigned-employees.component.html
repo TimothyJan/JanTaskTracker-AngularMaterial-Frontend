@@ -10,50 +10,55 @@
       </mat-grid-tile>
       <mat-grid-tile colspan="2">
         <button mat-raised-button color="primary" (click)="openAssignEmployees()">
-          Edit Employees
+          @if(assignedEmployeeList.length<1) {
+            Add Employees
+          } @else {
+            Edit Employees
+          }
         </button>
       </mat-grid-tile>
       <mat-grid-tile colspan="3"></mat-grid-tile>
     </mat-grid-list>
 
     <mat-card-content>
-      <div *ngIf="assignedEmployeeList.length>0; else noAssignedEmployees">
-        <mat-list>
+      @if (assignedEmployeeList.length>0) {
+        <div>
+          <mat-list>
 
-          <mat-list-item>
-            <mat-grid-list cols="9">
-              <mat-grid-tile colspan="3">
-                Employee Name
-              </mat-grid-tile>
-              <mat-grid-tile colspan="3">
-                Role
-              </mat-grid-tile>
-              <mat-grid-tile colspan="3">
-                Department
-              </mat-grid-tile>
-            </mat-grid-list>
-          </mat-list-item>
+            <mat-list-item>
+              <mat-grid-list cols="9">
+                <mat-grid-tile colspan="3">
+                  Employee Name
+                </mat-grid-tile>
+                <mat-grid-tile colspan="3">
+                  Role
+                </mat-grid-tile>
+                <mat-grid-tile colspan="3">
+                  Department
+                </mat-grid-tile>
+              </mat-grid-list>
+            </mat-list-item>
 
-          <mat-list-item *ngFor="let employee of assignedEmployeeList">
-            <mat-grid-list cols="9">
-              <mat-grid-tile colspan="3">
-                {{ employee.name | truncate:20 }}
-              </mat-grid-tile>
-              <mat-grid-tile colspan="3">
-                {{ getRoleName(employee.roleId)! | truncate:20 }}
-              </mat-grid-tile>
-              <mat-grid-tile colspan="3">
-                {{ getDepartmentName(employee.departmentId)! | truncate:20 }}
-              </mat-grid-tile>
-            </mat-grid-list>
-          </mat-list-item>
+            <mat-list-item *ngFor="let employee of assignedEmployeeList">
+              <mat-grid-list cols="9">
+                <mat-grid-tile colspan="3">
+                  {{ employee.name | truncate:20 }}
+                </mat-grid-tile>
+                <mat-grid-tile colspan="3">
+                  {{ getRoleName(employee.roleId)! | truncate:20 }}
+                </mat-grid-tile>
+                <mat-grid-tile colspan="3">
+                  {{ getDepartmentName(employee.departmentId)! | truncate:20 }}
+                </mat-grid-tile>
+              </mat-grid-list>
+            </mat-list-item>
 
-        </mat-list>
-      </div>
-
-      <ng-template #noAssignedEmployees>
+          </mat-list>
+        </div>
+      }
+      @else {
         No assigned employees
-      </ng-template>
+      }
     </mat-card-content>
   </mat-card>
 

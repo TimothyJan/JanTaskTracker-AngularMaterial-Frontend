@@ -1,7 +1,10 @@
 @if(!isLoading) {
 
-  <h1 mat-dialog-title *ngIf="data.projectId==-1">Create Project Task</h1>
-  <h1 mat-dialog-title *ngIf="data.projectId!=-1">Edit Project Task</h1>
+  @if(projectTaskForm.get('projectTaskId')?.value == 0) {
+    <h1 mat-dialog-title>Create Project Task</h1>
+  } @else {
+    <h1 mat-dialog-title>Edit Project Task</h1>
+  }
 
   <div mat-dialog-content>
     <form (ngSubmit)="confirm()">
@@ -22,7 +25,8 @@
         </div>
         <div class="flex-item">
           <app-select-status
-            [value]="projectTaskForm.get('status')?.value">
+            [value]="projectTaskForm.get('status')?.value"
+            (statusChanged)="handleStatusChange($event)">
           </app-select-status>
         </div>
         <div class="flex-item">
@@ -39,11 +43,6 @@
             (dateSelected)="handleDueDateSelection($event)">
           </app-date-picker>
         </div>
-        @if(data.projectTaskId) {
-          <div class="flex-item">
-            <app-assigned-employees [projectTaskId]="data.projectTaskId"></app-assigned-employees>
-          </div>
-        }
       </div>
     </form>
   </div>

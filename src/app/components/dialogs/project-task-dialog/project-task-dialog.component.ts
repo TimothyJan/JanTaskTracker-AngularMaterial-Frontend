@@ -5,7 +5,6 @@ import { ProjectTask } from '../../../models/project-task.model';
 import { InputComponent } from "../../input/input.component";
 import { SelectStatusComponent } from "../../select-status/select-status.component";
 import { DatePickerComponent } from "../../date-picker/date-picker.component";
-import { AssignedEmployeesComponent } from '../../assigned-employees/assigned-employees.component';
 import { Subject } from 'rxjs';
 
 import { SnackbarService } from '../../../services/snackbar.service';
@@ -25,7 +24,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     InputComponent,
     SelectStatusComponent,
     DatePickerComponent,
-    AssignedEmployeesComponent,
     MatProgressSpinnerModule
 ],
   templateUrl: './project-task-dialog.component.html',
@@ -37,11 +35,10 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
   private _projectTaskService = inject(ProjectTaskService);
   private unsubscribe$ = new Subject<void>();
 
-  @Input() projectId: number = -1;
-
   isLoading: boolean = false;
   projectTaskForm: FormGroup = new FormGroup({
-    projectId: new FormControl(0, [Validators.required, Validators.pattern(/^\d+$/), Validators.minLength(2), Validators.maxLength(50)]),
+    projectTaskId: new FormControl(0, [Validators.required, Validators.pattern(/^\d+$/)]),
+    projectId: new FormControl(0, [Validators.required, Validators.pattern(/^\d+$/)]),
     title: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
     description: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
     status: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
@@ -56,50 +53,51 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    if (this.data.projectId) {
-      this.assignProjectId();
-    }
     if (this.data.projectTaskId) {
       this.setProjectTaskFormValues();
+    }
+    else {
+      this.assignProjectId();
     }
   }
 
   /** Assigns projectId to projectTaskForm */
   assignProjectId(): void {
     this.isLoading = true;
-    this.projectTaskForm.controls["projectId"].setValue(this.projectId);
+    this.projectTaskForm.controls["projectId"].setValue(this.data.projectId);
     this.isLoading = false;
   }
 
   /** Set projectTaskForm using getProjectTaskById */
   setProjectTaskFormValues(): void {
     this.isLoading = true;
-    const projectFormValues = this._projectTaskService.getProjectTaskById(this.data.projectTaskId!);
+    const projectTaskFormValues = this._projectTaskService.getProjectTaskById(this.data.projectTaskId!);
     this.projectTaskForm.patchValue({
-      projectId: projectFormValues.projectId,
-      title: projectFormValues.title,
-      description: projectFormValues.description,
-      status: projectFormValues.status,
-      startDate: projectFormValues.startDate,
-      dueDate: projectFormValues.dueDate,
-      assignedEmployeeIds: projectFormValues.assignedEmployeeIds,
+      projectTaskId: projectTaskFormValues.projectTaskId,
+      projectId: projectTaskFormValues.projectId,
+      title: projectTaskFormValues.title,
+      description: projectTaskFormValues.description,
+      status: projectTaskFormValues.status,
+      startDate: projectTaskFormValues.startDate,
+      dueDate: projectTaskFormValues.dueDate,
+      assignedEmployeeIds: projectTaskFormValues.assignedEmployeeIds,
     })
     this.isLoading = false;
   }
 
   /** Handles task change from input component and assigns title to projectTaskForm */
   handleTitleChange(title: string): void {
-    this.projectTaskForm.patchValue({ title });
+    this.projectTaskForm.patchValue({ title: title });
   }
 
   /** Handles description change from text area component and assigns description to projectTaskForm */
   handleDescriptionChange(description: string): void {
-    this.projectTaskForm.patchValue({ description });
+    this.projectTaskForm.patchValue({ description: description });
   }
 
   /** Handles status change from status selector component and assigns status to projectTaskForm */
   handleStatusChange(status: string): void {
-    this.projectTaskForm.patchValue({ status });
+    this.projectTaskForm.patchValue({ status: status });
   }
 
   /** Handles startDate change from date-selector component and assigns date value to projectTaskForm */
@@ -115,6 +113,25 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
   /** Handles assign employees change from assign-employees component and assigns list of employeeIds to projectTaskForm */
   handleEmployeeSelection(selectedEmployeeIds: any) {
     this.projectTaskForm.controls['assignedEmployeeIds'].setValue(selectedEmployeeIds);
+  }
+
+  /** Cancel and close modal */
+  cancel() {
+    this.dialogRef.close(null);
+  }
+
+  /** Confirm save and close modal */
+  confirm() {
+    if(this.projectTaskForm.valid) {
+      if (this.projectTaskForm.get("projectTaskId")?.value == 0) {
+        this.createProjectTask();
+      } else {
+        this.updateProjectTask();
+      }
+      this.dialogRef.close(null);
+    } else {
+      this._snackbarService.error("Please fill all required fields correctly.");
+    }
   }
 
   /** Create Project Task */
@@ -153,25 +170,6 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
     this._projectTaskService.notifyProjectTasksChanged();
     this._snackbarService.success("Project task updated.");
     this.isLoading = false;
-  }
-
-  /** Cancel and close modal */
-  cancel() {
-    this.dialogRef.close(null);
-  }
-
-  /** Confirm save and close modal */
-  confirm() {
-    if(this.projectTaskForm.valid) {
-      if (this.data.projectId == -1) {
-        this.createProjectTask();
-      } else {
-        this.updateProjectTask();
-      }
-      this.dialogRef.close(null);
-    } else {
-      this._snackbarService.error("Please fill all required fields correctly.");
-    }
   }
 
   ngOnDestroy(): void {

@@ -64,10 +64,13 @@ export class AssignedEmployeesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.getProjectTaskById();
     this.getEmployees();
     this.getRoles();
     this.getDepartments();
+
+    if(this.projectTaskId != -1) {
+      this.getProjectTaskById();
+    }
   }
 
   /** Get list of assigned employee ids from the projectTask */
