@@ -37,7 +37,7 @@ export class EmployeeDialogComponent  implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
 
   isLoading: boolean = false;
-  employeeForm: FormGroup = new FormGroup({
+  form: FormGroup = new FormGroup({
     employeeId: new FormControl(0, [Validators.pattern(/^\d+$/)]),
     name: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(100)]),
     salary: new FormControl(0, [Validators.min(0), Validators.required, Validators.pattern(/^\d+$/)]),
@@ -59,7 +59,7 @@ export class EmployeeDialogComponent  implements OnInit, OnDestroy {
   setEmployeeFormValues(): void {
     this.isLoading = true;
     const employee = this._employeeService.getEmployeeById(this.data.employeeId);
-    this.employeeForm.patchValue({
+    this.form.patchValue({
       employeeId: employee?.employeeId,
       name: employee?.name,
       salary: employee?.salary,
@@ -71,22 +71,22 @@ export class EmployeeDialogComponent  implements OnInit, OnDestroy {
 
   /** Handle department select changes */
   handleDepartmentChange(departmentId: number): void {
-    this.employeeForm.controls["departmentId"].setValue(departmentId);
+    this.form.controls["departmentId"].setValue(departmentId);
   }
 
   /** Handle role select changes */
   handleRoleChange(roleId: number): void {
-    this.employeeForm.controls["roleId"].setValue(roleId);
+    this.form.controls["roleId"].setValue(roleId);
   }
 
   /** Handle department name input changes */
   handleEmployeeNameChange(newValue: string): void {
-    this.employeeForm.controls["name"].setValue(newValue.toUpperCase());
+    this.form.controls["name"].setValue(newValue.toUpperCase());
   }
 
   /** Handle salary input changes */
   handleSalaryChange(newSalary: number): void {
-    this.employeeForm.controls["salary"].setValue(newSalary);
+    this.form.controls["salary"].setValue(newSalary);
   }
 
   /** Cancel and close dialog */
@@ -104,9 +104,9 @@ export class EmployeeDialogComponent  implements OnInit, OnDestroy {
   }
 
   createEmployee(): void {
-    if (this.employeeForm.valid) {
+    if (this.form.valid) {
       this.isLoading = true;
-      const newEmployee = this.employeeForm.value;
+      const newEmployee = this.form.value;
       this._employeeService.addEmployee(newEmployee);
       this._employeeService.notifyEmployeesChanged();
       this._snackbarService.success("Employee created.");
@@ -121,7 +121,7 @@ export class EmployeeDialogComponent  implements OnInit, OnDestroy {
   /** Save Changes */
   updateEmployee(): void {
     this.isLoading = true;
-    const updatedEmployee = this.employeeForm.value;
+    const updatedEmployee = this.form.value;
     this._employeeService.updateEmployee(updatedEmployee);
     this._employeeService.notifyEmployeesChanged();
     this._snackbarService.success("Employee saved.");

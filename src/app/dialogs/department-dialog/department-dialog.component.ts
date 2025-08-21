@@ -31,7 +31,7 @@ export class DepartmentDialogComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
 
   isLoading: boolean = false;
-  departmentForm: FormGroup = new FormGroup({
+  form: FormGroup = new FormGroup({
     departmentId: new FormControl(0, [Validators.pattern(/^\d+$/)]),
     departmentName: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)])
   });
@@ -47,11 +47,11 @@ export class DepartmentDialogComponent implements OnInit, OnDestroy {
     }
   }
 
-  /** Set departmentForm using getDepartmentById */
+  /** Set form using getDepartmentById */
   setDepartmentFormValues(): void {
     this.isLoading = true;
     const dept = this._departmentService.getDepartmentById(this.data.departmentId!);
-    this.departmentForm.patchValue({
+    this.form.patchValue({
       departmentId: dept?.departmentId,
       departmentName: dept?.departmentName
     })
@@ -60,7 +60,7 @@ export class DepartmentDialogComponent implements OnInit, OnDestroy {
 
   /** Handle department name input changes */
   onDepartmentNameChange(newValue: string): void {
-    this.departmentForm.controls["departmentName"].setValue(newValue.toUpperCase());
+    this.form.controls["departmentName"].setValue(newValue.toUpperCase());
   }
 
   /** Cancel and close dialog */
@@ -78,11 +78,11 @@ export class DepartmentDialogComponent implements OnInit, OnDestroy {
   }
 
   createDepartment() {
-    if (this.departmentForm.valid) {
+    if (this.form.valid) {
       this.isLoading = true;
-      const newDepartment = this.departmentForm.value;
+      const newDepartment = this.form.value;
       if (!this._departmentService.checkDuplicates(newDepartment.departmentName)) {
-        this._departmentService.createDepartment(this.departmentForm.value);
+        this._departmentService.createDepartment(this.form.value);
         this._departmentService.notifyDepartmentsChanged();
         this._snackbarService.success("Department created.");
         this.dialogRef.close(this.data.departmentId);
@@ -97,9 +97,9 @@ export class DepartmentDialogComponent implements OnInit, OnDestroy {
   }
 
   updateDepartment(): void {
-    if(this.departmentForm.valid) {
+    if(this.form.valid) {
       this.isLoading = true;
-      const updatedDepartment = this.departmentForm.value
+      const updatedDepartment = this.form.value
       if (!this._departmentService.checkDuplicates(updatedDepartment.departmentName)) {
         this._departmentService.updateDepartment(updatedDepartment);
         this._departmentService.notifyDepartmentsChanged();

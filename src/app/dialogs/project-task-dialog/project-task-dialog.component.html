@@ -1,6 +1,6 @@
 @if(!isLoading) {
 
-  @if(projectTaskForm.get('projectTaskId')?.value == 0) {
+  @if(form.get('projectTaskId')?.value == 0) {
     <h1 mat-dialog-title>Create Project Task</h1>
   } @else {
     <h1 mat-dialog-title>Edit Project Task</h1>
@@ -12,34 +12,34 @@
         <div class="flex-item">
           <app-input
             [label]="'Project Task Name'"
-            [value]="projectTaskForm.get('title')?.value"
+            [value]="form.get('title')?.value"
             (valueChanged)="handleTitleChange($event)">
           </app-input>
         </div>
         <div class="flex-item">
           <app-input
             [label]="'Description'"
-            [value]="projectTaskForm.get('description')?.value"
+            [value]="form.get('description')?.value"
             (valueChanged)="handleDescriptionChange($event)">
           </app-input>
         </div>
         <div class="flex-item">
           <app-select-status
-            [value]="projectTaskForm.get('status')?.value"
+            [value]="form.get('status')?.value"
             (statusChanged)="handleStatusChange($event)">
           </app-select-status>
         </div>
         <div class="flex-item">
           <app-date-picker
             [label]="'Start Date'"
-            [initialDate]="projectTaskForm.get('startDate')?.value"
+            [initialDate]="form.get('startDate')?.value"
             (dateSelected)="handleStartDateSelection($event)">
           </app-date-picker>
         </div>
         <div class="flex-item">
           <app-date-picker
             [label]="'End Date'"
-            [initialDate]="projectTaskForm.get('dueDate')?.value"
+            [initialDate]="form.get('dueDate')?.value"
             (dateSelected)="handleDueDateSelection($event)">
           </app-date-picker>
         </div>

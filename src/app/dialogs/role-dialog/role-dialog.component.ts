@@ -33,7 +33,7 @@ export class RoleDialogComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
 
   isLoading: boolean = false;
-  roleForm: FormGroup = new FormGroup({
+  form: FormGroup = new FormGroup({
     roleId: new FormControl(0, [Validators.pattern(/^\d+$/)]),
     roleName: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
     departmentId: new FormControl(-1, [Validators.required, Validators.pattern(/^\d+$/)])
@@ -53,7 +53,7 @@ export class RoleDialogComponent implements OnInit, OnDestroy {
   setRoleFormValues(): void {
     this.isLoading = true;
     const role = this._roleService.getRoleById(this.data.roleId!);
-    this.roleForm.patchValue({
+    this.form.patchValue({
       roleId: role?.roleId,
       roleName: role?.roleName,
       departmentId: role?.departmentId
@@ -63,12 +63,12 @@ export class RoleDialogComponent implements OnInit, OnDestroy {
 
   /** Handle department select changes */
   handleDepartmentChange(departmentId: number): void {
-    this.roleForm.controls["departmentId"].setValue(departmentId);
+    this.form.controls["departmentId"].setValue(departmentId);
   }
 
   /** Handle department name input changes */
   handleRoleNameChange(newValue: string): void {
-    this.roleForm.controls["roleName"].setValue(newValue.toUpperCase());
+    this.form.controls["roleName"].setValue(newValue.toUpperCase());
   }
 
   /** Cancel and close dialog */
@@ -86,9 +86,9 @@ export class RoleDialogComponent implements OnInit, OnDestroy {
   }
 
   createRole(): void {
-    if (this.roleForm.valid) {
+    if (this.form.valid) {
       this.isLoading = true;
-      const newRole = this.roleForm.value;
+      const newRole = this.form.value;
       if(!this._roleService.checkDuplicates(newRole)) {
         this._roleService.createRole(newRole);
         this._roleService.notifyRolesChanged();
@@ -109,9 +109,9 @@ export class RoleDialogComponent implements OnInit, OnDestroy {
 
   /** Save Changes */
   updateRole(): void {
-    if (this.roleForm.valid) {
+    if (this.form.valid) {
       this.isLoading = true;
-      const updatedRole = this.roleForm.value;
+      const updatedRole = this.form.value;
       if(!this._roleService.checkDuplicates(updatedRole)) {
         this._roleService.updateRole(updatedRole);
         this._roleService.notifyRolesChanged();

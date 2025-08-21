@@ -10,34 +10,34 @@
         <div class="flex-item">
           <app-input
             [label]="'Project Name'"
-            [value]="projectForm.get('projectName')?.value"
+            [value]="form.get('projectName')?.value"
             (valueChanged)="handleProjectNameChange($event)">
           </app-input>
         </div>
         <div class="flex-item">
           <app-input
             [label]="'Description'"
-            [value]="projectForm.get('description')?.value"
+            [value]="form.get('description')?.value"
             (valueChanged)="handleDescriptionChange($event)">
           </app-input>
         </div>
         <div class="flex-item">
           <app-select-status
-            [value]="projectForm.get('status')?.value"
+            [value]="form.get('status')?.value"
             (statusChanged)="handleStatusChange($event)">
           </app-select-status>
         </div>
         <div class="flex-item">
           <app-date-picker
             [label]="'Start Date'"
-            [initialDate]="projectForm.get('startDate')?.value"
+            [initialDate]="form.get('startDate')?.value"
             (dateSelected)="handleStartDateSelection($event)">
           </app-date-picker>
         </div>
         <div class="flex-item">
           <app-date-picker
             [label]="'End Date'"
-            [initialDate]="projectForm.get('dueDate')?.value"
+            [initialDate]="form.get('dueDate')?.value"
             (dateSelected)="handleDueDateSelection($event)">
           </app-date-picker>
         </div>

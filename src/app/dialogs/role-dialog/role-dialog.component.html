@@ -15,14 +15,14 @@
       <div class="flex-container">
         <div class="flex-item">
           <app-select-department
-            [departmentId]="roleForm.get('departmentId')?.value"
+            [departmentId]="form.get('departmentId')?.value"
             (departmentChanged)="handleDepartmentChange($event)">
           </app-select-department>
         </div>
         <div class="flex-item">
           <app-input
             [label]="'Role Name'"
-            [value]="roleForm.get('roleName')?.value || ''"
+            [value]="form.get('roleName')?.value || ''"
             (valueChanged)="handleRoleNameChange($event)">
           </app-input>
         </div>

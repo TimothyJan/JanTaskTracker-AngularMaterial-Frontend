@@ -36,7 +36,7 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
 
   isLoading: boolean = false;
-  projectTaskForm: FormGroup = new FormGroup({
+  form: FormGroup = new FormGroup({
     projectTaskId: new FormControl(0, [Validators.required, Validators.pattern(/^\d+$/)]),
     projectId: new FormControl(0, [Validators.required, Validators.pattern(/^\d+$/)]),
     title: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
@@ -61,58 +61,58 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
     }
   }
 
-  /** Assigns projectId to projectTaskForm */
+  /** Assigns projectId to form */
   assignProjectId(): void {
     this.isLoading = true;
-    this.projectTaskForm.controls["projectId"].setValue(this.data.projectId);
+    this.form.controls["projectId"].setValue(this.data.projectId);
     this.isLoading = false;
   }
 
-  /** Set projectTaskForm using getProjectTaskById */
+  /** Set form using getProjectTaskById */
   setProjectTaskFormValues(): void {
     this.isLoading = true;
-    const projectTaskFormValues = this._projectTaskService.getProjectTaskById(this.data.projectTaskId!);
-    this.projectTaskForm.patchValue({
-      projectTaskId: projectTaskFormValues.projectTaskId,
-      projectId: projectTaskFormValues.projectId,
-      title: projectTaskFormValues.title,
-      description: projectTaskFormValues.description,
-      status: projectTaskFormValues.status,
-      startDate: projectTaskFormValues.startDate,
-      dueDate: projectTaskFormValues.dueDate,
-      assignedEmployeeIds: projectTaskFormValues.assignedEmployeeIds,
+    const formValues = this._projectTaskService.getProjectTaskById(this.data.projectTaskId!);
+    this.form.patchValue({
+      projectTaskId: formValues.projectTaskId,
+      projectId: formValues.projectId,
+      title: formValues.title,
+      description: formValues.description,
+      status: formValues.status,
+      startDate: formValues.startDate,
+      dueDate: formValues.dueDate,
+      assignedEmployeeIds: formValues.assignedEmployeeIds,
     })
     this.isLoading = false;
   }
 
-  /** Handles task change from input component and assigns title to projectTaskForm */
+  /** Handles task change from input component and assigns title to form */
   handleTitleChange(title: string): void {
-    this.projectTaskForm.patchValue({ title: title });
+    this.form.patchValue({ title: title });
   }
 
-  /** Handles description change from text area component and assigns description to projectTaskForm */
+  /** Handles description change from text area component and assigns description to form */
   handleDescriptionChange(description: string): void {
-    this.projectTaskForm.patchValue({ description: description });
+    this.form.patchValue({ description: description });
   }
 
-  /** Handles status change from status selector component and assigns status to projectTaskForm */
+  /** Handles status change from status selector component and assigns status to form */
   handleStatusChange(status: string): void {
-    this.projectTaskForm.patchValue({ status: status });
+    this.form.patchValue({ status: status });
   }
 
-  /** Handles startDate change from date-selector component and assigns date value to projectTaskForm */
+  /** Handles startDate change from date-selector component and assigns date value to form */
   handleStartDateSelection(selectedDate: Date): void {
-    this.projectTaskForm.patchValue({ startDate: selectedDate });
+    this.form.patchValue({ startDate: selectedDate });
   }
 
-  /** Handles dueDate change from date-selector component and assigns date value to projectTaskForm */
+  /** Handles dueDate change from date-selector component and assigns date value to form */
   handleDueDateSelection(selectedDate: Date): void {
-    this.projectTaskForm.patchValue({ dueDate: selectedDate });
+    this.form.patchValue({ dueDate: selectedDate });
   }
 
-  /** Handles assign employees change from assign-employees component and assigns list of employeeIds to projectTaskForm */
+  /** Handles assign employees change from assign-employees component and assigns list of employeeIds to form */
   handleEmployeeSelection(selectedEmployeeIds: any) {
-    this.projectTaskForm.controls['assignedEmployeeIds'].setValue(selectedEmployeeIds);
+    this.form.controls['assignedEmployeeIds'].setValue(selectedEmployeeIds);
   }
 
   /** Cancel and close modal */
@@ -122,8 +122,8 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
 
   /** Confirm save and close modal */
   confirm() {
-    if(this.projectTaskForm.valid) {
-      if (this.projectTaskForm.get("projectTaskId")?.value == 0) {
+    if(this.form.valid) {
+      if (this.form.get("projectTaskId")?.value == 0) {
         this.createProjectTask();
       } else {
         this.updateProjectTask();
@@ -139,13 +139,13 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     const newProjectTask = new ProjectTask(
       0,
-      this.projectTaskForm.controls["projectId"].value,
-      this.projectTaskForm.controls["title"].value,
-      this.projectTaskForm.controls["description"].value,
-      this.projectTaskForm.controls["status"].value,
-      this.projectTaskForm.controls["startDate"].value,
-      this.projectTaskForm.controls["dueDate"].value,
-      this.projectTaskForm.controls["assignedEmployeeIds"].value
+      this.form.controls["projectId"].value,
+      this.form.controls["title"].value,
+      this.form.controls["description"].value,
+      this.form.controls["status"].value,
+      this.form.controls["startDate"].value,
+      this.form.controls["dueDate"].value,
+      this.form.controls["assignedEmployeeIds"].value
     );
     this._projectTaskService.createProjectTask(newProjectTask);
     this._projectTaskService.notifyProjectTasksChanged();
@@ -158,13 +158,13 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     const newProjectTask = new ProjectTask(
       this.data.projectTaskId!,
-      this.projectTaskForm.controls["projectId"].value,
-      this.projectTaskForm.controls["title"].value,
-      this.projectTaskForm.controls["description"].value,
-      this.projectTaskForm.controls["status"].value,
-      this.projectTaskForm.controls["startDate"].value,
-      this.projectTaskForm.controls["dueDate"].value,
-      this.projectTaskForm.controls["assignedEmployeeIds"].value
+      this.form.controls["projectId"].value,
+      this.form.controls["title"].value,
+      this.form.controls["description"].value,
+      this.form.controls["status"].value,
+      this.form.controls["startDate"].value,
+      this.form.controls["dueDate"].value,
+      this.form.controls["assignedEmployeeIds"].value
     );
     this._projectTaskService.updateProjectTask(newProjectTask);
     this._projectTaskService.notifyProjectTasksChanged();

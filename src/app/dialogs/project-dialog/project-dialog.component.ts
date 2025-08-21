@@ -36,7 +36,7 @@ export class ProjectDialogComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
 
   isLoading: boolean = false;
-  projectForm: FormGroup = new FormGroup({
+  form: FormGroup = new FormGroup({
     projectName: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
     description: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
     status: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
@@ -67,7 +67,7 @@ export class ProjectDialogComponent implements OnInit, OnDestroy {
     }
     this.isLoading = false;
 
-    this.projectForm.patchValue({
+    this.form.patchValue({
       projectName: project.projectName,
       description: project.description,
       status: project.status,
@@ -78,27 +78,27 @@ export class ProjectDialogComponent implements OnInit, OnDestroy {
 
   /** Handle project name input changes */
   handleProjectNameChange(projectName: string): void {
-    this.projectForm.patchValue({ projectName });
+    this.form.patchValue({ projectName });
   }
 
   /** Handle description input changes */
   handleDescriptionChange(description: string): void {
-    this.projectForm.patchValue({ description });
+    this.form.patchValue({ description });
   }
 
   /** Handle status input changes */
   handleStatusChange(status: string): void {
-    this.projectForm.patchValue({ status });
+    this.form.patchValue({ status });
   }
 
   /** Handles startDate change */
   handleStartDateSelection(selectedDate: Date): void {
-    this.projectForm.patchValue({ startDate: selectedDate });
+    this.form.patchValue({ startDate: selectedDate });
   }
 
   /** Handles endDate change */
   handleDueDateSelection(selectedDate: Date): void {
-    this.projectForm.patchValue({ dueDate: selectedDate });
+    this.form.patchValue({ dueDate: selectedDate });
   }
 
   /** Create the Project */
@@ -106,11 +106,11 @@ export class ProjectDialogComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     const newProject = new Project(
       0,
-      this.projectForm.controls["projectName"].value,
-      this.projectForm.controls["description"].value,
-      this.projectForm.controls["status"].value,
-      this.projectForm.controls["startDate"].value,
-      this.projectForm.controls["dueDate"].value,
+      this.form.controls["projectName"].value,
+      this.form.controls["description"].value,
+      this.form.controls["status"].value,
+      this.form.controls["startDate"].value,
+      this.form.controls["dueDate"].value,
     );
     this._projectService.createProject(newProject);
     this._projectService.notifyProjectsChanged();
@@ -123,11 +123,11 @@ export class ProjectDialogComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     const editedProject = new Project(
       this.data.projectId,
-      this.projectForm.controls["projectName"].value,
-      this.projectForm.controls["description"].value,
-      this.projectForm.controls["status"].value,
-      this.projectForm.controls["startDate"].value,
-      this.projectForm.controls["dueDate"].value,
+      this.form.controls["projectName"].value,
+      this.form.controls["description"].value,
+      this.form.controls["status"].value,
+      this.form.controls["startDate"].value,
+      this.form.controls["dueDate"].value,
     );
     this._projectService.updateProject(editedProject);
     this._projectService.notifyProjectsChanged();
@@ -142,7 +142,7 @@ export class ProjectDialogComponent implements OnInit, OnDestroy {
 
   /** Confirm create or update project */
   confirm(): void {
-    if (this.projectForm.valid) {
+    if (this.form.valid) {
       if (this.data.projectId == -1) {
         this.createProject();
       } else {
