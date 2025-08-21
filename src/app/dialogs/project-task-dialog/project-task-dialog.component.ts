@@ -157,7 +157,7 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
   updateProjectTask(): void {
     this.isLoading = true;
     const newProjectTask = new ProjectTask(
-      0,
+      this.data.projectTaskId!,
       this.projectTaskForm.controls["projectId"].value,
       this.projectTaskForm.controls["title"].value,
       this.projectTaskForm.controls["description"].value,
