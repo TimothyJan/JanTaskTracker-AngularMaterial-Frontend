@@ -3,7 +3,7 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { SnackbarService } from '../../../services/snackbar.service';
 import { EmployeeService } from '../../../services/employee.service';
 import { Employee } from '../../../models/employee.model';
-import { EmployeeDialogComponent } from '../../../components/dialogs/employee-dialog/employee-dialog.component';
+import { EmployeeDialogComponent } from '../../../dialogs/employee-dialog/employee-dialog.component';
 import { Department } from '../../../models/department.model';
 import { Role } from '../../../models/role.model';
 import { TruncatePipe } from '../../../pipes/truncate.pipe';

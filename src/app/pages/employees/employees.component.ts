@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { EmployeeListComponent } from "./employee-list/employee-list.component";
-import { EmployeeDialogComponent } from '../../components/dialogs/employee-dialog/employee-dialog.component';
+import { EmployeeDialogComponent } from '../../dialogs/employee-dialog/employee-dialog.component';
 
 import { MatCardModule } from "@angular/material/card";
 import { MatGridListModule } from "@angular/material/grid-list";

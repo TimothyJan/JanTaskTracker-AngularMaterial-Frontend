@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProjectComponent } from "./project/project.component";
-import { ProjectDialogComponent } from '../../components/dialogs/project-dialog/project-dialog.component';
+import { ProjectDialogComponent } from '../../dialogs/project-dialog/project-dialog.component';
 
 import { ProjectService } from '../../services/project.service';
 

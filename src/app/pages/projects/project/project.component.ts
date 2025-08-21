@@ -2,8 +2,8 @@ import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Project } from '../../../models/project.model';
 import { ProjectTaskComponent } from "../project-task/project-task.component";
-import { ProjectDialogComponent } from '../../../components/dialogs/project-dialog/project-dialog.component';
-import { ProjectTaskDialogComponent } from '../../../components/dialogs/project-task-dialog/project-task-dialog.component';
+import { ProjectDialogComponent } from '../../../dialogs/project-dialog/project-dialog.component';
+import { ProjectTaskDialogComponent } from '../../../dialogs/project-task-dialog/project-task-dialog.component';
 import { Subject, takeUntil } from 'rxjs';
 
 import { SnackbarService } from '../../../services/snackbar.service';

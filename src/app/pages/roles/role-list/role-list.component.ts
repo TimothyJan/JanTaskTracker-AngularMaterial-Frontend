@@ -2,9 +2,9 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Role } from '../../../models/role.model';
 import { Department } from '../../../models/department.model';
-
 import { TruncatePipe } from '../../../pipes/truncate.pipe';
 import { Subject, takeUntil } from 'rxjs';
+import { RoleDialogComponent } from '../../../dialogs/role-dialog/role-dialog.component';
 
 import { SnackbarService } from '../../../services/snackbar.service';
 import { DepartmentService } from '../../../services/department.service';
@@ -19,7 +19,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDialog } from '@angular/material/dialog';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { RoleDialogComponent } from '../../../components/dialogs/role-dialog/role-dialog.component';
+
 
 @Component({
   selector: 'app-role-list',

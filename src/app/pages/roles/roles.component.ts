@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RoleListComponent } from "./role-list/role-list.component";
-import { RoleDialogComponent } from '../../components/dialogs/role-dialog/role-dialog.component';
+import { RoleDialogComponent } from '../../dialogs/role-dialog/role-dialog.component';
 
 import { MatCardModule } from "@angular/material/card";
 import { MatGridListModule } from "@angular/material/grid-list";

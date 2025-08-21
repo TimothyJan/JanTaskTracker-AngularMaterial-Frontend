@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormsModule } from '@angular/forms';
-import { ProjectTask } from '../../../models/project-task.model';
-import { InputComponent } from "../../input/input.component";
-import { SelectStatusComponent } from "../../select-status/select-status.component";
-import { DatePickerComponent } from "../../date-picker/date-picker.component";
 import { Subject } from 'rxjs';
+import { DatePickerComponent } from '../../components/date-picker/date-picker.component';
+import { InputComponent } from '../../components/input/input.component';
+import { SelectStatusComponent } from '../../components/select-status/select-status.component';
+import { ProjectTask } from '../../models/project-task.model';
 
-import { SnackbarService } from '../../../services/snackbar.service';
-import { ProjectTaskService } from '../../../services/project-task.service';
+import { SnackbarService } from '../../services/snackbar.service';
+import { ProjectTaskService } from '../../services/project-task.service';
 
 import { MatDialogRef, MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';

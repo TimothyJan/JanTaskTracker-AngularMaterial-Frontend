@@ -3,7 +3,7 @@ import { Component, inject, Input, OnInit } from '@angular/core';
 import { ProjectTask } from '../../../models/project-task.model';
 import { AssignedEmployeesComponent } from "../../../components/assigned-employees/assigned-employees.component";
 import { Subject, takeUntil } from 'rxjs';
-import { ProjectTaskDialogComponent } from '../../../components/dialogs/project-task-dialog/project-task-dialog.component';
+import { ProjectTaskDialogComponent } from '../../../dialogs/project-task-dialog/project-task-dialog.component';
 
 import { SnackbarService } from '../../../services/snackbar.service';
 import { ProjectTaskService } from '../../../services/project-task.service';

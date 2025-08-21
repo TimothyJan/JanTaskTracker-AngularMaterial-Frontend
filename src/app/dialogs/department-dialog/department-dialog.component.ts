@@ -1,11 +1,11 @@
 import { Component, inject, Inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
-import { InputComponent } from '../../input/input.component';
 import { Subject } from 'rxjs';
+import { InputComponent } from '../../components/input/input.component';
 
-import { SnackbarService } from '../../../services/snackbar.service';
-import { DepartmentService } from '../../../services/department.service';
+import { SnackbarService } from '../../services/snackbar.service';
+import { DepartmentService } from '../../services/department.service';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';

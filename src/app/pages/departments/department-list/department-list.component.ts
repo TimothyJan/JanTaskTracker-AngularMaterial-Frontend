@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Department } from '../../../models/department.model';
-import { DepartmentDialogComponent } from '../../../components/dialogs/department-dialog/department-dialog.component';
+import { DepartmentDialogComponent } from '../../../dialogs/department-dialog/department-dialog.component';
 import { Subject, takeUntil } from 'rxjs';
 
 import { SnackbarService } from '../../../services/snackbar.service';

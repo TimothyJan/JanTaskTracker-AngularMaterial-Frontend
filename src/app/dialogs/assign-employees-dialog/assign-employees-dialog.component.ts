@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Employee } from '../../../models/employee.model';
-import { ProjectTask } from '../../../models/project-task.model';
 import { Subject, takeUntil } from 'rxjs';
+import { Employee } from '../../models/employee.model';
+import { ProjectTask } from '../../models/project-task.model';
 
-import { EmployeeService } from '../../../services/employee.service';
-import { ProjectTaskService } from '../../../services/project-task.service';
-import { SnackbarService } from '../../../services/snackbar.service';
+import { SnackbarService } from '../../services/snackbar.service';
+import { EmployeeService } from '../../services/employee.service';
+import { ProjectTaskService } from '../../services/project-task.service';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';

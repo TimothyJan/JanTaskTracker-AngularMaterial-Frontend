@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { DepartmentListComponent } from "./department-list/department-list.component";
-import { DepartmentDialogComponent } from '../../components/dialogs/department-dialog/department-dialog.component';
+import { DepartmentDialogComponent } from '../../dialogs/department-dialog/department-dialog.component';
 
 import { MatCardModule } from "@angular/material/card";
 import { MatGridListModule } from "@angular/material/grid-list";

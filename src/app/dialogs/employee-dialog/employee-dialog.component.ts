@@ -1,14 +1,14 @@
 import { Component, Inject, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
-import { InputComponent } from '../../input/input.component';
-import { SelectDepartmentComponent } from "../../select-department/select-department.component";
-import { SelectRoleComponent } from '../../select-role/select-role.component';
-import { InputSalaryComponent } from "../../input-salary/input-salary.component";
 import { Subject } from 'rxjs';
+import { InputSalaryComponent } from '../../components/input-salary/input-salary.component';
+import { InputComponent } from '../../components/input/input.component';
+import { SelectDepartmentComponent } from '../../components/select-department/select-department.component';
+import { SelectRoleComponent } from '../../components/select-role/select-role.component';
 
-import { SnackbarService } from '../../../services/snackbar.service';
-import { EmployeeService } from '../../../services/employee.service';
+import { SnackbarService } from '../../services/snackbar.service';
+import { EmployeeService } from '../../services/employee.service';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';

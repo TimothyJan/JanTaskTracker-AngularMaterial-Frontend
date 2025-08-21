@@ -1,7 +1,7 @@
 import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProjectTask } from '../../models/project-task.model';
-import { AssignEmployeesDialogComponent } from '../dialogs/assign-employees-dialog/assign-employees-dialog.component';
+import { AssignEmployeesDialogComponent } from '../../dialogs/assign-employees-dialog/assign-employees-dialog.component';
 import { Employee } from '../../models/employee.model';
 import { Role } from '../../models/role.model';
 import { Department } from '../../models/department.model';
