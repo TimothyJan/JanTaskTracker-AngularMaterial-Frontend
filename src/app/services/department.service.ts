@@ -7,7 +7,7 @@ import { Department } from '../models/department.model';
 })
 export class DepartmentService {
 
-  private departmentsChangedSource = new Subject<void>();  // Emit events when department is added
+  private departmentsChangedSource = new Subject<void>();  // Emit events when department is updated
   departmentsChanged$ = this.departmentsChangedSource.asObservable();
 
   departmentId: number = 3;
@@ -45,9 +45,10 @@ export class DepartmentService {
 
   /** Update existing Department based on id */
   updateDepartment(department: Department): void {
+    let updatedDepartment = new Department(this.departmentId, department.departmentName.toUpperCase());
     for(let i=0; i<this.departments.length; i++) {
       if(this.departments[i].departmentId == department.departmentId) {
-        this.departments[i] = department;
+        this.departments[i] = updatedDepartment;
       }
     }
   }
@@ -68,12 +69,10 @@ export class DepartmentService {
 
   /** Checks for duplicate department names */
   checkDuplicates(departmentName: string): boolean {
-    for(let i=0; i<this.departments.length; i++) {
-      if(this.departments[i].departmentName == departmentName) {
-        return true;
-      }
-    }
-    return false;
+    const upperName = departmentName.toUpperCase().trim();
+    return this.departments.some(dept =>
+      dept.departmentName.toUpperCase() === upperName
+    );
   }
 
   /** Helper method to sort departments alphabetically */

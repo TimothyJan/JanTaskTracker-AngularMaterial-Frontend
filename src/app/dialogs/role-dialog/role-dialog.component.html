@@ -10,7 +10,7 @@
   </h1>
 
   <div mat-dialog-content>
-    <form (ngSubmit)="confirm()">
+    <form [formGroup]="form" (ngSubmit)="confirm()">
 
       <div class="flex-container">
         <div class="flex-item">
@@ -20,11 +20,18 @@
           </app-select-department>
         </div>
         <div class="flex-item">
-          <app-input
-            [label]="'Role Name'"
-            [value]="form.get('roleName')?.value || ''"
-            (valueChanged)="handleRoleNameChange($event)">
-          </app-input>
+          <label>Role: </label>
+          <mat-form-field appearance="outline">
+            <input
+              matInput
+              formControlName="roleName"
+              (blur)="form.get('roleName')?.markAsTouched()">
+            @if (form.get('roleName')?.invalid) {
+              <mat-error>
+                {{ errorControls }}
+              </mat-error>
+            }
+          </mat-form-field>
         </div>
       </div>
 

@@ -1,7 +1,8 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProjectComponent } from "./project/project.component";
 import { ProjectDialogComponent } from '../../dialogs/project-dialog/project-dialog.component';
+import { Subject, takeUntil } from 'rxjs';
 
 import { ProjectService } from '../../services/project.service';
 
@@ -10,7 +11,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from "@angular/material/menu";
 import { MatListModule } from '@angular/material/list';
 import { MatDialog } from '@angular/material/dialog';
-
 
 @Component({
   selector: 'app-projects',
@@ -26,8 +26,11 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrl: './projects.component.css',
   standalone: true
 })
-export class ProjectsComponent implements OnInit {
+export class ProjectsComponent implements OnInit, OnDestroy {
   private _projectService = inject(ProjectService);
+  private unsubscribe$ = new Subject<void>();
+
+  isLoading: boolean = false;
   listOfProjectIds: number[] = [];
 
   constructor(
@@ -36,23 +39,32 @@ export class ProjectsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getListOfProjectIds();
-
-    // Subscribe to changes in projects, specifically for deletion
-    this._projectService.projectsChanged$.subscribe(() => {
-      this.getListOfProjectIds();
-    });
   }
 
   /** Get list of ProjectIds */
   getListOfProjectIds(): void {
+    this.isLoading = true;
     this.listOfProjectIds = this._projectService.getListOfProjectIds();
+    this.isLoading = false;
+
+    // Subscribe to changes in projects, specifically for deletion
+    this._projectService.projectsChanged$
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(() => {
+      this.getListOfProjectIds();
+    });
   }
 
   /** Open Project Create Dialog */
   openProjectCreateDialog(): void {
     this.dialog.open(ProjectDialogComponent, {
       width: '500px',
-      data: { projectId: -1}
+      data: { }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

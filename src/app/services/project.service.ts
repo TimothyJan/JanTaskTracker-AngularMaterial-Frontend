@@ -7,7 +7,7 @@ import { Project } from '../models/project.model';
 })
 export class ProjectService {
 
-  private projectsChangedSource = new Subject<void>();  // Emit events when department is added/changed
+  private projectsChangedSource = new Subject<void>();  // Emit events when department is updated
   projectsChanged$ = this.projectsChangedSource.asObservable();
 
   projectId: number = 3;

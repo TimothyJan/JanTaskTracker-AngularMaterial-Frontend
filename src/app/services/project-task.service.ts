@@ -7,7 +7,7 @@ import { ProjectTask } from '../models/project-task.model';
 })
 export class ProjectTaskService {
 
-  private projectTasksChangedSource = new Subject<void>();  // Emit events when department is added
+  private projectTasksChangedSource = new Subject<void>();  // Emit events when department is updated
   projectTasksChanged$ = this.projectTasksChangedSource.asObservable();
 
   projectTaskId: number = 5;

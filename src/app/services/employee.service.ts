@@ -6,7 +6,7 @@ import { Employee } from '../models/employee.model';
   providedIn: 'root'
 })
 export class EmployeeService {
-  private employeesChangedSource = new Subject<void>(); //Emit events when employee is added
+  private employeesChangedSource = new Subject<void>(); //Emit events when employee is updated
   employeesChanged$ = this.employeesChangedSource.asObservable();
 
   employeeId:number = 4;
@@ -37,16 +37,16 @@ export class EmployeeService {
 
   /** Post new Employee */
   addEmployee(employee: Employee): void {
-    let newEmployee = new Employee(this.employeeId++, employee.name, employee.salary, employee.departmentId, employee.roleId);
+    let newEmployee = new Employee(this.employeeId++, employee.name.toUpperCase(), employee.salary, employee.departmentId, employee.roleId);
     this.employees.push(newEmployee);
-    // console.log(this.employees);
   }
 
   /** Update existing Employee based on id */
   updateEmployee(employee: Employee): void {
+    let updatedEmployee = new Employee(this.employeeId++, employee.name.toUpperCase(), employee.salary, employee.departmentId, employee.roleId);
     for(let i=0; i<this.employees.length; i++) {
       if(this.employees[i].employeeId == employee.employeeId) {
-        this.employees[i] = employee;
+        this.employees[i] = updatedEmployee;
       }
     }
   }

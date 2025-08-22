@@ -7,21 +7,35 @@
   }
 
   <div mat-dialog-content>
-    <form (ngSubmit)="confirm()">
+    <form [formGroup]="form" (ngSubmit)="confirm()">
       <div class="flex-container">
         <div class="flex-item">
-          <app-input
-            [label]="'Project Task Name'"
-            [value]="form.get('title')?.value"
-            (valueChanged)="handleTitleChange($event)">
-          </app-input>
+          <label>Project Task: </label>
+          <mat-form-field appearance="outline">
+            <input
+              matInput
+              formControlName="name"
+              (blur)="form.get('name')?.markAsTouched()">
+            @if (errorControlsName) {
+              <mat-error>
+                {{ errorControlsName }}
+              </mat-error>
+            }
+          </mat-form-field>
         </div>
         <div class="flex-item">
-          <app-input
-            [label]="'Description'"
-            [value]="form.get('description')?.value"
-            (valueChanged)="handleDescriptionChange($event)">
-          </app-input>
+          <label>Description: </label>
+          <mat-form-field appearance="outline">
+            <input
+              matInput
+              formControlName="description"
+              (blur)="form.get('description')?.markAsTouched()">
+            @if (errorControlsDescription) {
+              <mat-error>
+                {{ errorControlsDescription }}
+              </mat-error>
+            }
+          </mat-form-field>
         </div>
         <div class="flex-item">
           <app-select-status

@@ -162,7 +162,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
   /** Open Employee Edit dialog */
   onOpenEditDialog(employeeId: number): void {
     this.dialog.open(EmployeeDialogComponent, {
-      width: '500px',
+      width: '600px',
       data: { employeeId }
     });
   }

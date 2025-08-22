@@ -27,7 +27,7 @@ export class EmployeesComponent {
 
   onOpenEmployeeDialog(): void {
     this.dialog.open(EmployeeDialogComponent, {
-      width: '500px',
+      width: '600px',
       data: { }
     });
   }

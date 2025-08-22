@@ -31,14 +31,11 @@
 
       <p>{{ project.description }}</p>
 
-      <div *ngIf="listOfProjectTaskIds.length>0; else noProjectTasksBlock">
-        <div *ngFor="let projectTaskId of listOfProjectTaskIds">
-          <app-project-task [projectTaskId]="projectTaskId"></app-project-task>
-        </div>
-      </div>
-      <ng-template #noProjectTasksBlock>
+      @for (projectTaskId of listOfProjectTaskIds; track projectTaskId) {
+        <app-project-task [projectTaskId]="projectTaskId"></app-project-task>
+      } @empty {
         No Project Tasks
-      </ng-template>
+      }
 
     </mat-card-content>
   </mat-card>

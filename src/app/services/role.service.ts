@@ -6,7 +6,7 @@ import { Role } from '../models/role.model';
   providedIn: 'root'
 })
 export class RoleService {
-  private rolesChangedSource = new Subject<void>();  // Emit events when role is added
+  private rolesChangedSource = new Subject<void>();  // Emit events when role is updated
   rolesChanged$ = this.rolesChangedSource.asObservable();
 
   roleId: number = 10;
@@ -32,14 +32,8 @@ export class RoleService {
   }
 
   /** Get Roles based on DepartmenIdd */
-  getRolesFromDepartmentId(departmentId: number) {
-    let departmentRoles = [];
-    for(let i=0; i<this.roles.length; i++) {
-      if(this.roles[i].departmentId == departmentId) {
-        departmentRoles.push(this.roles[i]);
-      }
-    }
-    return departmentRoles;
+  getRolesFromDepartmentId(departmentId: number): Role[] {
+    return this.roles.filter(role => role.departmentId === departmentId);
   }
 
   /** Get Role based on id */
@@ -56,14 +50,14 @@ export class RoleService {
   createRole(role: Role): void {
     let newRole = new Role(this.roleId++, role.roleName.toUpperCase(), role.departmentId);
     this.roles.push(newRole);
-    // console.log(this.roles);
   }
 
   /** Update existing Role based on id */
   updateRole(role: Role): void {
+    let updatedRole = new Role(role.roleId, role.roleName.toUpperCase(), role.departmentId);
     for(let i=0; i<this.roles.length; i++) {
       if(this.roles[i].roleId == role.roleId) {
-        this.roles[i] = role;
+        this.roles[i] = updatedRole;
       }
     }
   }
@@ -83,12 +77,12 @@ export class RoleService {
   }
 
   /** Checks for duplicate department names */
-  checkDuplicates(role: Role): boolean {
-    for(let i=0; i<this.roles.length; i++) {
-      if(this.roles[i].roleName == role.roleName && this.roles[i].departmentId == role.departmentId) {
-        return true;
-      }
-    }
-    return false;
+  checkDuplicates(role: Role, excludeRoleId?: number): boolean {
+    const upperName = role.roleName.toUpperCase();
+    return this.roles.some(existingRole =>
+      existingRole.roleName.toUpperCase() === upperName &&
+      existingRole.departmentId === role.departmentId &&
+      existingRole.roleId !== excludeRoleId
+    );
   }
 }

@@ -1,9 +1,7 @@
 import { Component, Inject, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { InputSalaryComponent } from '../../components/input-salary/input-salary.component';
-import { InputComponent } from '../../components/input/input.component';
 import { SelectDepartmentComponent } from '../../components/select-department/select-department.component';
 import { SelectRoleComponent } from '../../components/select-role/select-role.component';
 
@@ -13,25 +11,28 @@ import { EmployeeService } from '../../services/employee.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-employee-dialog',
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatDialogModule,
     MatButtonModule,
     SelectDepartmentComponent,
     SelectRoleComponent,
-    InputComponent,
-    InputSalaryComponent,
     MatProgressSpinnerModule,
   ],
   templateUrl: './employee-dialog.component.html',
   styleUrl: './employee-dialog.component.css',
   standalone: true
 })
-export class EmployeeDialogComponent  implements OnInit, OnDestroy {
+export class EmployeeDialogComponent implements OnInit, OnDestroy {
   private _snackbarService = inject(SnackbarService);
   private _employeeService = inject(EmployeeService);
   private unsubscribe$ = new Subject<void>();
@@ -40,14 +41,18 @@ export class EmployeeDialogComponent  implements OnInit, OnDestroy {
   form: FormGroup = new FormGroup({
     employeeId: new FormControl(0, [Validators.pattern(/^\d+$/)]),
     name: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(100)]),
-    salary: new FormControl(0, [Validators.min(0), Validators.required, Validators.pattern(/^\d+$/)]),
+    salary: new FormControl(0, [
+      Validators.required,
+      Validators.min(0.01), // Changed from 0 to 0.01 to require at least 1 cent
+      Validators.pattern(/^\d+(\.\d{1,2})?$/) // Fixed pattern for dollar amounts
+    ]),
     departmentId: new FormControl(-1, [Validators.required, Validators.pattern(/^\d+$/)]),
     roleId: new FormControl(-1, [Validators.required, Validators.pattern(/^\d+$/)])
   });
 
   constructor(
     private dialogRef: MatDialogRef<EmployeeDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { employeeId: number },
+    @Inject(MAT_DIALOG_DATA) public data: { employeeId?: number },
   ) {}
 
   ngOnInit(): void {
@@ -58,15 +63,37 @@ export class EmployeeDialogComponent  implements OnInit, OnDestroy {
 
   setEmployeeFormValues(): void {
     this.isLoading = true;
-    const employee = this._employeeService.getEmployeeById(this.data.employeeId);
-    this.form.patchValue({
-      employeeId: employee?.employeeId,
-      name: employee?.name,
-      salary: employee?.salary,
-      departmentId: employee?.departmentId,
-      roleId: employee?.roleId
-    })
+    const employee = this._employeeService.getEmployeeById(this.data.employeeId!);
+    if (employee) {
+      this.form.patchValue({
+        employeeId: employee.employeeId,
+        name: employee.name,
+        salary: employee.salary.toFixed(2), // Format to 2 decimal places
+        departmentId: employee.departmentId,
+        roleId: employee.roleId
+      });
+    }
     this.isLoading = false;
+  }
+
+  get errorControlsName() {
+    const control = this.form.get('name');
+    if (control?.errors && control.touched) {
+      if (control.errors['required']) return 'Name is required';
+      if (control.errors['minlength']) return 'Name must be at least 2 characters';
+      if (control.errors['maxlength']) return 'Name must be ≤ 100 characters';
+    }
+    return null;
+  }
+
+  get errorControlsSalary() {
+    const control = this.form.get('salary'); // Fixed typo: was 'falary'
+    if (control?.errors && control.touched) {
+      if (control.errors['required']) return 'Salary is required';
+      if (control.errors['min']) return 'Salary must be at least $0.01';
+      if (control.errors['pattern']) return 'Invalid format. Use: 0.00 or 100.50';
+    }
+    return null;
   }
 
   /** Handle department select changes */
@@ -79,14 +106,22 @@ export class EmployeeDialogComponent  implements OnInit, OnDestroy {
     this.form.controls["roleId"].setValue(roleId);
   }
 
-  /** Handle department name input changes */
-  handleEmployeeNameChange(newValue: string): void {
-    this.form.controls["name"].setValue(newValue.toUpperCase());
-  }
-
   /** Handle salary input changes */
-  handleSalaryChange(newSalary: number): void {
-    this.form.controls["salary"].setValue(newSalary);
+  onSalaryInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    let value = input.value;
+
+    // Remove any non-digit characters except decimal point
+    value = value.replace(/[^\d.]/g, '');
+
+    // Handle decimal places
+    const parts = value.split('.');
+    if (parts.length > 1) {
+      value = parts[0] + '.' + parts[1].slice(0, 2);
+    }
+
+    // Update form value
+    this.form.controls["salary"].setValue(value);
   }
 
   /** Cancel and close dialog */
@@ -96,33 +131,44 @@ export class EmployeeDialogComponent  implements OnInit, OnDestroy {
 
   /** Confirm save */
   confirm(): void {
-    if(this.data.employeeId === undefined) {
-      this.createEmployee();
+    this.form.markAllAsTouched();
+
+    if (this.form.valid) {
+      if(this.data.employeeId === undefined) {
+        this.createEmployee();
+      } else {
+        this.updateEmployee();
+      }
     } else {
-      this.updateEmployee();
+      this._snackbarService.error("Please fix the validation errors.");
     }
   }
 
   createEmployee(): void {
-    if (this.form.valid) {
-      this.isLoading = true;
-      const newEmployee = this.form.value;
-      this._employeeService.addEmployee(newEmployee);
-      this._employeeService.notifyEmployeesChanged();
-      this._snackbarService.success("Employee created.");
-      this.dialogRef.close(this.data.employeeId);
-      this.isLoading = false;
-    }
-    else {
-      this._snackbarService.error("Employee failed to be created.");
-    }
+    this.isLoading = true;
+    // Format salary to 2 decimal places
+    const formValue = {
+      ...this.form.value,
+      salary: parseFloat(parseFloat(this.form.value.salary).toFixed(2))
+    };
+
+    this._employeeService.addEmployee(formValue);
+    this._employeeService.notifyEmployeesChanged();
+    this._snackbarService.success("Employee created.");
+    this.dialogRef.close(this.data.employeeId);
+    this.isLoading = false;
   }
 
   /** Save Changes */
   updateEmployee(): void {
     this.isLoading = true;
-    const updatedEmployee = this.form.value;
-    this._employeeService.updateEmployee(updatedEmployee);
+    // Format salary to 2 decimal places
+    const formValue = {
+      ...this.form.value,
+      salary: parseFloat(parseFloat(this.form.value.salary).toFixed(2))
+    };
+
+    this._employeeService.updateEmployee(formValue);
     this._employeeService.notifyEmployeesChanged();
     this._snackbarService.success("Employee saved.");
     this.dialogRef.close(this.data.employeeId);

@@ -1,11 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject, inject, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormsModule } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { DatePickerComponent } from '../../components/date-picker/date-picker.component';
-import { InputComponent } from '../../components/input/input.component';
 import { SelectStatusComponent } from '../../components/select-status/select-status.component';
-import { ProjectTask } from '../../models/project-task.model';
 
 import { SnackbarService } from '../../services/snackbar.service';
 import { ProjectTaskService } from '../../services/project-task.service';
@@ -13,15 +11,19 @@ import { ProjectTaskService } from '../../services/project-task.service';
 import { MatDialogRef, MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-project-task-dialog',
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatDialogModule,
     MatButtonModule,
-    InputComponent,
     SelectStatusComponent,
     DatePickerComponent,
     MatProgressSpinnerModule
@@ -39,7 +41,7 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
   form: FormGroup = new FormGroup({
     projectTaskId: new FormControl(0, [Validators.required, Validators.pattern(/^\d+$/)]),
     projectId: new FormControl(0, [Validators.required, Validators.pattern(/^\d+$/)]),
-    title: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
+    name: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
     description: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
     status: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
     startDate: new FormControl(""),
@@ -53,7 +55,7 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    if (this.data.projectTaskId) {
+    if (this.data.projectTaskId !== undefined) {
       this.setProjectTaskFormValues();
     }
     else {
@@ -63,9 +65,7 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
 
   /** Assigns projectId to form */
   assignProjectId(): void {
-    this.isLoading = true;
     this.form.controls["projectId"].setValue(this.data.projectId);
-    this.isLoading = false;
   }
 
   /** Set form using getProjectTaskById */
@@ -75,7 +75,7 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
     this.form.patchValue({
       projectTaskId: formValues.projectTaskId,
       projectId: formValues.projectId,
-      title: formValues.title,
+      name: formValues.name,
       description: formValues.description,
       status: formValues.status,
       startDate: formValues.startDate,
@@ -85,14 +85,24 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
     this.isLoading = false;
   }
 
-  /** Handles task change from input component and assigns title to form */
-  handleTitleChange(title: string): void {
-    this.form.patchValue({ title: title });
+  get errorControlsName() {
+    const control = this.form.get('name');
+    if (control?.errors && control.touched) {
+      if (control.errors['required']) return 'Name is required';
+      if (control.errors['minlength']) return 'Name must be at least 2 characters';
+      if (control.errors['maxlength']) return 'Name must be ≤ 100 characters';
+    }
+    return null;
   }
 
-  /** Handles description change from text area component and assigns description to form */
-  handleDescriptionChange(description: string): void {
-    this.form.patchValue({ description: description });
+  get errorControlsDescription() {
+    const control = this.form.get('description');
+    if (control?.errors && control.touched) {
+      if (control.errors['required']) return 'Description is required';
+      if (control.errors['minlength']) return 'Description must be at least 2 characters';
+      if (control.errors['maxlength']) return 'Description must be ≤ 100 characters';
+    }
+    return null;
   }
 
   /** Handles status change from status selector component and assigns status to form */
@@ -110,11 +120,6 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
     this.form.patchValue({ dueDate: selectedDate });
   }
 
-  /** Handles assign employees change from assign-employees component and assigns list of employeeIds to form */
-  handleEmployeeSelection(selectedEmployeeIds: any) {
-    this.form.controls['assignedEmployeeIds'].setValue(selectedEmployeeIds);
-  }
-
   /** Cancel and close modal */
   cancel() {
     this.dialogRef.close(null);
@@ -122,8 +127,10 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
 
   /** Confirm save and close modal */
   confirm() {
+    this.form.markAllAsTouched();
+
     if(this.form.valid) {
-      if (this.form.get("projectTaskId")?.value == 0) {
+      if (this.data.projectTaskId === undefined) {
         this.createProjectTask();
       } else {
         this.updateProjectTask();
@@ -137,17 +144,8 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
   /** Create Project Task */
   createProjectTask(): void {
     this.isLoading = true;
-    const newProjectTask = new ProjectTask(
-      0,
-      this.form.controls["projectId"].value,
-      this.form.controls["title"].value,
-      this.form.controls["description"].value,
-      this.form.controls["status"].value,
-      this.form.controls["startDate"].value,
-      this.form.controls["dueDate"].value,
-      this.form.controls["assignedEmployeeIds"].value
-    );
-    this._projectTaskService.createProjectTask(newProjectTask);
+    const formValue = this.form.value;
+    this._projectTaskService.createProjectTask(formValue);
     this._projectTaskService.notifyProjectTasksChanged();
     this._snackbarService.success("Project task created.");
     this.isLoading = false;
@@ -156,17 +154,8 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
   /** Update Project Task */
   updateProjectTask(): void {
     this.isLoading = true;
-    const newProjectTask = new ProjectTask(
-      this.data.projectTaskId!,
-      this.form.controls["projectId"].value,
-      this.form.controls["title"].value,
-      this.form.controls["description"].value,
-      this.form.controls["status"].value,
-      this.form.controls["startDate"].value,
-      this.form.controls["dueDate"].value,
-      this.form.controls["assignedEmployeeIds"].value
-    );
-    this._projectTaskService.updateProjectTask(newProjectTask);
+    const formValue = this.form.value;
+    this._projectTaskService.updateProjectTask(formValue);
     this._projectTaskService.notifyProjectTasksChanged();
     this._snackbarService.success("Project task updated.");
     this.isLoading = false;

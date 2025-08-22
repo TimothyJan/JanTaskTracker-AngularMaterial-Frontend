@@ -1,8 +1,7 @@
 import { Component, Inject, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { InputComponent } from '../../components/input/input.component';
 import { SelectDepartmentComponent } from '../../components/select-department/select-department.component';
 
 import { SnackbarService } from '../../services/snackbar.service';
@@ -11,15 +10,19 @@ import { RoleService } from '../../services/role.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-role-dialog',
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatButtonModule,
-    InputComponent,
     SelectDepartmentComponent,
     MatProgressSpinnerModule
   ],
@@ -61,14 +64,19 @@ export class RoleDialogComponent implements OnInit, OnDestroy {
     this.isLoading = false;
   }
 
+  get errorControls() {
+    const control = this.form.get("roleName");
+    if (control?.errors && control.touched) {
+      if (control.errors['required']) return 'This field is required';
+      if (control.errors['minlength']) return 'Must be at least 2 characters';
+      if (control.errors['maxlength']) return 'Must be ≤ 50 characters';
+    }
+    return null;
+  }
+
   /** Handle department select changes */
   handleDepartmentChange(departmentId: number): void {
     this.form.controls["departmentId"].setValue(departmentId);
-  }
-
-  /** Handle department name input changes */
-  handleRoleNameChange(newValue: string): void {
-    this.form.controls["roleName"].setValue(newValue.toUpperCase());
   }
 
   /** Cancel and close dialog */
@@ -78,6 +86,8 @@ export class RoleDialogComponent implements OnInit, OnDestroy {
 
   /** Confirm save */
   confirm(): void {
+    this.form.markAllAsTouched();
+
     if(this.data.roleId === undefined) {
       this.createRole();
     } else {
@@ -88,18 +98,17 @@ export class RoleDialogComponent implements OnInit, OnDestroy {
   createRole(): void {
     if (this.form.valid) {
       this.isLoading = true;
-      const newRole = this.form.value;
-      if(!this._roleService.checkDuplicates(newRole)) {
-        this._roleService.createRole(newRole);
+      const formValue = this.form.value;
+      if(!this._roleService.checkDuplicates(formValue)) {
+        this._roleService.createRole(formValue);
         this._roleService.notifyRolesChanged();
         this._snackbarService.success("Role created.");
         this.dialogRef.close(this.data.roleId);
-        this.isLoading = false;
       }
       else {
         this._snackbarService.error("Role already exists.");
-        this.isLoading = false;
       }
+      this.isLoading = false;
     }
     else {
       this._snackbarService.error("Role failed to be created.");
@@ -111,18 +120,17 @@ export class RoleDialogComponent implements OnInit, OnDestroy {
   updateRole(): void {
     if (this.form.valid) {
       this.isLoading = true;
-      const updatedRole = this.form.value;
-      if(!this._roleService.checkDuplicates(updatedRole)) {
-        this._roleService.updateRole(updatedRole);
+      const formValue = this.form.value;
+      if(!this._roleService.checkDuplicates(formValue, formValue.roleId)) {
+        this._roleService.updateRole(formValue);
         this._roleService.notifyRolesChanged();
         this._snackbarService.success("Role saved.");
         this.dialogRef.close(this.data.roleId);
-        this.isLoading = false;
       }
       else {
         this._snackbarService.error("Role already exists.");
-        this.isLoading = false;
       }
+      this.isLoading = false;
     } else {
       this._snackbarService.error("Invalid role values");
     }

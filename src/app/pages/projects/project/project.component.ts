@@ -86,7 +86,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   /** Opens Project Edit Dialog */
   async openProjectEditDialog() {
     this.dialog.open(ProjectDialogComponent, {
-      width: '500px',
+      width: '600px',
       data: { projectId: this.project.projectId }
     });
   }
@@ -94,8 +94,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
   /** Opens Project Task Create Dialog */
   async openProjectTaskCreateDialog() {
     this.dialog.open(ProjectTaskDialogComponent, {
-      width: '500px',
-      data: { projectId: this.project.projectId }
+      width: '600px',
+      data: { projectId: this.projectId }
     })
   }
 

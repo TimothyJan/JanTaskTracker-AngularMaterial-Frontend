@@ -1,8 +1,7 @@
 import { Component, inject, Inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { InputComponent } from '../../components/input/input.component';
 
 import { SnackbarService } from '../../services/snackbar.service';
 import { DepartmentService } from '../../services/department.service';
@@ -10,17 +9,21 @@ import { DepartmentService } from '../../services/department.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-department-dialog',
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatButtonModule,
-    InputComponent,
-    MatProgressSpinnerModule
-  ],
+    MatProgressSpinnerModule,
+],
   templateUrl: './department-dialog.component.html',
   styleUrl: './department-dialog.component.css',
   standalone: true
@@ -58,9 +61,14 @@ export class DepartmentDialogComponent implements OnInit, OnDestroy {
     this.isLoading = false;
   }
 
-  /** Handle department name input changes */
-  onDepartmentNameChange(newValue: string): void {
-    this.form.controls["departmentName"].setValue(newValue.toUpperCase());
+  get errorControls() {
+    const control = this.form.get('departmentName');
+    if (control?.errors && control.touched) { // Add touched check
+      if (control.errors['required']) return 'Department name is required';
+      if (control.errors['minlength']) return 'Department name must be at least 2 characters'; // Fixed message
+      if (control.errors['maxlength']) return 'Department name must be ≤ 50 characters';
+    }
+    return null;
   }
 
   /** Cancel and close dialog */
@@ -70,6 +78,7 @@ export class DepartmentDialogComponent implements OnInit, OnDestroy {
 
   /** Confirm create or update and close dialog*/
   confirm(): void {
+    this.form.markAllAsTouched();
     if(this.data.departmentId === undefined) {
       this.createDepartment();
     } else {
@@ -80,9 +89,9 @@ export class DepartmentDialogComponent implements OnInit, OnDestroy {
   createDepartment() {
     if (this.form.valid) {
       this.isLoading = true;
-      const newDepartment = this.form.value;
-      if (!this._departmentService.checkDuplicates(newDepartment.departmentName)) {
-        this._departmentService.createDepartment(this.form.value);
+      const formValue = this.form.value;
+      if (!this._departmentService.checkDuplicates(formValue.departmentName)) {
+        this._departmentService.createDepartment(formValue);
         this._departmentService.notifyDepartmentsChanged();
         this._snackbarService.success("Department created.");
         this.dialogRef.close(this.data.departmentId);
@@ -99,9 +108,9 @@ export class DepartmentDialogComponent implements OnInit, OnDestroy {
   updateDepartment(): void {
     if(this.form.valid) {
       this.isLoading = true;
-      const updatedDepartment = this.form.value
-      if (!this._departmentService.checkDuplicates(updatedDepartment.departmentName)) {
-        this._departmentService.updateDepartment(updatedDepartment);
+      const formValue = this.form.value
+      if (!this._departmentService.checkDuplicates(formValue.departmentName)) {
+        this._departmentService.updateDepartment(formValue);
         this._departmentService.notifyDepartmentsChanged();
         this._snackbarService.success("Department saved.");
         this.dialogRef.close(this.data.departmentId);

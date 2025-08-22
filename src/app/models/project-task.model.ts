@@ -1,7 +1,7 @@
 export class ProjectTask {
   projectTaskId: number;
   projectId: number;
-  title: string;
+  name: string;
   description: string;
   status: "Not Started" | "Active" | "Completed";
   startDate?: Date;
@@ -11,7 +11,7 @@ export class ProjectTask {
   constructor(
     projectTaskId: number,
     projectId: number,
-    title: string,
+    name: string,
     description: string,
     status: "Not Started" | "Active" | "Completed",
     startDate?: Date,
@@ -20,7 +20,7 @@ export class ProjectTask {
   ) {
     this.projectTaskId = projectTaskId;
     this.projectId = projectId,
-    this.title = title,
+    this.name = name,
     this.description = description,
     this.status = status,
     this.startDate = startDate,

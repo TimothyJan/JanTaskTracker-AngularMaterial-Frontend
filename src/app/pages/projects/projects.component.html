@@ -10,15 +10,12 @@
   </mat-card-actions>
 
   <mat-card-content>
-    <div *ngIf="listOfProjectIds.length>0; else noProjectsBlock">
-      <div *ngFor="let projectId of listOfProjectIds">
-        <app-project [projectId]="projectId"></app-project>
-      </div>
-    </div>
-    <ng-template #noProjectsBlock>
+    @for(projectId of listOfProjectIds; track projectId) {
+      <app-project [projectId]="projectId"></app-project>
+    } @empty {
       <h3>No Projects Found</h3>
       <p>Get started by creating your first project</p>
-    </ng-template>
+    }
   </mat-card-content>
 </mat-card>
 

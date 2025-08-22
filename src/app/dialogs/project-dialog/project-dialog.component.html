@@ -1,25 +1,38 @@
 @if(!isLoading) {
 
-  <h1 mat-dialog-title *ngIf="data.projectId==-1">Create Project</h1>
-  <h1 mat-dialog-title *ngIf="data.projectId!=-1">Edit Project</h1>
+  <h1 mat-dialog-title>{{ data.projectId === undefined ? "Create" : "Edit" }} Project</h1>
 
   <div mat-dialog-content>
-    <form (ngSubmit)="confirm()">
+    <form [formGroup]="form" (ngSubmit)="confirm()">
 
       <div class="flex-container">
         <div class="flex-item">
-          <app-input
-            [label]="'Project Name'"
-            [value]="form.get('projectName')?.value"
-            (valueChanged)="handleProjectNameChange($event)">
-          </app-input>
+          <label>Project: </label>
+          <mat-form-field appearance="outline">
+            <input
+              matInput
+              formControlName="projectName"
+              (blur)="form.get('projectName')?.markAsTouched()">
+            @if (errorControlsProjectName) {
+              <mat-error>
+                {{ errorControlsProjectName }}
+              </mat-error>
+            }
+          </mat-form-field>
         </div>
         <div class="flex-item">
-          <app-input
-            [label]="'Description'"
-            [value]="form.get('description')?.value"
-            (valueChanged)="handleDescriptionChange($event)">
-          </app-input>
+          <label>Description: </label>
+          <mat-form-field appearance="outline">
+            <input
+              matInput
+              formControlName="description"
+              (blur)="form.get('description')?.markAsTouched()">
+            @if (errorControlsDescription) {
+              <mat-error>
+                {{ errorControlsDescription }}
+              </mat-error>
+            }
+          </mat-form-field>
         </div>
         <div class="flex-item">
           <app-select-status

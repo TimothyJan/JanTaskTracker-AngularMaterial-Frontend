@@ -1,9 +1,9 @@
 @if(!isLoading) {
 
-  <h1 mat-dialog-title>Edit Employee</h1>
+  <h1 mat-dialog-title>{{ data.employeeId === undefined ? 'Add' : 'Edit' }} Employee</h1>
 
   <div mat-dialog-content>
-    <form (ngSubmit)="confirm()">
+    <form [formGroup]="form" (ngSubmit)="confirm()">
 
       <div class="flex-container">
         <div class="flex-item">
@@ -20,17 +20,35 @@
           </app-select-role>
         </div>
         <div class="flex-item">
-          <app-input
-            [label]="'Employee Name'"
-            [value]="form.get('name')?.value"
-            (valueChanged)="handleEmployeeNameChange($event)">
-          </app-input>
+          <label>Employee Name: </label>
+          <mat-form-field appearance="outline">
+            <input
+              matInput
+              formControlName="name"
+              (blur)="form.get('name')?.markAsTouched()">
+            @if (errorControlsName) {
+              <mat-error>
+                {{ errorControlsName }}
+              </mat-error>
+            }
+          </mat-form-field>
         </div>
         <div class="flex-item">
-          <app-input-salary
-            [value]="form.get('salary')?.value"
-            (valueChanged)="handleSalaryChange($event)">
-          </app-input-salary>
+          <label>Salary: </label>
+          <mat-form-field appearance="outline">
+            <span matTextPrefix>$&nbsp;</span>
+            <input
+              matInput
+              formControlName="salary"
+              (input)="onSalaryInput($event)"
+              (blur)="form.get('salary')?.markAsTouched()"
+              placeholder="0.00">
+            @if (errorControlsSalary) {
+              <mat-error>
+                {{ errorControlsSalary }}
+              </mat-error>
+            }
+          </mat-form-field>
         </div>
       </div>
 
