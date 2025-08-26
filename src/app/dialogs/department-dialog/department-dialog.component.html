@@ -1,6 +1,6 @@
 @if(!isLoading) {
   <h1 mat-dialog-title>
-    @if(data.departmentId === undefined) {
+    @if(data.id === undefined) {
       Create Department
     } @else {
       Edit Department
@@ -13,9 +13,9 @@
       <mat-form-field appearance="outline">
         <input
           matInput
-          formControlName="departmentName"
-          (blur)="form.get('departmentName')?.markAsTouched()">
-        @if (form.get('departmentName')?.invalid) {
+          formControlName="name"
+          (blur)="form.get('name')?.markAsTouched()">
+        @if (form.get('name')?.invalid) {
           <mat-error>
             {{ errorControls }}
           </mat-error>

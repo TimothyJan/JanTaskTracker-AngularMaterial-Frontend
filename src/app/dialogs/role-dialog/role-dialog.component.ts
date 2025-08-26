@@ -38,7 +38,7 @@ export class RoleDialogComponent implements OnInit, OnDestroy {
 
   isLoading: boolean = false;
   form: FormGroup = new FormGroup({
-    roleId: new FormControl(0, [Validators.pattern(/^\d+$/)]),
+    id: new FormControl(0, [Validators.pattern(/^\d+$/)]),
     roleName: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
     departmentId: new FormControl(-1, [Validators.required, Validators.pattern(/^\d+$/)])
   });
@@ -58,7 +58,7 @@ export class RoleDialogComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     const role = this._roleService.getRoleById(this.data.roleId!);
     this.form.patchValue({
-      roleId: role?.roleId,
+      id: role?.id,
       roleName: role?.roleName,
       departmentId: role?.departmentId
     })
@@ -101,7 +101,7 @@ export class RoleDialogComponent implements OnInit, OnDestroy {
       this.isLoading = true;
       const formValue = this.form.getRawValue();
       const newRole: Role = {
-        roleId: formValue.roleId,
+        id: formValue.id,
         roleName: formValue.roleName.trim(),
         departmentId: formValue.departmentId
       }
@@ -128,11 +128,11 @@ export class RoleDialogComponent implements OnInit, OnDestroy {
       this.isLoading = true;
       const formValue = this.form.getRawValue();
       const updatedRole: Role = {
-        roleId: formValue.roleId,
+        id: formValue.id,
         roleName: formValue.roleName.trim(),
         departmentId: formValue.departmentId
       }
-      if(!this._roleService.checkDuplicates(updatedRole, updatedRole.roleId)) {
+      if(!this._roleService.checkDuplicates(updatedRole, updatedRole.id)) {
         this._roleService.updateRole(updatedRole);
         this._roleService.notifyRolesChanged();
         this._snackbarService.success("Role saved.");

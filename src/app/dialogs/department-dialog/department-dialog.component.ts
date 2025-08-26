@@ -36,17 +36,17 @@ export class DepartmentDialogComponent implements OnInit, OnDestroy {
 
   isLoading: boolean = false;
   form: FormGroup = new FormGroup({
-    departmentId: new FormControl(0, [Validators.pattern(/^\d+$/)]),
-    departmentName: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)])
+    id: new FormControl(0, [Validators.pattern(/^\d+$/)]),
+    name: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)])
   });
 
   constructor(
     private dialogRef: MatDialogRef<DepartmentDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { departmentId?: number },
+    @Inject(MAT_DIALOG_DATA) public data: { id?: number },
   ) { }
 
   ngOnInit() {
-    if(this.data.departmentId !== undefined) {
+    if(this.data.id !== undefined) {
       this.setDepartmentFormValues();
     }
   }
@@ -54,16 +54,16 @@ export class DepartmentDialogComponent implements OnInit, OnDestroy {
   /** Set form using getDepartmentById */
   setDepartmentFormValues(): void {
     this.isLoading = true;
-    const dept = this._departmentService.getDepartmentById(this.data.departmentId!);
+    const dept = this._departmentService.getDepartmentById(this.data.id!);
     this.form.patchValue({
-      departmentId: dept?.departmentId,
-      departmentName: dept?.departmentName
+      id: dept?.id,
+      name: dept?.name
     })
     this.isLoading = false;
   }
 
   get errorControls() {
-    const control = this.form.get('departmentName');
+    const control = this.form.get('name');
     if (control?.errors && control.touched) { // Add touched check
       if (control.errors['required']) return 'Department name is required';
       if (control.errors['minlength']) return 'Department name must be at least 2 characters'; // Fixed message
@@ -80,7 +80,7 @@ export class DepartmentDialogComponent implements OnInit, OnDestroy {
   /** Confirm create or update and close dialog*/
   confirm(): void {
     this.form.markAllAsTouched();
-    if(this.data.departmentId === undefined) {
+    if(this.data.id === undefined) {
       this.createDepartment();
     } else {
       this.updateDepartment();
@@ -92,14 +92,14 @@ export class DepartmentDialogComponent implements OnInit, OnDestroy {
       this.isLoading = true;
       const formValue = this.form.getRawValue();
       const newDepartment: Department = {
-        departmentId: formValue.departmentId,
-        departmentName: formValue.departmentName.trim()
+        id: formValue.id,
+        name: formValue.name.trim()
       }
-      if (!this._departmentService.checkDuplicates(newDepartment.departmentName)) {
+      if (!this._departmentService.checkDuplicates(newDepartment.name)) {
         this._departmentService.createDepartment(newDepartment);
         this._departmentService.notifyDepartmentsChanged();
         this._snackbarService.success("Department created.");
-        this.dialogRef.close(this.data.departmentId);
+        this.dialogRef.close(this.data.id);
         this.isLoading = false;
       } else {
         this._snackbarService.error("Department already exists.");
@@ -115,14 +115,14 @@ export class DepartmentDialogComponent implements OnInit, OnDestroy {
       this.isLoading = true;
       const formValue = this.form.getRawValue();
       const updatedDepartment: Department = {
-        departmentId: formValue.departmentId,
-        departmentName: formValue.departmentName.trim()
+        id: formValue.id,
+        name: formValue.name.trim()
       }
-      if (!this._departmentService.checkDuplicates(updatedDepartment.departmentName)) {
+      if (!this._departmentService.checkDuplicates(updatedDepartment.name)) {
         this._departmentService.updateDepartment(updatedDepartment);
         this._departmentService.notifyDepartmentsChanged();
         this._snackbarService.success("Department saved.");
-        this.dialogRef.close(this.data.departmentId);
+        this.dialogRef.close(this.data.id);
         this.isLoading = false;
       } else {
         this._snackbarService.error("Department already exists.");

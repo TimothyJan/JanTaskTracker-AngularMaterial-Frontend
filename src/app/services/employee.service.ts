@@ -28,7 +28,7 @@ export class EmployeeService {
   /** Get Employee based on id */
   getEmployeeById(id: number): Employee | undefined {
     for(let i=0; i<this.employees.length; i++) {
-      if(this.employees[i].employeeId == id) {
+      if(this.employees[i].id == id) {
         return this.employees[i];
       }
     }
@@ -45,7 +45,7 @@ export class EmployeeService {
   updateEmployee(employee: Employee): void {
     let updatedEmployee = new Employee(this.employeeId++, employee.name.toUpperCase(), employee.salary, employee.departmentId, employee.roleId);
     for(let i=0; i<this.employees.length; i++) {
-      if(this.employees[i].employeeId == employee.employeeId) {
+      if(this.employees[i].id == employee.id) {
         this.employees[i] = updatedEmployee;
       }
     }
@@ -54,7 +54,7 @@ export class EmployeeService {
   /** Delete Employee based on id */
   deleteEmployee(id: number): void {
     for(let i=0; i<this.employees.length; i++) {
-      if(this.employees[i].employeeId == id) {
+      if(this.employees[i].id == id) {
         this.employees.splice(i, 1);
       }
     }

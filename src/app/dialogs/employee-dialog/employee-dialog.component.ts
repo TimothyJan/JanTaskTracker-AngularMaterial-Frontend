@@ -41,7 +41,7 @@ export class EmployeeDialogComponent implements OnInit, OnDestroy {
 
   isLoading: boolean = false;
   form: FormGroup = new FormGroup({
-    employeeId: new FormControl(0, [Validators.pattern(/^\d+$/)]),
+    id: new FormControl(0, [Validators.pattern(/^\d+$/)]),
     name: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(100)]),
     salary: new FormControl(0, [
       Validators.required,
@@ -68,7 +68,7 @@ export class EmployeeDialogComponent implements OnInit, OnDestroy {
     const employee = this._employeeService.getEmployeeById(this.data.employeeId!);
     if (employee) {
       this.form.patchValue({
-        employeeId: employee.employeeId,
+        id: employee.id,
         name: employee.name,
         salary: employee.salary,
         departmentId: employee.departmentId,
@@ -150,14 +150,14 @@ export class EmployeeDialogComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     const formValue = this.form.getRawValue();
     const newEmployee: Employee = {
-      employeeId: formValue.employeeId,
+      id: formValue.id,
       name: formValue.name.trim(),
       salary: parseFloat(parseFloat(formValue.salary).toFixed(2)),
       departmentId: formValue.departmentId,
       roleId: formValue.roleId
     };
 
-    this._employeeService.addEmployee(formValue);
+    this._employeeService.addEmployee(newEmployee);
     this._employeeService.notifyEmployeesChanged();
     this._snackbarService.success("Employee created.");
     this.dialogRef.close(this.data.employeeId);
@@ -169,7 +169,7 @@ export class EmployeeDialogComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     const formValue = this.form.getRawValue();
     const updatedEmployee: Employee = {
-      employeeId: formValue.employeeId,
+      id: formValue.id,
       name: formValue.name.trim(),
       salary: parseFloat(parseFloat(formValue.salary).toFixed(2)),
       departmentId: formValue.departmentId,

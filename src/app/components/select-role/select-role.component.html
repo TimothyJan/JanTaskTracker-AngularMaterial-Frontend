@@ -6,7 +6,7 @@
       (selectionChange)="onRoleChange($event)"
       [value]="selectedRoleId"
       placeholder="Select Role">
-      <mat-option *ngFor="let role of roles" [value]="role.roleId">
+      <mat-option *ngFor="let role of roles" [value]="role.id">
         {{ role.roleName }}
       </mat-option>
     </mat-select>

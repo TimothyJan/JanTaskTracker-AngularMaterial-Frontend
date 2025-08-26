@@ -61,16 +61,16 @@ export class AssignEmployeesDialogComponent implements OnInit, OnDestroy {
   }
 
   /** Get Project Task by Id */
-  getProjectTaskById(projectTaskId: number): void {
+  getProjectTaskById(id: number): void {
     this.isLoading = true;
-    this.projectTask = this._projectTaskService.getProjectTaskById(projectTaskId);
+    this.projectTask = this._projectTaskService.getProjectTaskById(id);
     this.isLoading = false;
 
     // Subscribe to the projectTask notifications
     this._projectTaskService.projectTasksChanged$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => {
-        this.getProjectTaskById(this.projectTask.projectTaskId); // Reload projectTask with updates
+        this.getProjectTaskById(this.projectTask.id); // Reload projectTask with updates
       });
   }
 

@@ -71,7 +71,7 @@ export class SelectRoleComponent implements OnInit, OnChanges, OnDestroy {
 
   /** Set the selected role based on input roleId */
   setSelectedRole(): void {
-    if (this.roleId !== null && this.roles.some(role => role.roleId === this.roleId)) {
+    if (this.roleId !== null && this.roles.some(role => role.id === this.roleId)) {
       this.selectedRoleId = this.roleId;
     } else {
       this.selectedRoleId = null;

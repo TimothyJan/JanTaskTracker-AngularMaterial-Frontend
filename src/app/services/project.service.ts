@@ -28,26 +28,26 @@ export class ProjectService {
   getListOfProjectIds(): number[] {
     let listOfProjectIds: number[] = [];
     this.projects.forEach((project) => {
-      listOfProjectIds.push(project.projectId);
+      listOfProjectIds.push(project.id);
     });
     return listOfProjectIds;
   }
 
   // Get a project by Id
   getProjectById(projectId: number): Project {
-    return this.projects.find((project) => project.projectId === projectId)!;
+    return this.projects.find((project) => project.id === projectId)!;
   }
 
   // Add a new project
   createProject(newProject: Project): void {
-    newProject.projectId = this.projectId++;
+    newProject.id = this.projectId++;
     this.projects.push(newProject);
     this.projectsChangedSource.next();
   }
 
   // Update an existing project
   updateProject(updatedProject: Project): void {
-    const index = this.projects.findIndex((project) => project.projectId === updatedProject.projectId);
+    const index = this.projects.findIndex((project) => project.id === updatedProject.id);
     if (index !== -1) {
       this.projects[index] = updatedProject;
       this.projectsChangedSource.next();
@@ -56,7 +56,7 @@ export class ProjectService {
 
   // Delete a project
   deleteProject(projectId: number): void {
-    const index = this.projects.findIndex(project => project.projectId === projectId);
+    const index = this.projects.findIndex(project => project.id === projectId);
     if (index !== -1) {
       this.projects.splice(index, 1);
       this.projectsChangedSource.next(); // Notify subscribers that the project list has changed

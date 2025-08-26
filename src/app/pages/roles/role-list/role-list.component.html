@@ -24,7 +24,7 @@
         </mat-grid-list>
       </mat-list-item>
 
-      @for (role of sortedRoles; track role.roleId) {
+      @for (role of sortedRoles; track role.id) {
         <mat-list-item>
           <mat-grid-list cols="7">
             <mat-grid-tile colspan="3">
@@ -38,8 +38,8 @@
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="onOpenEditDialog(role.roleId)">Edit</button>
-                <button mat-menu-item (click)="onDelete(role.roleId)">Delete</button>
+                <button mat-menu-item (click)="onOpenEditDialog(role.id)">Edit</button>
+                <button mat-menu-item (click)="onDelete(role.id)">Delete</button>
               </mat-menu>
             </mat-grid-tile>
           </mat-grid-list>

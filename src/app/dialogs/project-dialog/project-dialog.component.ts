@@ -40,7 +40,7 @@ export class ProjectDialogComponent implements OnInit, OnDestroy {
 
   isLoading: boolean = false;
   form: FormGroup = new FormGroup({
-    projectId: new FormControl(0, [Validators.pattern(/^\d+$/)]),
+    id: new FormControl(0, [Validators.pattern(/^\d+$/)]),
     projectName: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
     description: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
     status: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
@@ -72,7 +72,7 @@ export class ProjectDialogComponent implements OnInit, OnDestroy {
     this.isLoading = false;
 
     this.form.patchValue({
-      projectId: project.projectId,
+      id: project.id,
       projectName: project.projectName,
       description: project.description,
       status: project.status,
@@ -142,7 +142,7 @@ export class ProjectDialogComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     const formValue = this.form.getRawValue();
     const newProject: Project = {
-      projectId: formValue.projectId,
+      id: formValue.id,
       projectName: formValue.projectName.trim(),
       description: formValue.description.trim(),
       status: formValue.status,
@@ -160,7 +160,7 @@ export class ProjectDialogComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     const formValue = this.form.getRawValue();
     const updatedProject: Project = {
-      projectId: formValue.projectId,
+      id: formValue.id,
       projectName: formValue.projectName.trim(),
       description: formValue.description.trim(),
       status: formValue.status,

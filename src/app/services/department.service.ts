@@ -28,7 +28,7 @@ export class DepartmentService {
   /** Get Departments based on id */
   getDepartmentById(id: number): Department | undefined {
     for(let i=0; i<this.departments.length; i++) {
-      if(this.departments[i].departmentId == id) {
+      if(this.departments[i].id == id) {
         return this.departments[i];
       }
     }
@@ -37,7 +37,7 @@ export class DepartmentService {
 
   /** Post new Department */
   createDepartment(department: Department): void {
-    let newDepartment = new Department(this.departmentId++, department.departmentName.toUpperCase());
+    let newDepartment = new Department(this.departmentId++, department.name.toUpperCase());
     this.departments.push(newDepartment);
     this.departments = this.sortDepartments(this.departments); // Sort after adding
     this.notifyDepartmentsChanged();
@@ -45,9 +45,9 @@ export class DepartmentService {
 
   /** Update existing Department based on id */
   updateDepartment(department: Department): void {
-    let updatedDepartment = new Department(this.departmentId, department.departmentName.toUpperCase());
+    let updatedDepartment = new Department(this.departmentId, department.name.toUpperCase());
     for(let i=0; i<this.departments.length; i++) {
-      if(this.departments[i].departmentId == department.departmentId) {
+      if(this.departments[i].id == department.id) {
         this.departments[i] = updatedDepartment;
       }
     }
@@ -56,7 +56,7 @@ export class DepartmentService {
   /** Delete Department based on id */
   deleteDepartment(id: number): void {
     for(let i=0; i<this.departments.length; i++) {
-      if(this.departments[i].departmentId == id) {
+      if(this.departments[i].id == id) {
         this.departments.splice(i, 1);
       }
     }
@@ -68,17 +68,17 @@ export class DepartmentService {
   }
 
   /** Checks for duplicate department names */
-  checkDuplicates(departmentName: string): boolean {
-    const upperName = departmentName.toUpperCase().trim();
+  checkDuplicates(name: string): boolean {
+    const upperName = name.toUpperCase().trim();
     return this.departments.some(dept =>
-      dept.departmentName.toUpperCase() === upperName
+      dept.name.toUpperCase() === upperName
     );
   }
 
   /** Helper method to sort departments alphabetically */
   private sortDepartments(departments: Department[]): Department[] {
     return [...departments].sort((a, b) =>
-      a.departmentName.localeCompare(b.departmentName)
+      a.name.localeCompare(b.name)
     );
   }
 

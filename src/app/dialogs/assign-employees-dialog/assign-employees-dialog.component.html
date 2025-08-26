@@ -8,10 +8,10 @@
         multiple
         [(ngModel)]="selectedEmployees"
         name="employees">
-        @for(employee of employees; track employee.employeeId) {
+        @for(employee of employees; track employee.id) {
           <mat-list-option
-            [value]="employee.employeeId">
-            {{ employee.name }} (ID: {{ employee.employeeId }})
+            [value]="employee.id">
+            {{ employee.name }} (ID: {{ employee.id }})
           </mat-list-option>
         }
         @empty {

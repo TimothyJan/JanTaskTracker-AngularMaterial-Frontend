@@ -66,7 +66,7 @@ export class ProjectTaskComponent implements OnInit{
   async openProjectTaskEditDialog() {
     this.dialog.open(ProjectTaskDialogComponent, {
       width: '600px',
-      data: { projectTaskId: this.projectTask.projectTaskId }
+      data: { projectTaskId: this.projectTask.id }
     });
   }
 

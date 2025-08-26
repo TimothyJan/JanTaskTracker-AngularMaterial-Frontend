@@ -87,7 +87,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   async openProjectEditDialog() {
     this.dialog.open(ProjectDialogComponent, {
       width: '600px',
-      data: { projectId: this.project.projectId }
+      data: { projectId: this.project.id }
     });
   }
 
@@ -103,7 +103,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
     const confirmDelete = confirm('Are you sure you want to delete this project?');
     if (confirmDelete) {
       this.isLoading = true;
-      this._projectService.deleteProject(this.project.projectId);
+      this._projectService.deleteProject(this.project.id);
       this._snackbarService.success("Department deleted.");
       this.isLoading = false;
     }

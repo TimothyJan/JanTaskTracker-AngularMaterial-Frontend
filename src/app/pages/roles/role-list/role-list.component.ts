@@ -127,8 +127,8 @@ export class RoleListComponent implements OnInit, OnDestroy {
 
   /** Get Department name from DepartmentId */
   getDepartmentName(departmentId: number): string | undefined {
-    const department = this.departments.find(dep => dep.departmentId === departmentId);
-    return department ? department.departmentName : undefined;
+    const department = this.departments.find(dep => dep.id === departmentId);
+    return department ? department.name : undefined;
   }
 
   /** Open Role Edit dialog */

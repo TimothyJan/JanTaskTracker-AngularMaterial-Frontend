@@ -149,13 +149,13 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
 
   /** Get Department name from DepartmentId */
   getDepartmentName(departmentId: number): string | undefined {
-    const department = this.departments.find(dep => dep.departmentId === departmentId);
-    return department ? department.departmentName : undefined;
+    const department = this.departments.find(dep => dep.id === departmentId);
+    return department ? department.name : undefined;
   }
 
   /** Get Role name from RoleId */
   getRoleName(roleId: number): string | undefined {
-    const role = this.roles.find(role => role.roleId === roleId);
+    const role = this.roles.find(role => role.id === roleId);
     return role ? role.roleName : undefined;
   }
 

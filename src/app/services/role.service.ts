@@ -39,7 +39,7 @@ export class RoleService {
   /** Get Role based on id */
   getRoleById(id: number): Role | undefined {
     for(let i=0; i<this.roles.length; i++) {
-      if(this.roles[i].roleId == id) {
+      if(this.roles[i].id == id) {
         return this.roles[i];
       }
     }
@@ -54,9 +54,9 @@ export class RoleService {
 
   /** Update existing Role based on id */
   updateRole(role: Role): void {
-    let updatedRole = new Role(role.roleId, role.roleName.toUpperCase(), role.departmentId);
+    let updatedRole = new Role(role.id, role.roleName.toUpperCase(), role.departmentId);
     for(let i=0; i<this.roles.length; i++) {
-      if(this.roles[i].roleId == role.roleId) {
+      if(this.roles[i].id == role.id) {
         this.roles[i] = updatedRole;
       }
     }
@@ -65,7 +65,7 @@ export class RoleService {
   /** Delete Role based on id */
   deleteRole(id: number): void {
     for(let i=0; i<this.roles.length; i++) {
-      if(this.roles[i].roleId == id) {
+      if(this.roles[i].id == id) {
         this.roles.splice(i, 1);
       }
     }
@@ -82,7 +82,7 @@ export class RoleService {
     return this.roles.some(existingRole =>
       existingRole.roleName.toUpperCase() === upperName &&
       existingRole.departmentId === role.departmentId &&
-      existingRole.roleId !== excludeRoleId
+      existingRole.id !== excludeRoleId
     );
   }
 }

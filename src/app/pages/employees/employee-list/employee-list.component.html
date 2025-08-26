@@ -35,7 +35,7 @@
         </mat-grid-list>
       </mat-list-item>
 
-      @for(employee of sortedEmployees; track employee.employeeId) {
+      @for(employee of sortedEmployees; track employee.id) {
         <mat-list-item>
           <mat-grid-list cols="12">
             <mat-grid-tile colspan="3">
@@ -55,8 +55,8 @@
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="onOpenEditDialog(employee.employeeId)">Edit</button>
-                <button mat-menu-item (click)="onDelete(employee.employeeId)">Delete</button>
+                <button mat-menu-item (click)="onOpenEditDialog(employee.id)">Edit</button>
+                <button mat-menu-item (click)="onDelete(employee.id)">Delete</button>
               </mat-menu>
             </mat-grid-tile>
           </mat-grid-list>

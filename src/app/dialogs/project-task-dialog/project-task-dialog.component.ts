@@ -40,7 +40,7 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
 
   isLoading: boolean = false;
   form: FormGroup = new FormGroup({
-    projectTaskId: new FormControl(0, [Validators.required, Validators.pattern(/^\d+$/)]),
+    id: new FormControl(0, [Validators.required, Validators.pattern(/^\d+$/)]),
     projectId: new FormControl(0, [Validators.required, Validators.pattern(/^\d+$/)]),
     name: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
     description: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
@@ -74,7 +74,7 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     const formValues = this._projectTaskService.getProjectTaskById(this.data.projectTaskId!);
     this.form.patchValue({
-      projectTaskId: formValues.projectTaskId,
+      id: formValues.id,
       projectId: formValues.projectId,
       name: formValues.name,
       description: formValues.description,
@@ -147,7 +147,7 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     const formValue = this.form.getRawValue();
     const newProjectTask: ProjectTask = {
-      projectTaskId: formValue.projectTaskId,
+      id: formValue.id,
       projectId: formValue.projectId,
       name: formValue.name.trim(),
       description: formValue.description.trim(),
@@ -167,7 +167,7 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     const formValue = this.form.getRawValue();
     const updatedProjectTask: ProjectTask = {
-      projectTaskId: formValue.projectTaskId,
+      id: formValue.id,
       projectId: formValue.projectId,
       name: formValue.name.trim(),
       description: formValue.description.trim(),

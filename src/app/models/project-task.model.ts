@@ -1,5 +1,5 @@
 export class ProjectTask {
-  projectTaskId: number;
+  id: number;
   projectId: number;
   name: string;
   description: string;
@@ -9,7 +9,7 @@ export class ProjectTask {
   assignedEmployeeIds?: number[] | null;
 
   constructor(
-    projectTaskId: number,
+    id: number,
     projectId: number,
     name: string,
     description: string,
@@ -18,7 +18,7 @@ export class ProjectTask {
     dueDate?: Date,
     assignedEmployeeIds?: number[] | null,
   ) {
-    this.projectTaskId = projectTaskId;
+    this.id = id;
     this.projectId = projectId,
     this.name = name,
     this.description = description,
