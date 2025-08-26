@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { SelectDepartmentComponent } from '../../components/select-department/select-department.component';
+import { Role } from '../../models/role.model';
 
 import { SnackbarService } from '../../services/snackbar.service';
 import { RoleService } from '../../services/role.service';
@@ -98,9 +99,14 @@ export class RoleDialogComponent implements OnInit, OnDestroy {
   createRole(): void {
     if (this.form.valid) {
       this.isLoading = true;
-      const formValue = this.form.value;
-      if(!this._roleService.checkDuplicates(formValue)) {
-        this._roleService.createRole(formValue);
+      const formValue = this.form.getRawValue();
+      const newRole: Role = {
+        roleId: formValue.roleId,
+        roleName: formValue.roleName.trim(),
+        departmentId: formValue.departmentId
+      }
+      if(!this._roleService.checkDuplicates(newRole)) {
+        this._roleService.createRole(newRole);
         this._roleService.notifyRolesChanged();
         this._snackbarService.success("Role created.");
         this.dialogRef.close(this.data.roleId);
@@ -120,9 +126,14 @@ export class RoleDialogComponent implements OnInit, OnDestroy {
   updateRole(): void {
     if (this.form.valid) {
       this.isLoading = true;
-      const formValue = this.form.value;
-      if(!this._roleService.checkDuplicates(formValue, formValue.roleId)) {
-        this._roleService.updateRole(formValue);
+      const formValue = this.form.getRawValue();
+      const updatedRole: Role = {
+        roleId: formValue.roleId,
+        roleName: formValue.roleName.trim(),
+        departmentId: formValue.departmentId
+      }
+      if(!this._roleService.checkDuplicates(updatedRole, updatedRole.roleId)) {
+        this._roleService.updateRole(updatedRole);
         this._roleService.notifyRolesChanged();
         this._snackbarService.success("Role saved.");
         this.dialogRef.close(this.data.roleId);

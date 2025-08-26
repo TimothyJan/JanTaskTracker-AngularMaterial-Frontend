@@ -4,6 +4,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { Subject } from 'rxjs';
 import { DatePickerComponent } from '../../components/date-picker/date-picker.component';
 import { SelectStatusComponent } from '../../components/select-status/select-status.component';
+import { Project } from '../../models/project.model';
 
 import { SnackbarService } from '../../services/snackbar.service';
 import { ProjectService } from '../../services/project.service';
@@ -139,8 +140,16 @@ export class ProjectDialogComponent implements OnInit, OnDestroy {
     /** Create the Project */
   createProject(): void {
     this.isLoading = true;
-    const formValue = this.form.value;
-    this._projectService.createProject(formValue);
+    const formValue = this.form.getRawValue();
+    const newProject: Project = {
+      projectId: formValue.projectId,
+      projectName: formValue.projectName.trim(),
+      description: formValue.description.trim(),
+      status: formValue.status,
+      startDate: formValue.startDate,
+      dueDate: formValue.dueDate
+    }
+    this._projectService.createProject(newProject);
     this._projectService.notifyProjectsChanged();
     this._snackbarService.success("Project created.");
     this.isLoading = false;
@@ -149,8 +158,16 @@ export class ProjectDialogComponent implements OnInit, OnDestroy {
   /** Edit the Project */
   updateProject(): void {
     this.isLoading = true;
-    const formValue = this.form.value;
-    this._projectService.updateProject(formValue);
+    const formValue = this.form.getRawValue();
+    const updatedProject: Project = {
+      projectId: formValue.projectId,
+      projectName: formValue.projectName.trim(),
+      description: formValue.description.trim(),
+      status: formValue.status,
+      startDate: formValue.startDate,
+      dueDate: formValue.dueDate
+    }
+    this._projectService.updateProject(updatedProject);
     this._projectService.notifyProjectsChanged();
     this._snackbarService.success("Project saved.");
     this.isLoading = false;

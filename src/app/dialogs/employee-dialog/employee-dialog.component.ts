@@ -4,6 +4,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { Subject } from 'rxjs';
 import { SelectDepartmentComponent } from '../../components/select-department/select-department.component';
 import { SelectRoleComponent } from '../../components/select-role/select-role.component';
+import { Employee } from '../../models/employee.model';
 
 import { SnackbarService } from '../../services/snackbar.service';
 import { EmployeeService } from '../../services/employee.service';
@@ -13,6 +14,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/materia
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+
 
 @Component({
   selector: 'app-employee-dialog',
@@ -68,7 +70,7 @@ export class EmployeeDialogComponent implements OnInit, OnDestroy {
       this.form.patchValue({
         employeeId: employee.employeeId,
         name: employee.name,
-        salary: employee.salary.toFixed(2), // Format to 2 decimal places
+        salary: employee.salary,
         departmentId: employee.departmentId,
         roleId: employee.roleId
       });
@@ -146,10 +148,13 @@ export class EmployeeDialogComponent implements OnInit, OnDestroy {
 
   createEmployee(): void {
     this.isLoading = true;
-    // Format salary to 2 decimal places
-    const formValue = {
-      ...this.form.value,
-      salary: parseFloat(parseFloat(this.form.value.salary).toFixed(2))
+    const formValue = this.form.getRawValue();
+    const newEmployee: Employee = {
+      employeeId: formValue.employeeId,
+      name: formValue.name.trim(),
+      salary: parseFloat(parseFloat(formValue.salary).toFixed(2)),
+      departmentId: formValue.departmentId,
+      roleId: formValue.roleId
     };
 
     this._employeeService.addEmployee(formValue);
@@ -162,13 +167,16 @@ export class EmployeeDialogComponent implements OnInit, OnDestroy {
   /** Save Changes */
   updateEmployee(): void {
     this.isLoading = true;
-    // Format salary to 2 decimal places
-    const formValue = {
-      ...this.form.value,
-      salary: parseFloat(parseFloat(this.form.value.salary).toFixed(2))
+    const formValue = this.form.getRawValue();
+    const updatedEmployee: Employee = {
+      employeeId: formValue.employeeId,
+      name: formValue.name.trim(),
+      salary: parseFloat(parseFloat(formValue.salary).toFixed(2)),
+      departmentId: formValue.departmentId,
+      roleId: formValue.roleId
     };
 
-    this._employeeService.updateEmployee(formValue);
+    this._employeeService.updateEmployee(updatedEmployee);
     this._employeeService.notifyEmployeesChanged();
     this._snackbarService.success("Employee saved.");
     this.dialogRef.close(this.data.employeeId);

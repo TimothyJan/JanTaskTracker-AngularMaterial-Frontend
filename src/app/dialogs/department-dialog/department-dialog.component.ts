@@ -2,6 +2,7 @@ import { Component, inject, Inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Subject } from 'rxjs';
+import { Department } from '../../models/department.model';
 
 import { SnackbarService } from '../../services/snackbar.service';
 import { DepartmentService } from '../../services/department.service';
@@ -89,9 +90,13 @@ export class DepartmentDialogComponent implements OnInit, OnDestroy {
   createDepartment() {
     if (this.form.valid) {
       this.isLoading = true;
-      const formValue = this.form.value;
-      if (!this._departmentService.checkDuplicates(formValue.departmentName)) {
-        this._departmentService.createDepartment(formValue);
+      const formValue = this.form.getRawValue();
+      const newDepartment: Department = {
+        departmentId: formValue.departmentId,
+        departmentName: formValue.departmentName.trim()
+      }
+      if (!this._departmentService.checkDuplicates(newDepartment.departmentName)) {
+        this._departmentService.createDepartment(newDepartment);
         this._departmentService.notifyDepartmentsChanged();
         this._snackbarService.success("Department created.");
         this.dialogRef.close(this.data.departmentId);
@@ -108,9 +113,13 @@ export class DepartmentDialogComponent implements OnInit, OnDestroy {
   updateDepartment(): void {
     if(this.form.valid) {
       this.isLoading = true;
-      const formValue = this.form.value
-      if (!this._departmentService.checkDuplicates(formValue.departmentName)) {
-        this._departmentService.updateDepartment(formValue);
+      const formValue = this.form.getRawValue();
+      const updatedDepartment: Department = {
+        departmentId: formValue.departmentId,
+        departmentName: formValue.departmentName.trim()
+      }
+      if (!this._departmentService.checkDuplicates(updatedDepartment.departmentName)) {
+        this._departmentService.updateDepartment(updatedDepartment);
         this._departmentService.notifyDepartmentsChanged();
         this._snackbarService.success("Department saved.");
         this.dialogRef.close(this.data.departmentId);

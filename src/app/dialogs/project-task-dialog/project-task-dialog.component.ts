@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } 
 import { Subject } from 'rxjs';
 import { DatePickerComponent } from '../../components/date-picker/date-picker.component';
 import { SelectStatusComponent } from '../../components/select-status/select-status.component';
+import { ProjectTask } from '../../models/project-task.model';
 
 import { SnackbarService } from '../../services/snackbar.service';
 import { ProjectTaskService } from '../../services/project-task.service';
@@ -144,8 +145,18 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
   /** Create Project Task */
   createProjectTask(): void {
     this.isLoading = true;
-    const formValue = this.form.value;
-    this._projectTaskService.createProjectTask(formValue);
+    const formValue = this.form.getRawValue();
+    const newProjectTask: ProjectTask = {
+      projectTaskId: formValue.projectTaskId,
+      projectId: formValue.projectId,
+      name: formValue.name.trim(),
+      description: formValue.description.trim(),
+      status: formValue.status,
+      startDate: formValue.startDate,
+      dueDate: formValue.dueDate,
+      assignedEmployeeIds: formValue.assignedEmployeeIds
+    };
+    this._projectTaskService.createProjectTask(newProjectTask);
     this._projectTaskService.notifyProjectTasksChanged();
     this._snackbarService.success("Project task created.");
     this.isLoading = false;
@@ -154,8 +165,18 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
   /** Update Project Task */
   updateProjectTask(): void {
     this.isLoading = true;
-    const formValue = this.form.value;
-    this._projectTaskService.updateProjectTask(formValue);
+    const formValue = this.form.getRawValue();
+    const updatedProjectTask: ProjectTask = {
+      projectTaskId: formValue.projectTaskId,
+      projectId: formValue.projectId,
+      name: formValue.name.trim(),
+      description: formValue.description.trim(),
+      status: formValue.status,
+      startDate: formValue.startDate,
+      dueDate: formValue.dueDate,
+      assignedEmployeeIds: formValue.assignedEmployeeIds
+    };
+    this._projectTaskService.updateProjectTask(updatedProjectTask);
     this._projectTaskService.notifyProjectTasksChanged();
     this._snackbarService.success("Project task updated.");
     this.isLoading = false;
