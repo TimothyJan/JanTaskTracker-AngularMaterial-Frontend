@@ -7,7 +7,7 @@
       [value]="selectedRoleId"
       placeholder="Select Role">
       <mat-option *ngFor="let role of roles" [value]="role.id">
-        {{ role.roleName }}
+        {{ role.name }}
       </mat-option>
     </mat-select>
   </mat-form-field>

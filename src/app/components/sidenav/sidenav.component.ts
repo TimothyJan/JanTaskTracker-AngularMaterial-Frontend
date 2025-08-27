@@ -30,7 +30,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 })
 export class SidenavComponent implements AfterViewInit, OnDestroy {
   @ViewChild('sidenav') matSidenav!: MatSidenav;
-  isBrowser: boolean;
   private subscription: Subscription;
   currentYear = new Date().getFullYear();
 
@@ -46,7 +45,6 @@ export class SidenavComponent implements AfterViewInit, OnDestroy {
     public sidenavService: SidenavService,
     @Inject(PLATFORM_ID) platformId: Object
   ) {
-    this.isBrowser = isPlatformBrowser(platformId);
     this.subscription = this.sidenavService.isOpen$.subscribe(open => {
       if (this.matSidenav) {
         open ? this.matSidenav.open() : this.matSidenav.close();

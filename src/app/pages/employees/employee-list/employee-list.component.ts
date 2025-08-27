@@ -156,7 +156,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
   /** Get Role name from RoleId */
   getRoleName(roleId: number): string | undefined {
     const role = this.roles.find(role => role.id === roleId);
-    return role ? role.roleName : undefined;
+    return role ? role.name : undefined;
   }
 
   /** Open Employee Edit dialog */

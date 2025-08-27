@@ -7,6 +7,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { ProjectService } from '../../services/project.service';
 
 import { MatCardModule } from '@angular/material/card';
+import { MatGridListModule } from "@angular/material/grid-list";
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from "@angular/material/menu";
 import { MatListModule } from '@angular/material/list';
@@ -17,6 +18,7 @@ import { MatDialog } from '@angular/material/dialog';
   imports: [
     CommonModule,
     MatCardModule,
+    MatGridListModule,
     MatButtonModule,
     MatMenuModule,
     MatListModule,

@@ -106,7 +106,7 @@ export class RoleListComponent implements OnInit, OnDestroy {
 
     this.sortedRoles = [...this.roles].sort((a, b) => {
       if (this.sortBy === 'role') {
-        return a.roleName.localeCompare(b.roleName);
+        return a.name.localeCompare(b.name);
       } else {
         const aDept = this.getDepartmentName(a.departmentId) || '';
         const bDept = this.getDepartmentName(b.departmentId) || '';
