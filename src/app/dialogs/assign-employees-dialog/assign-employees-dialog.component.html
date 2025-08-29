@@ -1,17 +1,17 @@
 @if(!isLoading) {
 
-  <h1 mat-dialog-title>Assign Employees to: {{ projectTask.name }}</h1>
+  <h1 mat-dialog-title>Assign Employees to: {{ projectTask.name_ }}</h1>
 
   <div mat-dialog-content>
     <form>
       <mat-selection-list
         multiple
         [(ngModel)]="selectedEmployees"
-        name="employees">
+        name_="employees">
         @for(employee of employees; track employee.id) {
           <mat-list-option
             [value]="employee.id">
-            {{ employee.name }} (ID: {{ employee.id }})
+            {{ employee.name_ }} (ID: {{ employee.id }})
           </mat-list-option>
         }
         @empty {

@@ -37,7 +37,7 @@ export class DepartmentService {
 
   /** Post new Department */
   createDepartment(department: Department): void {
-    let newDepartment = new Department(this.departmentId++, department.name.toUpperCase());
+    let newDepartment = new Department(this.departmentId++, department.name_.toUpperCase());
     this.departments.push(newDepartment);
     this.departments = this.sortDepartments(this.departments); // Sort after adding
     this.notifyDepartmentsChanged();
@@ -45,7 +45,7 @@ export class DepartmentService {
 
   /** Update existing Department based on id */
   updateDepartment(department: Department): void {
-    let updatedDepartment = new Department(this.departmentId, department.name.toUpperCase());
+    let updatedDepartment = new Department(this.departmentId, department.name_.toUpperCase());
     for(let i=0; i<this.departments.length; i++) {
       if(this.departments[i].id == department.id) {
         this.departments[i] = updatedDepartment;
@@ -67,18 +67,18 @@ export class DepartmentService {
     this.departmentsChangedSource.next();
   }
 
-  /** Checks for duplicate department names */
-  checkDuplicates(name: string): boolean {
-    const upperName = name.toUpperCase().trim();
+  /** Checks for duplicate department name_s */
+  checkDuplicates(name_: string): boolean {
+    const upperName = name_.toUpperCase().trim();
     return this.departments.some(dept =>
-      dept.name.toUpperCase() === upperName
+      dept.name_.toUpperCase() === upperName
     );
   }
 
   /** Helper method to sort departments alphabetically */
   private sortDepartments(departments: Department[]): Department[] {
     return [...departments].sort((a, b) =>
-      a.name.localeCompare(b.name)
+      a.name_.localeCompare(b.name_)
     );
   }
 

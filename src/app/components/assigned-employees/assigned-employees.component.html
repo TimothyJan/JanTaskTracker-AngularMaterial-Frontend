@@ -42,7 +42,7 @@
             <mat-list-item *ngFor="let employee of assignedEmployeeList">
               <mat-grid-list cols="9">
                 <mat-grid-tile colspan="3">
-                  {{ employee.name | truncate:20 }}
+                  {{ employee.name_ | truncate:20 }}
                 </mat-grid-tile>
                 <mat-grid-tile colspan="3">
                   {{ getRoleName(employee.roleId)! | truncate:20 }}

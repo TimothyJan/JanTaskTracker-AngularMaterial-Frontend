@@ -106,7 +106,7 @@ export class RoleListComponent implements OnInit, OnDestroy {
 
     this.sortedRoles = [...this.roles].sort((a, b) => {
       if (this.sortBy === 'role') {
-        return a.name.localeCompare(b.name);
+        return a.name_.localeCompare(b.name_);
       } else {
         const aDept = this.getDepartmentName(a.departmentId) || '';
         const bDept = this.getDepartmentName(b.departmentId) || '';
@@ -125,10 +125,10 @@ export class RoleListComponent implements OnInit, OnDestroy {
     this.sortRoles();
   }
 
-  /** Get Department name from DepartmentId */
+  /** Get Department name_ from DepartmentId */
   getDepartmentName(departmentId: number): string | undefined {
     const department = this.departments.find(dep => dep.id === departmentId);
-    return department ? department.name : undefined;
+    return department ? department.name_ : undefined;
   }
 
   /** Open Role Edit dialog */

@@ -1,23 +1,23 @@
 export class Project {
   id: number;
-  projectName: string;
-  description: string;
-  status: "Not Started" | "Active" | "Completed";
+  name_: string;
+  description_: string;
+  status_: "Not Started" | "Active" | "Completed";
   startDate?: Date;
   dueDate?: Date;
 
   constructor(
     id: number,
-    projectName: string,
-    description: string,
-    status: "Not Started" | "Active" | "Completed",
+    name_: string,
+    description_: string,
+    status_: "Not Started" | "Active" | "Completed",
     startDate?: Date,
     dueDate?: Date,
   ) {
     this.id = id;
-    this.projectName = projectName;
-    this.description = description;
-    this.status = status;
+    this.name_ = name_;
+    this.description_ = description_;
+    this.status_ = status_;
     this.startDate = startDate;
     this.dueDate = dueDate;
   }

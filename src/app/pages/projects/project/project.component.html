@@ -8,7 +8,7 @@
       </mat-grid-tile>
       <mat-grid-tile colspan="9"></mat-grid-tile>
       <mat-grid-tile colspan="2">
-        {{ project.status }}
+        {{ project.status_ }}
       </mat-grid-tile>
       <mat-grid-tile colspan="1">
         <button matIconButton [matMenuTriggerFor]="menu">
@@ -26,10 +26,10 @@
 
     <mat-card-content>
       <mat-card-title>
-        {{ project.projectName }}
+        {{ project.name_ }}
       </mat-card-title>
 
-      <p>{{ project.description }}</p>
+      <p>{{ project.description_ }}</p>
 
       @for (projectTaskId of listOfProjectTaskIds; track projectTaskId) {
         <app-project-task [projectTaskId]="projectTaskId"></app-project-task>

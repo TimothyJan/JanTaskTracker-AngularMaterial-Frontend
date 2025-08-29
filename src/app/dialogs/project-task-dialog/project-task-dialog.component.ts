@@ -42,9 +42,9 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
   form: FormGroup = new FormGroup({
     id: new FormControl(0, [Validators.required, Validators.pattern(/^\d+$/)]),
     projectId: new FormControl(0, [Validators.required, Validators.pattern(/^\d+$/)]),
-    name: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
-    description: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
-    status: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
+    name_: new FormControl("", [Validators.required, Validators.minLength(1), Validators.maxLength(100)]),
+    description_: new FormControl("", [Validators.required, Validators.minLength(1), Validators.maxLength(200)]),
+    status_: new FormControl("", [Validators.required, Validators.minLength(1), Validators.maxLength(50)]),
     startDate: new FormControl(""),
     dueDate: new FormControl(""),
     assignedEmployeeIds: new FormControl([]),
@@ -76,9 +76,9 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
     this.form.patchValue({
       id: formValues.id,
       projectId: formValues.projectId,
-      name: formValues.name,
-      description: formValues.description,
-      status: formValues.status,
+      name_: formValues.name_,
+      description_: formValues.description_,
+      status_: formValues.status_,
       startDate: formValues.startDate,
       dueDate: formValues.dueDate,
       assignedEmployeeIds: formValues.assignedEmployeeIds,
@@ -87,7 +87,7 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
   }
 
   get errorControlsName() {
-    const control = this.form.get('name');
+    const control = this.form.get('name_');
     if (control?.errors && control.touched) {
       if (control.errors['required']) return 'Name is required';
       if (control.errors['minlength']) return 'Name must be at least 2 characters';
@@ -97,7 +97,7 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
   }
 
   get errorControlsDescription() {
-    const control = this.form.get('description');
+    const control = this.form.get('description_');
     if (control?.errors && control.touched) {
       if (control.errors['required']) return 'Description is required';
       if (control.errors['minlength']) return 'Description must be at least 2 characters';
@@ -106,9 +106,9 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
     return null;
   }
 
-  /** Handles status change from status selector component and assigns status to form */
-  handleStatusChange(status: string): void {
-    this.form.patchValue({ status: status });
+  /** Handles status_ change from status_ selector component and assigns status_ to form */
+  handleStatusChange(status_: string): void {
+    this.form.patchValue({ status_: status_ });
   }
 
   /** Handles startDate change from date-selector component and assigns date value to form */
@@ -149,9 +149,9 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
     const newProjectTask: ProjectTask = {
       id: formValue.id,
       projectId: formValue.projectId,
-      name: formValue.name.trim(),
-      description: formValue.description.trim(),
-      status: formValue.status,
+      name_: formValue.name_.trim(),
+      description_: formValue.description_.trim(),
+      status_: formValue.status_,
       startDate: formValue.startDate,
       dueDate: formValue.dueDate,
       assignedEmployeeIds: formValue.assignedEmployeeIds
@@ -169,9 +169,9 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
     const updatedProjectTask: ProjectTask = {
       id: formValue.id,
       projectId: formValue.projectId,
-      name: formValue.name.trim(),
-      description: formValue.description.trim(),
-      status: formValue.status,
+      name_: formValue.name_.trim(),
+      description_: formValue.description_.trim(),
+      status_: formValue.status_,
       startDate: formValue.startDate,
       dueDate: formValue.dueDate,
       assignedEmployeeIds: formValue.assignedEmployeeIds

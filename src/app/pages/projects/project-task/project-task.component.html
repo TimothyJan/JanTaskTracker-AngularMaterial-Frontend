@@ -7,7 +7,7 @@
       </mat-grid-tile>
       <mat-grid-tile colspan="9"></mat-grid-tile>
       <mat-grid-tile colspan="2">
-        {{ projectTask.status }}
+        {{ projectTask.status_ }}
       </mat-grid-tile>
       <mat-grid-tile colspan="1">
         <button matIconButton [matMenuTriggerFor]="menu">
@@ -25,10 +25,10 @@
     <mat-card-content>
 
       <mat-card-title>
-        {{ projectTask.name }}
+        {{ projectTask.name_ }}
       </mat-card-title>
 
-      <p>{{ projectTask.description }}</p>
+      <p>{{ projectTask.description_ }}</p>
 
       <app-assigned-employees [projectTaskId]="projectTaskId"></app-assigned-employees>
 

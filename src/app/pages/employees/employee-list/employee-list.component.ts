@@ -122,7 +122,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
     this.sortedEmployees = [...this.employees].sort((a, b) => {
       switch (this.sortBy) {
         case 'employee':
-          return a.name.localeCompare(b.name);
+          return a.name_.localeCompare(b.name_);
         case 'role':
           const aRole = this.getRoleName(a.roleId) || '';
           const bRole = this.getRoleName(b.roleId) || '';
@@ -147,16 +147,16 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
     this.sortEmployees();
   }
 
-  /** Get Department name from DepartmentId */
+  /** Get Department name_ from DepartmentId */
   getDepartmentName(departmentId: number): string | undefined {
     const department = this.departments.find(dep => dep.id === departmentId);
-    return department ? department.name : undefined;
+    return department ? department.name_ : undefined;
   }
 
-  /** Get Role name from RoleId */
+  /** Get Role name_ from RoleId */
   getRoleName(roleId: number): string | undefined {
     const role = this.roles.find(role => role.id === roleId);
-    return role ? role.name : undefined;
+    return role ? role.name_ : undefined;
   }
 
   /** Open Employee Edit dialog */

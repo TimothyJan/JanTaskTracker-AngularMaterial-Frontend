@@ -39,7 +39,7 @@
         <mat-list-item>
           <mat-grid-list cols="12">
             <mat-grid-tile colspan="3">
-              {{ employee.name | truncate:12 }}
+              {{ employee.name_ | truncate:12 }}
             </mat-grid-tile>
             <mat-grid-tile colspan="3">
               {{ getRoleName(employee.roleId)! | truncate:12 }}

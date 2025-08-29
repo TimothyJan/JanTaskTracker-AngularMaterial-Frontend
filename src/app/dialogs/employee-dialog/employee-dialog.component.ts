@@ -42,7 +42,7 @@ export class EmployeeDialogComponent implements OnInit, OnDestroy {
   isLoading: boolean = false;
   form: FormGroup = new FormGroup({
     id: new FormControl(0, [Validators.pattern(/^\d+$/)]),
-    name: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(100)]),
+    name_: new FormControl("", [Validators.required, Validators.minLength(1), Validators.maxLength(100)]),
     salary: new FormControl(0, [
       Validators.required,
       Validators.min(0.01), // Changed from 0 to 0.01 to require at least 1 cent
@@ -69,7 +69,7 @@ export class EmployeeDialogComponent implements OnInit, OnDestroy {
     if (employee) {
       this.form.patchValue({
         id: employee.id,
-        name: employee.name,
+        name_: employee.name_,
         salary: employee.salary,
         departmentId: employee.departmentId,
         roleId: employee.roleId
@@ -79,10 +79,10 @@ export class EmployeeDialogComponent implements OnInit, OnDestroy {
   }
 
   get errorControlsName() {
-    const control = this.form.get('name');
+    const control = this.form.get('name_');
     if (control?.errors && control.touched) {
       if (control.errors['required']) return 'Name is required';
-      if (control.errors['minlength']) return 'Name must be at least 2 characters';
+      if (control.errors['minlength']) return 'Name must be at least 1 characters';
       if (control.errors['maxlength']) return 'Name must be ≤ 100 characters';
     }
     return null;
@@ -151,7 +151,7 @@ export class EmployeeDialogComponent implements OnInit, OnDestroy {
     const formValue = this.form.getRawValue();
     const newEmployee: Employee = {
       id: formValue.id,
-      name: formValue.name.trim(),
+      name_: formValue.name_.trim(),
       salary: parseFloat(parseFloat(formValue.salary).toFixed(2)),
       departmentId: formValue.departmentId,
       roleId: formValue.roleId
@@ -170,7 +170,7 @@ export class EmployeeDialogComponent implements OnInit, OnDestroy {
     const formValue = this.form.getRawValue();
     const updatedEmployee: Employee = {
       id: formValue.id,
-      name: formValue.name.trim(),
+      name_: formValue.name_.trim(),
       salary: parseFloat(parseFloat(formValue.salary).toFixed(2)),
       departmentId: formValue.departmentId,
       roleId: formValue.roleId

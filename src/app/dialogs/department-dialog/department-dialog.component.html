@@ -13,9 +13,9 @@
       <mat-form-field appearance="outline">
         <input
           matInput
-          formControlName="name"
-          (blur)="form.get('name')?.markAsTouched()">
-        @if (form.get('name')?.invalid) {
+          formControlName="name_"
+          (blur)="form.get('name_')?.markAsTouched()">
+        @if (form.get('name_')?.invalid) {
           <mat-error>
             {{ errorControls }}
           </mat-error>

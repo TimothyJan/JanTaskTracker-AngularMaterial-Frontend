@@ -41,9 +41,9 @@ export class ProjectDialogComponent implements OnInit, OnDestroy {
   isLoading: boolean = false;
   form: FormGroup = new FormGroup({
     id: new FormControl(0, [Validators.pattern(/^\d+$/)]),
-    projectName: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
-    description: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
-    status: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
+    name_: new FormControl("", [Validators.required, Validators.minLength(1), Validators.maxLength(100)]),
+    description_: new FormControl("", [Validators.required, Validators.minLength(1), Validators.maxLength(200)]),
+    status_: new FormControl("", [Validators.required, Validators.minLength(1), Validators.maxLength(50)]),
     startDate: new FormControl(null),
     dueDate: new FormControl(null),
   });
@@ -73,16 +73,16 @@ export class ProjectDialogComponent implements OnInit, OnDestroy {
 
     this.form.patchValue({
       id: project.id,
-      projectName: project.projectName,
-      description: project.description,
-      status: project.status,
+      name_: project.name_,
+      description_: project.description_,
+      status_: project.status_,
       startDate: project.startDate,
       dueDate: project.dueDate
     });
   }
 
   get errorControlsProjectName() {
-    const control = this.form.get('projectName');
+    const control = this.form.get('name_');
     if (control?.errors && control.touched) {
       if (control.errors['required']) return 'Project Name is required';
       if (control.errors['minlength']) return 'Project Name must be at least 2 characters';
@@ -92,7 +92,7 @@ export class ProjectDialogComponent implements OnInit, OnDestroy {
   }
 
   get errorControlsDescription() {
-    const control = this.form.get('description');
+    const control = this.form.get('description_');
     if (control?.errors && control.touched) {
       if (control.errors['required']) return 'Description is required';
       if (control.errors['minlength']) return 'Description must be at least 2 characters';
@@ -101,9 +101,9 @@ export class ProjectDialogComponent implements OnInit, OnDestroy {
     return null;
   }
 
-  /** Handle status input changes */
-  handleStatusChange(status: string): void {
-    this.form.patchValue({ status });
+  /** Handle status_ input changes */
+  handleStatusChange(status_: string): void {
+    this.form.patchValue({ status_ });
   }
 
   /** Handles startDate change */
@@ -143,9 +143,9 @@ export class ProjectDialogComponent implements OnInit, OnDestroy {
     const formValue = this.form.getRawValue();
     const newProject: Project = {
       id: formValue.id,
-      projectName: formValue.projectName.trim(),
-      description: formValue.description.trim(),
-      status: formValue.status,
+      name_: formValue.name_.trim(),
+      description_: formValue.description_.trim(),
+      status_: formValue.status_,
       startDate: formValue.startDate,
       dueDate: formValue.dueDate
     }
@@ -161,9 +161,9 @@ export class ProjectDialogComponent implements OnInit, OnDestroy {
     const formValue = this.form.getRawValue();
     const updatedProject: Project = {
       id: formValue.id,
-      projectName: formValue.projectName.trim(),
-      description: formValue.description.trim(),
-      status: formValue.status,
+      name_: formValue.name_.trim(),
+      description_: formValue.description_.trim(),
+      status_: formValue.status_,
       startDate: formValue.startDate,
       dueDate: formValue.dueDate
     }

@@ -48,13 +48,13 @@ export class RoleService {
 
   /** Post new Role */
   createRole(role: Role): void {
-    let newRole = new Role(this.roleId++, role.name.toUpperCase(), role.departmentId);
+    let newRole = new Role(this.roleId++, role.name_.toUpperCase(), role.departmentId);
     this.roles.push(newRole);
   }
 
   /** Update existing Role based on id */
   updateRole(role: Role): void {
-    let updatedRole = new Role(role.id, role.name.toUpperCase(), role.departmentId);
+    let updatedRole = new Role(role.id, role.name_.toUpperCase(), role.departmentId);
     for(let i=0; i<this.roles.length; i++) {
       if(this.roles[i].id == role.id) {
         this.roles[i] = updatedRole;
@@ -76,11 +76,11 @@ export class RoleService {
     this.rolesChangedSource.next();
   }
 
-  /** Checks for duplicate department names */
+  /** Checks for duplicate department name_s */
   checkDuplicates(role: Role, excludeRoleId?: number): boolean {
-    const upperName = role.name.toUpperCase();
+    const upperName = role.name_.toUpperCase();
     return this.roles.some(existingRole =>
-      existingRole.name.toUpperCase() === upperName &&
+      existingRole.name_.toUpperCase() === upperName &&
       existingRole.departmentId === role.departmentId &&
       existingRole.id !== excludeRoleId
     );

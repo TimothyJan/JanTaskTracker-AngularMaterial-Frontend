@@ -147,16 +147,16 @@ export class AssignedEmployeesComponent implements OnInit, OnDestroy {
       });
   }
 
-  /** Get Department name from DepartmentId */
+  /** Get Department name_ from DepartmentId */
   getDepartmentName(departmentId: number): string | undefined {
     const department = this.departments.find(dep => dep.id === departmentId);
-    return department ? department.name : undefined;
+    return department ? department.name_ : undefined;
   }
 
-  /** Get Role name from RoleId */
+  /** Get Role name_ from RoleId */
   getRoleName(roleId: number): string | undefined {
     const role = this.roles.find(role => role.id === roleId);
-    return role ? role.name : undefined;
+    return role ? role.name_ : undefined;
   }
 
   /** Oopens Assign Employee Dialog */

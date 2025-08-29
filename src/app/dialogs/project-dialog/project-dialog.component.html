@@ -11,8 +11,8 @@
           <mat-form-field appearance="outline">
             <input
               matInput
-              formControlName="projectName"
-              (blur)="form.get('projectName')?.markAsTouched()">
+              formControlName="name_"
+              (blur)="form.get('name_')?.markAsTouched()">
             @if (errorControlsProjectName) {
               <mat-error>
                 {{ errorControlsProjectName }}
@@ -25,8 +25,8 @@
           <mat-form-field appearance="outline">
             <input
               matInput
-              formControlName="description"
-              (blur)="form.get('description')?.markAsTouched()">
+              formControlName="description_"
+              (blur)="form.get('description_')?.markAsTouched()">
             @if (errorControlsDescription) {
               <mat-error>
                 {{ errorControlsDescription }}
@@ -36,7 +36,7 @@
         </div>
         <div class="flex-item">
           <app-select-status
-            [value]="form.get('status')?.value"
+            [value]="form.get('status_')?.value"
             (statusChanged)="handleStatusChange($event)">
           </app-select-status>
         </div>

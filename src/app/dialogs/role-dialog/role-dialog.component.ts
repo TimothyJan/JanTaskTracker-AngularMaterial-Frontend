@@ -39,7 +39,7 @@ export class RoleDialogComponent implements OnInit, OnDestroy {
   isLoading: boolean = false;
   form: FormGroup = new FormGroup({
     id: new FormControl(0, [Validators.pattern(/^\d+$/)]),
-    name: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
+    name_: new FormControl("", [Validators.required, Validators.minLength(1), Validators.maxLength(100)]),
     departmentId: new FormControl(-1, [Validators.required, Validators.pattern(/^\d+$/)])
   });
 
@@ -59,18 +59,18 @@ export class RoleDialogComponent implements OnInit, OnDestroy {
     const role = this._roleService.getRoleById(this.data.roleId!);
     this.form.patchValue({
       id: role?.id,
-      name: role?.name,
+      name_: role?.name_,
       departmentId: role?.departmentId
     })
     this.isLoading = false;
   }
 
   get errorControls() {
-    const control = this.form.get("name");
+    const control = this.form.get("name_");
     if (control?.errors && control.touched) {
       if (control.errors['required']) return 'This field is required';
-      if (control.errors['minlength']) return 'Must be at least 2 characters';
-      if (control.errors['maxlength']) return 'Must be ≤ 50 characters';
+      if (control.errors['minlength']) return 'Must be at least 1 characters';
+      if (control.errors['maxlength']) return 'Must be ≤ 100 characters';
     }
     return null;
   }
@@ -102,7 +102,7 @@ export class RoleDialogComponent implements OnInit, OnDestroy {
       const formValue = this.form.getRawValue();
       const newRole: Role = {
         id: formValue.id,
-        name: formValue.name.trim(),
+        name_: formValue.name_.trim(),
         departmentId: formValue.departmentId
       }
       if(!this._roleService.checkDuplicates(newRole)) {
@@ -129,7 +129,7 @@ export class RoleDialogComponent implements OnInit, OnDestroy {
       const formValue = this.form.getRawValue();
       const updatedRole: Role = {
         id: formValue.id,
-        name: formValue.name.trim(),
+        name_: formValue.name_.trim(),
         departmentId: formValue.departmentId
       }
       if(!this._roleService.checkDuplicates(updatedRole, updatedRole.id)) {

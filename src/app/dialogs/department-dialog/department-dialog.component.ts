@@ -37,7 +37,7 @@ export class DepartmentDialogComponent implements OnInit, OnDestroy {
   isLoading: boolean = false;
   form: FormGroup = new FormGroup({
     id: new FormControl(0, [Validators.pattern(/^\d+$/)]),
-    name: new FormControl("", [Validators.required, Validators.minLength(2), Validators.maxLength(50)])
+    name_: new FormControl("", [Validators.required, Validators.minLength(1), Validators.maxLength(100)])
   });
 
   constructor(
@@ -57,17 +57,17 @@ export class DepartmentDialogComponent implements OnInit, OnDestroy {
     const dept = this._departmentService.getDepartmentById(this.data.id!);
     this.form.patchValue({
       id: dept?.id,
-      name: dept?.name
+      name_: dept?.name_
     })
     this.isLoading = false;
   }
 
   get errorControls() {
-    const control = this.form.get('name');
+    const control = this.form.get('name_');
     if (control?.errors && control.touched) { // Add touched check
-      if (control.errors['required']) return 'Department name is required';
-      if (control.errors['minlength']) return 'Department name must be at least 2 characters'; // Fixed message
-      if (control.errors['maxlength']) return 'Department name must be ≤ 50 characters';
+      if (control.errors['required']) return 'Department name_ is required';
+      if (control.errors['minlength']) return 'Department name_ must be at least 1 characters'; // Fixed message
+      if (control.errors['maxlength']) return 'Department name_ must be ≤ 100 characters';
     }
     return null;
   }
@@ -93,9 +93,9 @@ export class DepartmentDialogComponent implements OnInit, OnDestroy {
       const formValue = this.form.getRawValue();
       const newDepartment: Department = {
         id: formValue.id,
-        name: formValue.name.trim()
+        name_: formValue.name_.trim()
       }
-      if (!this._departmentService.checkDuplicates(newDepartment.name)) {
+      if (!this._departmentService.checkDuplicates(newDepartment.name_)) {
         this._departmentService.createDepartment(newDepartment);
         this._departmentService.notifyDepartmentsChanged();
         this._snackbarService.success("Department created.");
@@ -116,9 +116,9 @@ export class DepartmentDialogComponent implements OnInit, OnDestroy {
       const formValue = this.form.getRawValue();
       const updatedDepartment: Department = {
         id: formValue.id,
-        name: formValue.name.trim()
+        name_: formValue.name_.trim()
       }
-      if (!this._departmentService.checkDuplicates(updatedDepartment.name)) {
+      if (!this._departmentService.checkDuplicates(updatedDepartment.name_)) {
         this._departmentService.updateDepartment(updatedDepartment);
         this._departmentService.notifyDepartmentsChanged();
         this._snackbarService.success("Department saved.");
