@@ -7,7 +7,10 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:JanTaskTracker": "node dist/jan-task-tracker/server/server.mjs"
+    "predeploy": "npm run build:gh-pages",
+    "deploy": "npx angular-cli-ghpages --dir=dist/jan-task-tracker/browser",
+    "build:gh-pages": "ng build --configuration production --base-href \"/JanTaskTracker-AngularMaterial-Frontend/\"",
+    "postbuild:gh-pages": "node create-404.js"
   },
   "private": true,
   "dependencies": {
