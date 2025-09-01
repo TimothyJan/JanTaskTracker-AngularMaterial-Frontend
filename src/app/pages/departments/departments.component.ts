@@ -29,7 +29,7 @@ export class DepartmentsComponent {
   onOpenDepartmentDialog(): void {
     this.dialog.open(DepartmentDialogComponent, {
       width: '500px',
-      data: { }
+      data: { },
     });
   }
 

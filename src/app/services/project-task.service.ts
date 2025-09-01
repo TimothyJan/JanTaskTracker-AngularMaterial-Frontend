@@ -13,10 +13,11 @@ export class ProjectTaskService {
   id: number = 5;
 
   private projectTasks: ProjectTask[] = [
-    new ProjectTask(1, 1, 'Task 1', 'Task for Project Alpha', 'Completed', new Date('2025-11-13'), new Date('2025-12-13'), [0,1]),
-    new ProjectTask(2, 1, 'Task 2', 'Another Task for Project Alpha', 'Active', new Date('2025-12-13'), new Date('2026-1-13'), [3]),
-    new ProjectTask(3, 2, 'Task 3', 'Task for Project Beta', 'Completed', new Date('2026-1-13'), new Date('2026-2-13'), [1]),
-    new ProjectTask(4, 2, 'Task 4', 'Another Task for Project Beta', 'Active', new Date('2025-11-13'), new Date('2026-2-13'), [])
+    new ProjectTask(1, 1, 'Task 1', 'Task for Project Alpha', 'Completed', new Date('2025-06-01'), new Date('2025-10-01'), [0,1]),
+    new ProjectTask(2, 1, 'Task 2', 'Another Task for Project Alpha', 'Active', new Date('2025-07-01'), new Date('2026-05-30'), [3]),
+    new ProjectTask(3, 2, 'Task 3', 'Task for Project Beta', 'Not Started', new Date('2026-01-01'), new Date('2026-06-30'), [1,2]),
+    new ProjectTask(4, 2, 'Task 4', 'Another Task for Project Beta', 'Not Started', new Date('2025-12-01'), new Date('2026-6-30'), []),
+    new ProjectTask(5, 3, 'Task 5', 'Old Task', 'Completed', new Date('2024-01-01'), new Date('2024-12-31'), [0])
   ];
 
   constructor() {}

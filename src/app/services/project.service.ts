@@ -11,10 +11,11 @@ export class ProjectService {
   projectsChanged$ = this.projectsChangedSource.asObservable();
 
   projectId: number = 3;
-
+  // "Not Started" | "Active" | "Completed"
   private projects: Project[] = [
-    new Project(1, 'Project Alpha', 'First project', 'Active', new Date('2025-11-13'), new Date('2026-11-13')),
-    new Project(2, 'Project Beta', 'Second project', 'Active', new Date('2025-11-13'), new Date('2026-1-13')),
+    new Project(1, 'Project Alpha', 'First project', 'Active', new Date('2024-06-01'), new Date('2026-05-30')),
+    new Project(2, 'Project Beta', 'Second project', 'Not Started', new Date('2025-11-13'), new Date('2026-1-13')),
+    new Project(3, 'Project Charlie', 'Second project', 'Completed', new Date('2025-01-01'), new Date('2025-05-31')),
   ];
 
   constructor() {}

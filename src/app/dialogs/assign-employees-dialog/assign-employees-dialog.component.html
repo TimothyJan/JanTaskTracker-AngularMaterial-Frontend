@@ -7,7 +7,7 @@
       <mat-selection-list
         multiple
         [(ngModel)]="selectedEmployees"
-        name_="employees">
+        name="employees">
         @for(employee of employees; track employee.id) {
           <mat-list-option
             [value]="employee.id">

@@ -2,13 +2,17 @@
 
   <mat-card appearance="outlined">
 
-    <mat-grid-list cols="15">
-      <mat-grid-tile colspan="3">
-        {{ project.startDate | date: 'shortDate':'UTC' }} - {{ project.dueDate | date: 'shortDate':'UTC' }}
+    <mat-grid-list cols="15" rowHeight="2em">
+      <mat-grid-tile colspan="4">
+        <div class="date">
+          {{ project.startDate | date: 'shortDate':'UTC' }} - {{ project.dueDate | date: 'shortDate':'UTC' }}
+        </div>
       </mat-grid-tile>
-      <mat-grid-tile colspan="9"></mat-grid-tile>
-      <mat-grid-tile colspan="2">
-        {{ project.status_ }}
+      <mat-grid-tile colspan="7"></mat-grid-tile>
+      <mat-grid-tile colspan="3">
+        <div class="status">
+          {{ project.status_ }}
+        </div>
       </mat-grid-tile>
       <mat-grid-tile colspan="1">
         <button matIconButton [matMenuTriggerFor]="menu">
@@ -26,7 +30,9 @@
 
     <mat-card-content>
       <mat-card-title>
-        {{ project.name_ }}
+        <h2>
+          {{ project.name_ }}
+        </h2>
       </mat-card-title>
 
       <p>{{ project.description_ }}</p>

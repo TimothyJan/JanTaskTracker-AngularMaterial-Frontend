@@ -1,13 +1,17 @@
 @if(!isLoading) {
   <mat-card appearance="outlined">
 
-      <mat-grid-list cols="15">
-      <mat-grid-tile colspan="3">
-        {{ projectTask.startDate | date: 'shortDate':'UTC' }} - {{ projectTask.dueDate | date: 'shortDate':'UTC' }}
+      <mat-grid-list cols="15" rowHeight="2em">
+      <mat-grid-tile colspan="4">
+        <div class="date">
+          {{ projectTask.startDate | date: 'shortDate':'UTC' }} - {{ projectTask.dueDate | date: 'shortDate':'UTC' }}
+        </div>
       </mat-grid-tile>
-      <mat-grid-tile colspan="9"></mat-grid-tile>
-      <mat-grid-tile colspan="2">
-        {{ projectTask.status_ }}
+      <mat-grid-tile colspan="7"></mat-grid-tile>
+      <mat-grid-tile colspan="3">
+        <div class="status">
+          {{ projectTask.status_ }}
+        </div>
       </mat-grid-tile>
       <mat-grid-tile colspan="1">
         <button matIconButton [matMenuTriggerFor]="menu">

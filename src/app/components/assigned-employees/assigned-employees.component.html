@@ -1,24 +1,19 @@
 @if(!isLoading) {
 
   <mat-card>
+    <mat-card-header class="header">
+      <mat-card-title>
+        Assigned Employees
+      </mat-card-title>
 
-    <mat-grid-list cols="8">
-      <mat-grid-tile colspan="3">
-        <mat-card-title>
-          Assigned Employees
-        </mat-card-title>
-      </mat-grid-tile>
-      <mat-grid-tile colspan="2">
-        <button mat-raised-button color="primary" (click)="openAssignEmployees()">
-          @if(assignedEmployeeList.length<1) {
-            Add Employees
-          } @else {
-            Edit Employees
-          }
-        </button>
-      </mat-grid-tile>
-      <mat-grid-tile colspan="3"></mat-grid-tile>
-    </mat-grid-list>
+      <button mat-raised-button color="primary" (click)="openAssignEmployees()">
+        @if(assignedEmployeeList.length<1) {
+          Add Employees
+        } @else {
+          Edit Employees
+        }
+      </button>
+    </mat-card-header>
 
     <mat-card-content>
       @if (assignedEmployeeList.length>0) {

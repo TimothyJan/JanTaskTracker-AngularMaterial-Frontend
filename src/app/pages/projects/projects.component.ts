@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProjectComponent } from "./project/project.component";
 import { ProjectDialogComponent } from '../../dialogs/project-dialog/project-dialog.component';
@@ -7,23 +7,30 @@ import { Subject, takeUntil } from 'rxjs';
 import { ProjectService } from '../../services/project.service';
 
 import { MatCardModule } from '@angular/material/card';
-import { MatGridListModule } from "@angular/material/grid-list";
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from "@angular/material/menu";
 import { MatListModule } from '@angular/material/list';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTabsModule } from '@angular/material/tabs';
+
+const STATUS_OPTIONS = [
+  { value: 'all', label: 'All Projects' },
+  { value: 'Active', label: 'Active' },
+  { value: 'Not Started', label: 'Not Started' },
+  { value: 'Completed', label: 'Completed' }
+] as const;
 
 @Component({
   selector: 'app-projects',
   imports: [
     CommonModule,
     MatCardModule,
-    MatGridListModule,
     MatButtonModule,
     MatMenuModule,
     MatListModule,
-    ProjectComponent
-],
+    ProjectComponent,
+    MatTabsModule
+  ],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.css',
   standalone: true
@@ -33,28 +40,58 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
 
   isLoading: boolean = false;
-  listOfProjectIds: number[] = [];
 
-  constructor(
-    private dialog: MatDialog
-  ) {}
+  // Use signals for better reactivity
+  selectedStatus = signal<string>('all');
+  allProjects = signal<number[]>([]);
+
+  // Reference the constant
+  statusOptions = STATUS_OPTIONS;
+
+  // Computed signal for filtered projects - optimized version
+  filteredProjectIds = computed(() => {
+    const status = this.selectedStatus();
+
+    if (status === 'all') {
+      return this.allProjects();
+    }
+
+    // Filter based on status
+    return this._projectService.getProjects()
+      .filter(project => project.status_ === status)
+      .map(project => project.id);
+  });
+
+  constructor(private dialog: MatDialog) {}
 
   ngOnInit(): void {
-    this.getListOfProjectIds();
+    this.loadProjects();
+
+    // Subscribe to changes in projects
+    this._projectService.projectsChanged$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.loadProjects();
+      });
   }
 
-  /** Get list of ProjectIds */
-  getListOfProjectIds(): void {
+  /** Load all project IDs */
+  loadProjects(): void {
     this.isLoading = true;
-    this.listOfProjectIds = this._projectService.getListOfProjectIds();
+    const projects = this._projectService.getProjects().map(project => project.id);
+    this.allProjects.set(projects);
     this.isLoading = false;
+  }
 
-    // Subscribe to changes in projects, specifically for deletion
-    this._projectService.projectsChanged$
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(() => {
-      this.getListOfProjectIds();
-    });
+  onStatusChange(status: string): void {
+    this.selectedStatus.set(status);
+  }
+
+  onTabChange(event: any): void {
+    const selectedIndex = event.index;
+    if (selectedIndex >= 0 && selectedIndex < this.statusOptions.length) {
+      this.onStatusChange(this.statusOptions[selectedIndex].value);
+    }
   }
 
   /** Open Project Create Dialog */
