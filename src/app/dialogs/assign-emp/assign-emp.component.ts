@@ -18,9 +18,9 @@ import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
-  selector: 'app-assign-employees-dialog',
+  selector: 'app-assign-emp',
   imports: [
-    CommonModule,
+        CommonModule,
     FormsModule,
     ReactiveFormsModule,
     MatDialogModule,
@@ -31,11 +31,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatListModule,
     MatProgressSpinnerModule
   ],
-  templateUrl: './assign-employees-dialog.component.html',
-  styleUrl: './assign-employees-dialog.component.css',
+  templateUrl: './assign-emp.component.html',
+  styleUrl: './assign-emp.component.css',
   standalone: true
 })
-export class AssignEmployeesDialogComponent implements OnInit, OnDestroy {
+export class AssignEmpComponent implements OnInit, OnDestroy {
   private _snackbarService = inject(SnackbarService);
   private _projectTaskService = inject(ProjectTaskService);
   private _employeeService = inject(EmployeeService);
@@ -47,7 +47,7 @@ export class AssignEmployeesDialogComponent implements OnInit, OnDestroy {
   selectedEmployees: number[] = [];
 
   constructor(
-    private dialogRef: MatDialogRef<AssignEmployeesDialogComponent>,
+    private dialogRef: MatDialogRef<AssignEmpComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { projectTaskId: number },
   ) {}
 

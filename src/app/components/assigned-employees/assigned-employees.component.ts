@@ -1,7 +1,7 @@
 import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProjectTask } from '../../models/project-task.model';
-import { AssignEmployeesDialogComponent } from '../../dialogs/assign-employees-dialog/assign-employees-dialog.component';
+import { AssignEmpComponent } from '../../dialogs/assign-emp/assign-emp.component';
 import { Employee } from '../../models/employee.model';
 import { Role } from '../../models/role.model';
 import { Department } from '../../models/department.model';
@@ -161,7 +161,7 @@ export class AssignedEmployeesComponent implements OnInit, OnDestroy {
 
   /** Oopens Assign Employee Dialog */
   async openAssignEmployees() {
-    this.dialog.open(AssignEmployeesDialogComponent, {
+    this.dialog.open(AssignEmpComponent, {
       width: '500px',
       data: { projectTaskId: this.projectTaskId }
     })
