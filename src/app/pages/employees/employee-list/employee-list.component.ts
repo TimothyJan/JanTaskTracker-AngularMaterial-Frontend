@@ -41,7 +41,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   standalone: true
 })
 export class EmployeeListComponent implements OnInit, OnDestroy {
-  private _snackbar = inject(SnackbarService);
+  private _snackbarService = inject(SnackbarService);
   private _employeeService = inject(EmployeeService);
   private _departmentService = inject(DepartmentService);
   private _roleService = inject(RoleService);
@@ -174,7 +174,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
       this.isLoading = true;
       this._employeeService.deleteEmployee(employeeId);
       this.getEmployees();
-      this._snackbar.success("Employee deleted.");
+      this._snackbarService.success("Employee deleted.");
       this.isLoading = false;
     }
   }

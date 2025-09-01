@@ -34,7 +34,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   standalone: true
 })
 export class DepartmentListComponent implements OnInit, OnDestroy {
-  private _snackbar = inject(SnackbarService);
+  private _snackbarService = inject(SnackbarService);
   private _departmentService = inject(DepartmentService);
   private unsubscribe$ = new Subject<void>();
   isLoading: boolean = false;
@@ -77,7 +77,7 @@ export class DepartmentListComponent implements OnInit, OnDestroy {
       this.isLoading = true;
       this._departmentService.deleteDepartment(departmentId);
       this.getDepartments();
-      this._snackbar.success("Department deleted.");
+      this._snackbarService.success("Department deleted.");
       this.isLoading = false;
     }
   }

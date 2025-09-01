@@ -137,7 +137,6 @@ export class ProjectDialogComponent implements OnInit, OnDestroy {
     }
   }
 
-    /** Create the Project */
   createProject(): void {
     this.isLoading = true;
     const formValue = this.form.getRawValue();
@@ -155,7 +154,6 @@ export class ProjectDialogComponent implements OnInit, OnDestroy {
     this.isLoading = false;
   }
 
-  /** Edit the Project */
   updateProject(): void {
     this.isLoading = true;
     const formValue = this.form.getRawValue();

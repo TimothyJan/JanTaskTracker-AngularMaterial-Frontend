@@ -164,7 +164,6 @@ export class EmployeeDialogComponent implements OnInit, OnDestroy {
     this.isLoading = false;
   }
 
-  /** Save Changes */
   updateEmployee(): void {
     this.isLoading = true;
     const formValue = this.form.getRawValue();

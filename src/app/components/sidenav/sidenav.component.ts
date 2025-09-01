@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SidenavService } from '../../services/sidenav.service';
 import { PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { NavItem } from '../../models/nav-item.model';
 
@@ -53,7 +52,6 @@ export class SidenavComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    // Use the new currentState getter instead of .value
     if (this.sidenavService.currentState) {
       setTimeout(() => this.matSidenav.open());
     } else {

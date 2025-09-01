@@ -20,7 +20,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-
 @Component({
   selector: 'app-role-list',
   imports: [
@@ -40,7 +39,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   standalone: true
 })
 export class RoleListComponent implements OnInit, OnDestroy {
-  private _snackbar = inject(SnackbarService);
+  private _snackbarService = inject(SnackbarService);
   private _departmentService = inject(DepartmentService);
   private _roleService = inject(RoleService);
   private unsubscribe$ = new Subject<void>();
@@ -146,7 +145,7 @@ export class RoleListComponent implements OnInit, OnDestroy {
       this.isLoading = true;
       this._roleService.deleteRole(roleId);
       this.getRoles();
-      this._snackbar.success("Role deleted.");
+      this._snackbarService.success("Role deleted.");
       this.isLoading = false;
     }
   }

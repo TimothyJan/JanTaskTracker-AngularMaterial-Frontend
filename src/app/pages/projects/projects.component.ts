@@ -4,6 +4,7 @@ import { ProjectComponent } from "./project/project.component";
 import { ProjectDialogComponent } from '../../dialogs/project-dialog/project-dialog.component';
 import { Subject, takeUntil } from 'rxjs';
 
+import { SnackbarService } from '../../services/snackbar.service';
 import { ProjectService } from '../../services/project.service';
 
 import { MatCardModule } from '@angular/material/card';
@@ -36,6 +37,7 @@ const STATUS_OPTIONS = [
   standalone: true
 })
 export class ProjectsComponent implements OnInit, OnDestroy {
+  private _snackbarService = inject(SnackbarService);
   private _projectService = inject(ProjectService);
   private unsubscribe$ = new Subject<void>();
 

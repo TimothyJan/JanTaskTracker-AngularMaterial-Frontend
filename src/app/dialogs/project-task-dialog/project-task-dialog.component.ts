@@ -142,7 +142,6 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
     }
   }
 
-  /** Create Project Task */
   createProjectTask(): void {
     this.isLoading = true;
     const formValue = this.form.getRawValue();
@@ -162,7 +161,6 @@ export class ProjectTaskDialogComponent implements OnInit, OnDestroy {
     this.isLoading = false;
   }
 
-  /** Update Project Task */
   updateProjectTask(): void {
     this.isLoading = true;
     const formValue = this.form.getRawValue();

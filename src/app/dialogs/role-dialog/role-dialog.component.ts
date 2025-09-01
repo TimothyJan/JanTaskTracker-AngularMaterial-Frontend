@@ -122,7 +122,6 @@ export class RoleDialogComponent implements OnInit, OnDestroy {
     }
   }
 
-  /** Save Changes */
   updateRole(): void {
     if (this.form.valid) {
       this.isLoading = true;
